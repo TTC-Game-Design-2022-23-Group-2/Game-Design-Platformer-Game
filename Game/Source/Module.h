@@ -92,10 +92,6 @@ public:
 
 	SString name;
 	bool isEnabled;
-
-private:
-	//bool isEnabled = true;
-
 };
 
 #endif // __MODULE_H__

@@ -8,6 +8,7 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
+#include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -20,31 +21,33 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	input = new Input(true);
-	win = new Window(true);
-	render = new Render(true);
-	tex = new Textures(true);
-	audio = new Audio(true);
+	input			 = new Input(true);
+	win				 = new Window(true);
+	render			 = new Render(true);
+	tex				 = new Textures(true);
+	audio			 = new Audio(true);
 	//L07 DONE 2: Add Physics module
-	physics = new Physics(true);
-	scene = new Scene(false);
-	entityManager = new EntityManager(true);
-	map = new Map(true);
+	physics			 = new Physics(true);
+	scene			 = new Scene(false);
+	entityManager	 = new EntityManager(true);
+	map				 = new Map(true);
+	fade			 = new ModuleFadeToBlack(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
-	AddModule(win);
-	AddModule(tex);
-	AddModule(audio);
+	AddModule(input);			//1
+	AddModule(win);				//2
+	AddModule(tex);				//3
+	AddModule(audio);			//4
 	//L07 DONE 2: Add Physics module
-	AddModule(physics);
-	AddModule(scene);
-	AddModule(entityManager);
-	AddModule(map);
+	AddModule(physics);			//5
+	AddModule(scene);			//6
+	AddModule(entityManager);	//7
+	AddModule(map);				//8
+	AddModule(fade);			//9
 
 	// Render last to swap buffer
-	AddModule(render);
+	AddModule(render);			//10
 }
 
 // Destructor
