@@ -21,6 +21,8 @@ class Map;
 //L07 DONE 2: Add Physics module
 class Physics;
 class ModuleFadeToBlack;
+class SceneIntro;
+class SceneMenu;
 
 class App
 {
@@ -93,6 +95,8 @@ public:
 	//L07 DONE 2: Add Physics module
 	Physics* physics;
 	ModuleFadeToBlack* fade;
+	SceneMenu* sceneMenu;
+	SceneIntro* sceneIntro;
 
 private:
 

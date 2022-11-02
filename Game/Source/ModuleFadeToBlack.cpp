@@ -11,7 +11,7 @@
 
 ModuleFadeToBlack::ModuleFadeToBlack(bool startEnabled) : Module(startEnabled)
 {
-
+	name.Create("fade");
 }
 
 ModuleFadeToBlack::~ModuleFadeToBlack()
@@ -32,7 +32,7 @@ bool ModuleFadeToBlack::Start()
 	return true;
 }
 
-bool ModuleFadeToBlack::Update()
+bool ModuleFadeToBlack::Update(float dt)
 {
 	// Exit this function if we are not performing a fade
 	if (currentStep == Fade_Step::NONE) return true;
@@ -79,7 +79,7 @@ bool ModuleFadeToBlack::FadeToBlack(Module* moduleToDisable, Module* moduleToEna
 	bool ret = false;
 
 	// If we are already in a fade process, ignore this call
-	if(currentStep == Fade_Step::NONE)
+	if (currentStep == Fade_Step::NONE)
 	{
 		currentStep = Fade_Step::TO_BLACK;
 		frameCount = 0;

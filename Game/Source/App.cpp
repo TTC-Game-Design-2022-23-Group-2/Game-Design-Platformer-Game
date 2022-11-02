@@ -9,6 +9,8 @@
 #include "Map.h"
 #include "Physics.h"
 #include "ModuleFadeToBlack.h"
+#include "SceneIntro.h"
+#include "SceneMenu.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -29,7 +31,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//L07 DONE 2: Add Physics module
 	physics			 = new Physics(true);
 	scene			 = new Scene(false);
-	entityManager	 = new EntityManager(true);
+	sceneIntro		 = new SceneIntro(false);
+	sceneMenu		 = new SceneMenu(true);
+	entityManager	 = new EntityManager(false);
 	map				 = new Map(true);
 	fade			 = new ModuleFadeToBlack(true);
 
@@ -41,10 +45,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);			//4
 	//L07 DONE 2: Add Physics module
 	AddModule(physics);			//5
-	AddModule(scene);			//6
-	AddModule(entityManager);	//7
-	AddModule(map);				//8
-	AddModule(fade);			//9
+	AddModule(sceneMenu);		//6
+	AddModule(sceneIntro);		//7
+	AddModule(scene);			//8
+	AddModule(entityManager);	//9
+	AddModule(map);				//10
+	AddModule(fade);			//11
 
 	// Render last to swap buffer
 	AddModule(render);			//10

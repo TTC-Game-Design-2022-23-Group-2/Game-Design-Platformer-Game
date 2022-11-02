@@ -6,12 +6,13 @@
 #include "Audio.h"
 #include "Input.h"
 #include "ModuleFadeToBlack.h"
+#include "Window.h"
 
 #include "Log.h"
 
 SceneIntro::SceneIntro(bool startEnabled) : Module(startEnabled)
 {
-
+	name.Create("sceneIntro");
 }
 
 SceneIntro::~SceneIntro()
@@ -24,63 +25,59 @@ bool SceneIntro::Start()
 {
 	LOG("Loading background assets");
 
-	bool ret = true;
-
 	bgTexture = app->tex->Load("Assets/Sprites/sprite_title.png");
 	introTexture = app->tex->Load("Assets/Sprites/PreTitle.png");
-	app->audio->PlayMusic("", 1.0f);
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
-	return ret;
+	return true;
 }
 
-bool SceneIntro::Update()
+bool SceneIntro::Update(float dt)
 {
-	/*if ((!play_intro) && (app->input->keys[SDL_SCANCODE_SPACE] == Key_State::KEY_DOWN))
+	if ((!play_intro) && (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 	{
 		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 90);
 	}
-	else if ((!play_intro)&&(app->input->keys[SDL_SCANCODE_ESCAPE] == Key_State::KEY_DOWN))
+	else if ((!play_intro) && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN))
 	{
 		return false;
 	}
-	else if ((play_intro) && (app->input->keys[SDL_SCANCODE_SPACE] == Key_State::KEY_DOWN))
+	else if ((play_intro) && (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 	{
 		uint tex_w, tex_h;
 		app->tex->GetSize(introTexture, tex_w, tex_h);
-		app->render->camera.y = ((tex_h - SCREEN_HEIGHT) * SCREEN_SIZE);
-	}*/
+		app->render->camera.y = ((tex_h - app->win->GetHeight()) * app->win->GetScale());
+	}
 
 	return true;
 }
 
-// Update: draw background
 bool SceneIntro::PostUpdate()
 {
-	//// Draw everything --------------------------------------
-	//uint tex_w, tex_h;
-	//app->tex->GetSize(introTexture, tex_w, tex_h);
-	//int camera = ((app->render->camera.y / ) + SCREEN_HEIGHT);
+	// Draw everything --------------------------------------
+	uint tex_w, tex_h;
+	app->tex->GetSize(introTexture, tex_w, tex_h);
+	int camera = ((app->render->camera.y / app->win->GetScale()) + app->win->GetHeight());
 
-	//if (camera == tex_h) {
-	//	counter--;
-	//}
-	//else {
-	//	app->render->camera.y++;
-	//}
-	//if (counter == 0) {
-	//	play_intro = false;
-	//}
+	if (camera == tex_h) {
+		counter--;
+	}
+	else {
+		app->render->camera.y++;
+	}
+	if (counter == 0) {
+		play_intro = false;
+	}
 
-	//if (play_intro) {
-	//	app->render->DrawTexture(introTexture, 0, 0, NULL);
-	//}
-	//else {
-	//	app->render->camera.y = 0;
-	//	app->render->DrawTexture(bgTexture, 0, 0, NULL);
-	//}
+	if (play_intro) {
+		app->render->DrawTexture(introTexture, 0, 0, NULL);
+	}
+	else {
+		app->render->camera.y = 0;
+		app->render->DrawTexture(bgTexture, 0, 0, NULL);
+	}
 
 	return true;
 }

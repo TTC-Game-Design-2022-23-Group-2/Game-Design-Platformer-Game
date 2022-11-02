@@ -21,35 +21,17 @@ public:
 
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
-	bool Update();
+	bool Update(float dt);
 
 	// Called at the end of the application loop.
 	// Performs the render call of all the parts of the scene's background
 	bool PostUpdate();
 
-	bool SceneMenu::CleanUp();
-
-	void selectionToRight();
-	void selectionToLeft();
+	bool CleanUp();
 
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* modebgTexture = nullptr;
-	SDL_Texture* diffbgTexture = nullptr;
-	SDL_Texture* leftArrow = nullptr;
-	SDL_Texture* rightArrow = nullptr;
-	SDL_Texture* lateralBars = nullptr;
-
-	Animation lateralBarsAnim;
-	unsigned int lateralBarCounter;
-	int lateralBarsY = 0, lateralBarsX = 0;
-
-
-	bool play_diff = false;
-	int selection;
-	uint timer;
-	uint controlerDelay = 0;
-	
+	//SDL_Texture* modebgTexture = nullptr;
 };
 
 #endif
