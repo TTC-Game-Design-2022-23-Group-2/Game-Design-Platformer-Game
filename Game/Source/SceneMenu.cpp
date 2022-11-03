@@ -38,7 +38,7 @@ bool SceneMenu::Start()
 	//lateralBarsAnim.loop = true;
 	//lateralBarsAnim.speed = 0.2f;
 
-	//modebgTexture = app->tex->Load("Assets/Sprites/selectplayer_tetris.png");
+	modebgTexture = app->tex->Load("Assets/Textures/menu_provisional.png");
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
@@ -61,6 +61,7 @@ bool SceneMenu::Update(float dt)
 bool SceneMenu::PostUpdate()
 {
 	// Draw everything --------------------------------------
+	app->render->DrawTexture(modebgTexture, 0, 0);
 
 	return true;
 }
@@ -69,7 +70,7 @@ bool SceneMenu::CleanUp()
 {
 	LOG("Deleting background assets");
 
-	//app->tex->Unload(modebgTexture);
+	app->tex->Unload(modebgTexture);
 
 	return true;
 }
