@@ -61,6 +61,8 @@ public:
 	bool LoadFromFile();
 	bool SaveToFile() ;
 
+	pugi::xml_node LoadConfigFileToVar();
+
 private:
 
 	// Load config file

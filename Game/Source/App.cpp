@@ -116,7 +116,7 @@ bool App::Start()
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if(item->data->IsEnabled()){ ret = item->data->Start(); }
 		item = item->next;
 	}
 
@@ -354,6 +354,23 @@ bool App::SaveToFile()
 	ret = saveDoc->save_file("save_game.xml");
 
 	saveGameRequested = false;
+
+	return ret;
+}
+
+pugi::xml_node App::LoadConfigFileToVar()
+{
+	pugi::xml_node ret;
+	// L01: DONE 3: Load config.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result parseResult = configFile.load_file("config.xml");
+
+	// L01: DONE 3: Check result for loading errors
+	if (parseResult) {
+		ret = configFile.child("config");
+	}
+	else {
+		LOG("Error in App::LoadConfig(): %s", parseResult.description());
+	}
 
 	return ret;
 }

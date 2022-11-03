@@ -23,8 +23,17 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake(pugi::xml_node& config)
 {
+	return true;
+}
+
+// Called before the first frame
+bool Scene::Start()
+{
 	LOG("Loading Scene");
 	bool ret = true;
+
+	pugi::xml_node configNode = app->LoadConfigFileToVar();
+	pugi::xml_node config = configNode.child(name.GetString());
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
@@ -38,14 +47,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
 
-	return ret;
-}
-
-// Called before the first frame
-bool Scene::Start()
-{
 	//IMPORTANT, ENTITY MANAGER IS DISABLED BY DEFAULT
-	if(app->entityManager->isEnabled) { app->entityManager->Enable(); }
+	if(!app->entityManager->isEnabled) { app->entityManager->Enable(); }
 	//img = app->tex->Load("Assets/Textures/test.png");
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 	
@@ -62,7 +65,7 @@ bool Scene::Start()
 
 	app->win->SetTitle(title.GetString());
 
-	return true;
+	return ret;
 }
 
 // Called each loop iteration

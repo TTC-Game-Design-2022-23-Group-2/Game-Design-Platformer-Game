@@ -12,6 +12,11 @@
 Player::Player() : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
+
+	// idle left
+	idleLeftAnim.PushBack({ 0, 0, 109, 71 });
+	idleLeftAnim.loop = true;
+	idleLeftAnim.speed = 0.15f;
 }
 
 Player::~Player() {
@@ -54,7 +59,7 @@ bool Player::Start() {
 
 bool Player::Update()
 {
-
+	currentAnim = &idleLeftAnim;
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 
 	int speed = 10; 
@@ -83,7 +88,8 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	app->render->DrawTexture(texture, position.x , position.y);
+	SDL_Rect rect = currentAnim->GetCurrentFrame();
+	app->render->DrawTexture(texture, position.x , position.y, &rect);
 
 	return true;
 }
