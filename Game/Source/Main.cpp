@@ -34,6 +34,9 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
+		//DELAY 60 fps
+		SDL_Delay((int)(1000 / 60));
+
 		switch(state)
 		{
 			// Allocate the engine --------------------------------------------

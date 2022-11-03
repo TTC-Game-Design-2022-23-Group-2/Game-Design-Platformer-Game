@@ -23,13 +23,7 @@ Map::~Map()
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
-    LOG("Loading Map Parser");
-    bool ret = true;
-
-    mapFileName = config.child("mapfile").attribute("path").as_string();
-    mapFolder = config.child("mapfolder").attribute("path").as_string();
-
-    return ret;
+    return true;
 }
 
 void Map::Draw()
@@ -162,9 +156,17 @@ bool Map::CleanUp()
 }
 
 // Load new map
-bool Map::Load()
+bool Map::Load(const char* scene)
 {
+
+    LOG("Loading Map ");
     bool ret = true;
+
+    pugi::xml_node configNode = app->LoadConfigFileToVar();
+    pugi::xml_node config = configNode.child(scene).child(name.GetString());
+
+    mapFileName = config.child("mapfile").attribute("path").as_string();
+    mapFolder = config.child("mapfolder").attribute("path").as_string();
 
     pugi::xml_document mapFileXML;
     pugi::xml_parse_result result = mapFileXML.load_file(mapFileName.GetString());
