@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -96,6 +97,10 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 1;
 
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
+	}
+
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
@@ -119,6 +124,10 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	if (app->entityManager->isEnabled) { app->entityManager->Disable(); }
+
+	app->map->CleanUp();
 
 	return true;
 }

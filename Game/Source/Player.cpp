@@ -43,7 +43,7 @@ bool Player::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateCircle(position.x+16, position.y+16, 16, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 16, 50, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this; 
@@ -62,8 +62,8 @@ bool Player::Update()
 	currentAnim = &idleLeftAnim;
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 
-	int speed = 10; 
-	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y); 
+	int speed = 5; 
+	b2Vec2 vel = pbody->body->GetLinearVelocity(); 
 
 	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
@@ -74,22 +74,27 @@ bool Player::Update()
 	}
 		
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed, -GRAVITY_Y);
+		vel.x = -speed;
 	}
+	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		vel.x = speed;
+	}
+	else { vel.x = 0; }
 
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed, -GRAVITY_Y);
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		float impulse = pbody->body->GetMass() * 10;
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);
 	}
+	else{ pbody->body->SetLinearVelocity(vel); }
 
 	//Set the velocity of the pbody of the player
-	pbody->body->SetLinearVelocity(vel);
 
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x , position.y, &rect);
+	app->render->DrawTexture(texture, position.x -35, position.y-27, &rect);
 
 	return true;
 }
