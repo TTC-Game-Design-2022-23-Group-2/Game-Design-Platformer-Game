@@ -298,11 +298,12 @@ bool Map::LoadTileSet(pugi::xml_node mapFile){
     return ret;
 }
 
-// L05: DONE 3: Implement a function that loads a single layer layer
+// Lbool ret = true;
+
+    //L05: DONE 3: Implement a function that loads a single layer layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
     bool ret = true;
-
     //Load the attributes
     layer->id = node.attribute("id").as_int();
     layer->name = node.attribute("name").as_string();
@@ -345,6 +346,79 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     return ret;
 }
 
+bool Map::LoadObject(pugi::xml_node& node, Object* object)
+{
+    bool ret = true;
+    //Load the attributes
+    object->id = node.attribute("id").as_int();
+    object->x = node.attribute("x").as_int();
+    object->y = node.attribute("y").as_int();
+
+    //L06: DONE 6 Call Load Propoerties
+
+    //Reserve the memory for the data 
+    object->chainPoints = new uint();
+
+    //Iterate over all the tiles and assign the values
+    pugi::xml_node chain;
+    int i = 0;
+    for (chain = node.child("polygon"); chain && ret; )
+    {
+        object->chainPoints[i] = chain.attribute("points").as_uint() + i;
+        i++;
+    }
+
+    return ret;
+}
+
+bool Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectGroup)
+{
+    bool ret = true;
+    //Load the attributes
+    objectGroup->id = node.attribute("id").as_int();
+    objectGroup->name = node.attribute("name").as_string();
+
+
+    //Reserve the memory for the data 
+    for (pugi::xml_node objectNode = node.child("object"); objectNode && ret; objectNode = objectNode.next_sibling("object"))
+    {
+        //Load the layer
+        Object* mapObject = new Object();
+        ret = LoadObject(objectNode, mapObject);
+
+        //add the layer to the map
+        objectGroup->objects.Add(mapObject);
+    }
+
+    //Iterate over all the tiles and assign the values
+    /*pugi::xml_node chain;
+    int i = 0;
+    for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"))
+    {
+        layer->data[i] = tile.attribute("gid").as_int();
+        i++;
+    }*/
+
+    return ret;
+}
+
+bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
+{
+    bool ret = true;
+
+    for (pugi::xml_node objectGroupNode = mapNode.child("objectgroup"); objectGroupNode && ret; objectGroupNode = objectGroupNode.next_sibling("objectgroup"))
+    {
+        //Load the layer
+        ObjectGroup* mapObjectGroup = new ObjectGroup();
+        ret = LoadObjectGroup(objectGroupNode, mapObjectGroup);
+
+        //add the layer to the map
+        mapData.mapObjectGroups.Add(mapObjectGroup);
+    }
+
+    return ret;
+}
+
 // L06: DONE 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
@@ -359,6 +433,26 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
         properties.list.Add(p);
     }
 
+    return ret;
+}
+
+bool Map::CreateColliders()
+{
+    bool ret = true;
+    
+    int* chain;
+
+    ListItem<MapLayer*>* mapLayerItem;
+    mapLayerItem = mapData.maplayers.start;
+
+    while (mapLayerItem != NULL)
+    {
+        if (mapLayerItem->data->name == "CollisionMap")
+        {
+            chain = 
+        }
+        mapLayerItem = mapLayerItem->next;
+    }
     return ret;
 }
 

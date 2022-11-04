@@ -93,6 +93,38 @@ struct MapLayer
 	}
 };
 
+struct Object
+{
+	
+	int id;
+	int x, y;
+	uint* chainPoints;
+
+	inline uint Get(int x) const
+	{
+		return chainPoints[x];
+	}
+	Object() : chainPoints(NULL)
+	{}
+
+	~Object()
+	{
+		RELEASE(chainPoints);
+	}
+};
+struct ObjectGroup
+{
+	
+	SString	name;
+	int id;
+
+	// L06: DONE: Store custom properties
+	Properties properties;
+
+	List<Object*> objects;
+
+};
+
 // L04: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
@@ -105,7 +137,11 @@ struct MapData
 
 	// L05: DONE 2: Add a list/array of layers to the map
 	List<MapLayer*> maplayers;
+
+	List<ObjectGroup*> mapObjectGroups;
+	
 };
+
 
 class Map : public Module
 {
@@ -131,6 +167,8 @@ public:
 	// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
+	bool CreateColliders();
+
 private:
 
 	bool LoadMap(pugi::xml_node mapFile);
@@ -142,11 +180,17 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
+	bool LoadObject(pugi::xml_node& node, Object* object);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectGroup);
+	bool LoadAllObjectGroups(pugi::xml_node mapNode);
+
 	// L06: DONE 2
 	TileSet* GetTilesetFromTileId(int gid) const;
 
 	// L06: DONE 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+	
 
 public: 
 
