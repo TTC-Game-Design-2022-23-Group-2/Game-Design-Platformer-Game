@@ -449,7 +449,7 @@ bool Map::CreateColliders()
     {
         if (mapLayerItem->data->name == "CollisionMap")
         {
-            chain = 
+            //chain = 
         }
         mapLayerItem = mapLayerItem->next;
     }
