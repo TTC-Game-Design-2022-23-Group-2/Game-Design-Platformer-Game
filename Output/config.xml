@@ -31,7 +31,7 @@
     <item x="500" y="672" texturepath="Assets/Textures/goldCoin.png"/>
 	<map>
 		<mapfolder path="Assets/Maps/"/>
-		<mapfile path="Assets/Maps/MapTemplate.tmx"/>
+		<mapfile path="Assets/Maps/first_level.tmx"/>
 	</map>
   </scene>
   

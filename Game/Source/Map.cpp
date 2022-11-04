@@ -192,6 +192,10 @@ bool Map::Load(const char* scene)
     {
         ret = LoadAllLayers(mapFileXML.child("map"));
     }
+    if (ret == true)
+    {
+        ret = LoadAllObjectGroups(mapFileXML.child("map"));
+    }
     
     // L07 DONE 3: Create colliders
     // Later you can create a function here to load and create the colliders from the map
@@ -359,14 +363,23 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
     //Reserve the memory for the data 
     object->chainPoints = new uint();
 
-    //Iterate over all the tiles and assign the values
-    pugi::xml_node chain;
-    int i = 0;
-    for (chain = node.child("polygon"); chain && ret; )
+    
+    SString chainToken;
+    chainToken = node.child("polygon").attribute("points").as_string();
+
+    for (int i,j = 0; i < chainToken.Length(); i++,j++)
     {
-        object->chainPoints[i] = chain.attribute("points").as_uint() + i;
-        i++;
+        if ((chainToken[i] > 48) && (chainToken[i] < 58))
+        {
+            object->chainPoints[j] = (int)chainToken[j];
+        }
+        else
+        {
+            j--;
+        }
+        
     }
+    
 
     return ret;
 }
@@ -379,25 +392,15 @@ bool Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectGroup)
     objectGroup->name = node.attribute("name").as_string();
 
 
-    //Reserve the memory for the data 
     for (pugi::xml_node objectNode = node.child("object"); objectNode && ret; objectNode = objectNode.next_sibling("object"))
     {
-        //Load the layer
+        //Load the object
         Object* mapObject = new Object();
         ret = LoadObject(objectNode, mapObject);
 
-        //add the layer to the map
+        //add the object to the map
         objectGroup->objects.Add(mapObject);
     }
-
-    //Iterate over all the tiles and assign the values
-    /*pugi::xml_node chain;
-    int i = 0;
-    for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"))
-    {
-        layer->data[i] = tile.attribute("gid").as_int();
-        i++;
-    }*/
 
     return ret;
 }
@@ -408,11 +411,11 @@ bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
 
     for (pugi::xml_node objectGroupNode = mapNode.child("objectgroup"); objectGroupNode && ret; objectGroupNode = objectGroupNode.next_sibling("objectgroup"))
     {
-        //Load the layer
+        //Load the objectGroup
         ObjectGroup* mapObjectGroup = new ObjectGroup();
         ret = LoadObjectGroup(objectGroupNode, mapObjectGroup);
 
-        //add the layer to the map
+        //add the objectGroup to the map
         mapData.mapObjectGroups.Add(mapObjectGroup);
     }
 
