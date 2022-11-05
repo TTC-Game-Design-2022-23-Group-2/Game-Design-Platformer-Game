@@ -199,6 +199,8 @@ bool Map::Load(const char* scene)
     }
     
     // L07 DONE 3: Create colliders
+    CreateColliders();
+    
     // Later you can create a function here to load and create the colliders from the map
     PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
     // L07 DONE 7: Assign collider type
@@ -354,24 +356,36 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
 bool Map::LoadObject(pugi::xml_node& node, Object* object)
 {
     bool ret = true;
+    int arrLenght = 0;
     //Load the attributes
     object->id = node.attribute("id").as_int();
     object->x = node.attribute("x").as_int();
     object->y = node.attribute("y").as_int();
 
     //L06: DONE 6 Call Load Propoerties
-
-    //Reserve the memory for the data 
-    object->chainPoints = new uint();
-
-
     SString polygonString;
     polygonString = node.child("polygon").attribute("points").as_string();
+
+
+    //Reserve the memory for the data 
+    for (int a = 0; a < polygonString.Length(); a++, arrLenght++)
+    {
+        if ((polygonString.GetTerm(a) != ' ') && (polygonString.GetTerm(a) != ','))
+        {
+            arrLenght--;
+        }
+    }
+
+    object->chainPoints = new int[arrLenght];
+    memset(object->chainPoints, 0, arrLenght);
+
+    
     //char* temp = strtok(polygonString.GetCharString(), " ");
     char* temp;
-    uint arr[100];
+    int arr[100];
     int count = 0;
     int j = 0;
+    bool negative = false;
     /*SString clearString;
     while (temp != NULL)
     {
@@ -383,9 +397,23 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
         //LOG("number %s", polygonString.GetTerm(i));
         if ((polygonString.GetTerm(i) != ' ') && (polygonString.GetTerm(i) != ','))
         {
-            arr[count] = ((int)polygonString.GetTerm(i)) - 48;
-            count++;
-
+            if(polygonString.GetTerm(i) == '-')
+            {
+                negative = true;
+            }
+            else
+            {
+                
+                arr[count] = ((int)polygonString.GetTerm(i)) - 48;
+                LOG("%i", arr[count]);
+                if (negative == true)
+                {
+                    arr[count] *= -1;
+                    negative = false;
+                }
+                count++;
+            }
+            
             j--;
         }
         else
@@ -394,13 +422,20 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
             int aux = 0;
             for (int a = 0; count >= 0; a++, count--)
             {
-                aux += arr[a] * (pow(10, count));
+                if (aux < 0)
+                {
+                    aux -= arr[a] * (pow(10, count));
+                }
+                else
+                {
+                    aux += arr[a] * (pow(10, count));
+                }
+                
             }
             object->chainPoints[j] = aux;
             LOG("AUX NUMBER %i", object->chainPoints[j]);
             count = 0;
         }
-        
     }
     count--;
     int aux = 0;
@@ -409,7 +444,10 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
         aux += arr[a] * (pow(10, count));
     }
     object->chainPoints[j] = aux;
+    object->size = arrLenght + 1;
     LOG("AUX NUMBER %i", object->chainPoints[j]);
+
+    polygonString.Clear();
     
     return ret;
 }
@@ -472,9 +510,8 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 bool Map::CreateColliders()
 {
     bool ret = true;
-    
-    int* chain;
 
+    //CREATE TILE COLLIDERS
     ListItem<MapLayer*>* mapLayerItem;
     mapLayerItem = mapData.maplayers.start;
 
@@ -482,10 +519,48 @@ bool Map::CreateColliders()
     {
         if (mapLayerItem->data->name == "CollisionMap")
         {
-            //chain = 
+            int halfTileHeight = mapData.tileHeight / 2;
+            int halfTileWidth = mapData.tileWidth / 2;
+
+            for (int x = 0; x < mapLayerItem->data->width; x++)
+            {
+                for (int y = 0; y < mapLayerItem->data->height; y++)
+                {
+                    if (mapLayerItem->data->Get(x, y) == 3139)
+                    {
+                        iPoint pos = MapToWorld(x, y);
+                        app->physics->CreateRectangle(pos.x + halfTileHeight, pos.y + halfTileWidth, mapData.tileWidth, mapData.tileHeight, STATIC);
+                    }
+
+                }
+            }
         }
         mapLayerItem = mapLayerItem->next;
     }
+
+    //CREATE GAMEOBJECT COLLIDERS
+    ListItem<ObjectGroup*>* mapObjectGroupItem;
+    mapObjectGroupItem = mapData.mapObjectGroups.start;
+
+    while (mapObjectGroupItem != NULL)
+    {
+        if (mapObjectGroupItem->data->name == "CollisionMap")
+        {
+            ListItem<Object*>* mapObjectItem;
+            mapObjectItem = mapObjectGroupItem->data->objects.start;
+            while (mapObjectItem != NULL)
+            {
+                app->physics->CreateChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC);
+
+                mapObjectItem = mapObjectItem->next;
+            }
+        }
+        mapObjectGroupItem = mapObjectGroupItem->next;
+    }
+    /*int arr[16] = { 0,0,560,0,560,16,464,16,464,128,480,144,512,176,0,176 };
+    int arr2[22] = { 0,0,192,0,208,-16,240,-16 ,272,-16 ,272,-48 ,320,-48 ,368,-80 ,416,-80 ,416,64 ,0,64 };
+    app->physics->CreateChain(608, 416, arr2, 22, STATIC);
+    app->physics->CreateChain(0, 304, arr, 16, STATIC);*/
     return ret;
 }
 
