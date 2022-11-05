@@ -225,6 +225,14 @@ public:
 	{
 		return str;
 	}
+	char* GetCharString() const
+	{
+		return str;
+	}
+	const char GetTerm(int x) const
+	{
+		return str[x];
+	}
 
 	unsigned int GetCapacity() const
 	{

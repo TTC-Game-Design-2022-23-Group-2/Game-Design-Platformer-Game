@@ -363,24 +363,44 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
     //Reserve the memory for the data 
     object->chainPoints = new uint();
 
-    
-    SString chainToken;
-    chainToken = node.child("polygon").attribute("points").as_string();
 
-    for (int i,j = 0; i < chainToken.Length(); i++,j++)
+    SString polygonString;
+    polygonString = node.child("polygon").attribute("points").as_string();
+    //char* temp = strtok(polygonString.GetCharString(), " ");
+    char* temp;
+    uint aux = 0;
+    uint arr[100];
+    int count = 0;
+    /*SString clearString;
+    while (temp != NULL)
     {
-        if ((chainToken[i] > 48) && (chainToken[i] < 58))
+        clearString += temp;
+    }*/
+    LOG("number %s", polygonString.GetString());
+    for (uint i = 0,j = 0; i < polygonString.Length(); i++,j++)
+    {
+        //LOG("number %s", polygonString.GetTerm(i));
+        if ((polygonString.GetTerm(i) != ' ') && (polygonString.GetTerm(i) != ','))
         {
-            object->chainPoints[j] = (int)chainToken[j];
+            arr[count] = ((int)polygonString.GetTerm(i)) /* - 48*/;
+            count++;
+
+            j--;
         }
         else
         {
-            j--;
+            for (int a = 0; count < 0; a++, count--)
+            {
+                aux += arr[a] * (10 ^ count);
+            }
+            object->chainPoints[j] = aux;
+            LOG("AUX NUMBER %i", aux);
+            count = 0;
         }
         
     }
     
-
+    
     return ret;
 }
 
