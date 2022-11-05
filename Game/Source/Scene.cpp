@@ -85,23 +85,14 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += 20;
-
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= 20;
-
-	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += 20;
-
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= 20;
-
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (godMode) { godMode = false; }
+		if (!godMode) { godMode = true; }
 	}
 
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
+	if (player->position.x > 300 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 724 / app->win->GetScale())) {
+		app->render->camera.x = (player->position.x - 300 / app->win->GetScale())*-1;
+	}
 
 	// Draw map
 	app->map->Draw();

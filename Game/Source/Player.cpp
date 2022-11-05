@@ -92,14 +92,19 @@ bool Player::Update()
 	int speed = 5; 
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.1f); 
 
-	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		//
+	if (app->scene->godMode) {
+		vel = b2Vec2(0, 0);
+		pbody->body->SetGravityScale(0);
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			vel.y = -speed;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			vel.y = speed;
+		}
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
-	}
-		
+	if (!app->scene->godMode) { pbody->body->SetGravityScale(1); }
+
+	//L02: DONE 4: modify the position of the player using arrow keys and render the texture		
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel.x = -speed;
 	}

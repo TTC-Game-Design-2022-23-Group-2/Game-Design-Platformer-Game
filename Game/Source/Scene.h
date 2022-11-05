@@ -38,6 +38,7 @@ public:
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
+	bool godMode = false;
 
 private:
 	SDL_Texture* img;
