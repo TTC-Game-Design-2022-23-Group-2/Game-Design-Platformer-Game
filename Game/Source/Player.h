@@ -32,6 +32,8 @@ public:
 
 	Animation* currentAnim = nullptr;
 
+	Animation idlestaticleftanim;
+	Animation statictodynamicleftanim;
 	Animation idleLeftAnim;
 
 private:

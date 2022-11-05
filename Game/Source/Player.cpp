@@ -14,9 +14,36 @@ Player::Player() : Entity(EntityType::PLAYER)
 	name.Create("Player");
 
 	// idle left
+	idlestaticleftanim.PushBack({ 0, 0, 109, 71 });
+	idlestaticleftanim.PushBack({ 109, 0, 109, 71 });
+	idlestaticleftanim.PushBack({ 109*2, 0, 109, 71 });
+	idlestaticleftanim.PushBack({ 109, 0, 109, 71 });
+	idlestaticleftanim.loop = true;
+	idlestaticleftanim.speed = 0.10f;
+
+	// idle left
+	statictodynamicleftanim.PushBack({ 0, 0, 109, 71 });
+	statictodynamicleftanim.PushBack({ 109, 0, 109, 71 });
+	statictodynamicleftanim.PushBack({ 109 * 2, 0, 109, 71 });
+	statictodynamicleftanim.PushBack({ 109, 0, 109, 71 });
+	statictodynamicleftanim.loop = true;
+	statictodynamicleftanim.speed = 0.10f;
+
+	// idle left
 	idleLeftAnim.PushBack({ 0, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109 * 2, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109, 0, 109, 71 });
 	idleLeftAnim.loop = true;
-	idleLeftAnim.speed = 0.15f;
+	idleLeftAnim.speed = 0.10f;
+
+	// idle left
+	idleLeftAnim.PushBack({ 0, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109 * 2, 0, 109, 71 });
+	idleLeftAnim.PushBack({ 109, 0, 109, 71 });
+	idleLeftAnim.loop = true;
+	idleLeftAnim.speed = 0.10f;
 }
 
 Player::~Player() {
@@ -95,6 +122,7 @@ bool Player::Update()
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	app->render->DrawTexture(texture, position.x -35, position.y-27, &rect);
+	currentAnim->Update();
 
 	return true;
 }
