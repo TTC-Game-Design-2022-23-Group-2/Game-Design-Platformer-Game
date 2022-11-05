@@ -9,6 +9,7 @@
 #include "Log.h"
 
 #include <math.h>
+#include <cmath>
 #include "SDL_image/include/SDL_image.h"
 
 Map::Map(bool startEnabled) : Module(startEnabled), mapLoaded(false)
@@ -368,38 +369,47 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
     polygonString = node.child("polygon").attribute("points").as_string();
     //char* temp = strtok(polygonString.GetCharString(), " ");
     char* temp;
-    uint aux = 0;
     uint arr[100];
     int count = 0;
+    int j = 0;
     /*SString clearString;
     while (temp != NULL)
     {
         clearString += temp;
     }*/
     LOG("number %s", polygonString.GetString());
-    for (uint i = 0,j = 0; i < polygonString.Length(); i++,j++)
+    for (uint i = 0; i < polygonString.Length(); i++,j++)
     {
         //LOG("number %s", polygonString.GetTerm(i));
         if ((polygonString.GetTerm(i) != ' ') && (polygonString.GetTerm(i) != ','))
         {
-            arr[count] = ((int)polygonString.GetTerm(i)) /* - 48*/;
+            arr[count] = ((int)polygonString.GetTerm(i)) - 48;
             count++;
 
             j--;
         }
         else
         {
-            for (int a = 0; count < 0; a++, count--)
+            count--;
+            int aux = 0;
+            for (int a = 0; count >= 0; a++, count--)
             {
-                aux += arr[a] * (10 ^ count);
+                aux += arr[a] * (pow(10, count));
             }
             object->chainPoints[j] = aux;
-            LOG("AUX NUMBER %i", aux);
+            LOG("AUX NUMBER %i", object->chainPoints[j]);
             count = 0;
         }
         
     }
-    
+    count--;
+    int aux = 0;
+    for (int a = 0; count >= 0; a++, count--)
+    {
+        aux += arr[a] * (pow(10, count));
+    }
+    object->chainPoints[j] = aux;
+    LOG("AUX NUMBER %i", object->chainPoints[j]);
     
     return ret;
 }
