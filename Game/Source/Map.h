@@ -95,12 +95,12 @@ struct MapLayer
 
 struct Object
 {
-	
 	int id;
 	int x, y;
-	uint* chainPoints;
+	int* chainPoints;
+	int size;
 
-	inline uint Get(int x) const
+	inline int Get(int x) const
 	{
 		return chainPoints[x];
 	}
@@ -114,15 +114,10 @@ struct Object
 };
 struct ObjectGroup
 {
-	
 	SString	name;
 	int id;
 
-	// L06: DONE: Store custom properties
-	Properties properties;
-
 	List<Object*> objects;
-
 };
 
 // L04: DONE 1: Create a struct needed to hold the information to Map node
@@ -196,6 +191,7 @@ public:
 
 	// L04: DONE 1: Declare a variable data of the struct MapData
 	MapData mapData;
+
 
 private:
 
