@@ -34,7 +34,10 @@ public:
 
 	Animation idlestaticleftanim;
 	Animation statictodynamicleftanim;
+	Animation idleRightAnim;
 	Animation idleLeftAnim;
+	Animation runningRight;
+	Animation runningLeft;
 
 private:
 
@@ -46,6 +49,8 @@ private:
 	PhysBody* pbody;
 
 	int pickCoinFxId;
+	int state;
+	bool facing;
 
 };
 
