@@ -61,9 +61,9 @@ bool Player::Update()
 {
 	currentAnim = &idleLeftAnim;
 	// L07 DONE 5: Add physics to the player - updated player position using physics
-
+	b2Vec2 vel;
 	int speed = 5; 
-	b2Vec2 vel = pbody->body->GetLinearVelocity(); 
+	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.1f); 
 
 	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
