@@ -187,7 +187,7 @@ bool Player::Update()
 
 
 	if (app->scene->godMode) {
-		speed = 200.f;
+		speed = 300.f;
 		vel = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {

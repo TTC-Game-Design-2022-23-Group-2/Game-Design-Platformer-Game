@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="29">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="31">
  <tileset firstgid="1" name="clouds2" tilewidth="16" tileheight="16" tilecount="476" columns="34">
   <image source="magic_clifs/clouds2.png" width="544" height="236"/>
  </tileset>
@@ -6040,7 +6040,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="6" name="parallax1" width="200" height="30" visible="0">
+ <layer id="6" name="parallax1" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -18054,7 +18054,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="9" name="bg2" width="200" height="30" visible="0">
+ <layer id="9" name="bg2" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -24061,7 +24061,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="4" name="bg1" width="200" height="30" visible="0">
+ <layer id="4" name="bg1" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -30068,7 +30068,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="2" name="village_bg3" width="200" height="30" visible="0">
+ <layer id="2" name="village_bg3" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -36075,7 +36075,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="1" name="map" width="200" height="30" visible="0">
+ <layer id="1" name="map" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -42082,7 +42082,7 @@
    <tile gid="10527"/>
   </data>
  </layer>
- <layer id="8" name="Village_bg2" width="200" height="30" visible="0">
+ <layer id="8" name="Village_bg2" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -48089,7 +48089,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="3" name="village" width="200" height="30" visible="0">
+ <layer id="3" name="village" width="200" height="30">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -54096,12 +54096,12 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="14" name="CameraLimits" visible="0">
+ <objectgroup id="14" name="CameraLimits">
   <object id="28" x="0" y="0">
    <polygon points="0,0 0,480 3200,480 3200,0"/>
   </object>
  </objectgroup>
- <objectgroup id="11" name="CollisionMap" visible="0">
+ <objectgroup id="11" name="CollisionMap">
   <object id="8" x="0" y="304">
    <polygon points="0,0 560,0 560,16 464,16 464,128 480,144 512,176 0,176"/>
   </object>
@@ -54129,8 +54129,11 @@
   <object id="21" x="2592" y="480">
    <polygon points="0,0 0,-128 16,-128 112,-176 176,-176 176,-224 208,-224 208,-176 240,-176 240,-288 288,-288 352,-320 400,-320 400,-368 608,-368 608,0"/>
   </object>
+  <object id="30" x="0" y="304">
+   <polygon points="0,0 0,-304 3200,-304 3200,-192 3200,-304 0,-304"/>
+  </object>
  </objectgroup>
- <objectgroup id="13" name="DeathCollision" visible="0">
+ <objectgroup id="13" name="DeathCollision">
   <object id="26" x="0" y="480">
    <polygon points="0,0 3200,0 0,0"/>
   </object>
