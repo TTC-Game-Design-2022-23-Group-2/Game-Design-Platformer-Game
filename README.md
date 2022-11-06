@@ -6,8 +6,10 @@
 
 ## Key Features
 
- - {Collision chains loaded from TMX}
+ - {Collision chains loaded from TMX file}
  - {Double Jump}
+ - {Parallax effect on the background}
+ - {Upgraded the program to support two levels (we have not had enough time to design a second level)}
  
 ## Controls
 
@@ -25,11 +27,9 @@
 
 ## Developers
 
- - {Kiko Ferrerós} - {Programming & Design} -
- - {Alex Delgado} - {Programming & Design} 
+ - {Kiko Ferrerós} - {Programming & Design} - [_kikofp02_](https://github.com/kikofp02)
+ - {Alex Delgado} - {Programming & Design} - [_faelion_](https://github.com/faelion) // [_Crujialex_](https://github.com/Crujialex)
 
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-{AdditionalLicenses}
