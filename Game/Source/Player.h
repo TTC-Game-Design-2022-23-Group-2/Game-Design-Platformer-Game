@@ -31,6 +31,8 @@ public:
 
 	int GetState() const { return state; }
 
+	PhysBody* getpBody();
+
 
 public:
 
@@ -48,8 +50,13 @@ public:
 	Animation jumpLeftAnim;
 	Animation fallRightAnim;
 	Animation fallLeftAnim;
+	Animation initChargeAnim;
+	Animation chargeAnim;
+	Animation endChargeAnim;
+
 
 	bool endLevel;
+
 
 private:
 
@@ -65,6 +72,9 @@ private:
 	int pickCoinFxId;
 	bool facing;
 	bool canJump;
+	int remainJumps;
+	int chargeTimer;
+	bool isCharging;
 
 };
 

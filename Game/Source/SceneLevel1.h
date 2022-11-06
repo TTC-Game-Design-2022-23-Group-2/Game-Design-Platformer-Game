@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Item.h"
 #include "Point.h"
+#include "Physics.h"
 
 struct SDL_Texture;
 
@@ -34,6 +35,9 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data);
 
 public:
 
