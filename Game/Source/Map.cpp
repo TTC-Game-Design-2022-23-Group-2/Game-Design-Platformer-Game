@@ -153,6 +153,20 @@ bool Map::CleanUp()
         layerItem = layerItem->next;
     }
 
+    mapData.maplayers.Clear();
+
+    ListItem<PhysBody*>* collisionsItem;
+    collisionsItem = collisions.start;
+
+    while (collisionsItem != NULL)
+    {
+        collisionsItem->data->body->DestroyFixture(collisionsItem->data->body->GetFixtureList());
+        RELEASE(collisionsItem->data);
+        collisionsItem = collisionsItem->next;
+    }
+
+    collisions.Clear();
+
     return true;
 }
 
@@ -200,19 +214,6 @@ bool Map::Load(const char* scene)
     
     // L07 DONE 3: Create colliders
     CreateColliders();
-    
-    // Later you can create a function here to load and create the colliders from the map
-    PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
-    // L07 DONE 7: Assign collider type
-    c1->ctype = ColliderType::PLATFORM;
-
-    PhysBody* c2 = app->physics->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
-    // L07 DONE 7: Assign collider type
-    c2->ctype = ColliderType::PLATFORM;
-
-    PhysBody* c3 = app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
-    // L07 DONE 7: Assign collider type
-    c3->ctype = ColliderType::PLATFORM;
 
     if(ret == true)
     {
@@ -529,7 +530,7 @@ bool Map::CreateColliders()
                     if (mapLayerItem->data->Get(x, y) == 3139)
                     {
                         iPoint pos = MapToWorld(x, y);
-                        app->physics->CreateRectangle(pos.x + halfTileHeight, pos.y + halfTileWidth, mapData.tileWidth, mapData.tileHeight, STATIC);
+                        collisions.Add(app->physics->CreateRectangle(pos.x + halfTileHeight, pos.y + halfTileWidth, mapData.tileWidth, mapData.tileHeight, STATIC));
                     }
 
                 }
@@ -550,7 +551,7 @@ bool Map::CreateColliders()
             mapObjectItem = mapObjectGroupItem->data->objects.start;
             while (mapObjectItem != NULL)
             {
-                app->physics->CreateChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC);
+                collisions.Add(app->physics->CreateChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC));
 
                 mapObjectItem = mapObjectItem->next;
             }

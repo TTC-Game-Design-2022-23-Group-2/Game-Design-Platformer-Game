@@ -114,7 +114,7 @@ bool Player::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 16, 50, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 32, 50, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this; 
@@ -165,7 +165,7 @@ bool Player::Update()
 	}
 	else { vel.x = 0; }
 
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		float impulse = pbody->body->GetMass() * 10;
 		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);
 	}

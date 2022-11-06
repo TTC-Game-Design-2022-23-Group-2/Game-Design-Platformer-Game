@@ -47,6 +47,9 @@ bool Scene::Start()
 	//L02: DONE 3: Instantiate the player using the entity manager
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
+	
+	app->render->camera.x = 0;
+	app->render->camera.y = -192;
 
 	//IMPORTANT, ENTITY MANAGER IS DISABLED BY DEFAULT
 	if(!app->entityManager->isEnabled) { app->entityManager->Enable(); }
@@ -90,9 +93,25 @@ bool Scene::Update(float dt)
 		if (!godMode) { godMode = true; }
 	}
 
-	if (player->position.x > 300 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 724 / app->win->GetScale())) {
-		app->render->camera.x = (player->position.x - 300 / app->win->GetScale())*-1;
+	if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {
+		app->render->camera.x = ((player->position.x - 400 / app->win->GetScale())*-1)* app->win->GetScale();
 	}
+
+	if (player->position.y > 300 / app->win->GetScale() && player->position.y < ((app->map->mapData.tileHeight * app->map->mapData.height) - 458 / app->win->GetScale())) {
+		app->render->camera.y = ((player->position.y - 300 / app->win->GetScale()) * -1) * app->win->GetScale();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+		app->render->camera.x += 1;
+
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+		app->render->camera.x -= 1;
+
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		app->render->camera.y -= 1;
+
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+		app->render->camera.y += 1;
 
 	// Draw map
 	app->map->Draw();
@@ -106,7 +125,7 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
 
 	return ret;
 }
@@ -119,6 +138,9 @@ bool Scene::CleanUp()
 	if (app->entityManager->isEnabled) { app->entityManager->Disable(); }
 
 	app->map->CleanUp();
+
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 
 	return true;
 }

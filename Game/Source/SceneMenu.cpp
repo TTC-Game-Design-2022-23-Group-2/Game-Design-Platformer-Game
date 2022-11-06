@@ -60,10 +60,15 @@ bool SceneMenu::Update(float dt)
 
 bool SceneMenu::PostUpdate()
 {
+	bool ret = true;
+
 	// Draw everything --------------------------------------
 	app->render->DrawTexture(modebgTexture, 0, 0);
 
-	return true;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;
+
+	return ret;
 }
 
 bool SceneMenu::CleanUp()
