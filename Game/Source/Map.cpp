@@ -622,6 +622,21 @@ bool Map::CreateColliders()
                 mapObjectItem = mapObjectItem->next;
             }
         }
+        else if (mapObjectGroupItem->data->name == "WinCon")
+        {
+            ListItem<Object*>* mapObjectItem;
+            mapObjectItem = mapObjectGroupItem->data->objects.start;
+            while (mapObjectItem != NULL)
+            {
+                PhysBody* c1 = nullptr;
+                c1 = app->physics->CreateSensorChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC);
+                c1->ctype = ColliderType::WIN;
+                collisions.Add(c1);
+
+
+                mapObjectItem = mapObjectItem->next;
+            }
+        }
         mapObjectGroupItem = mapObjectGroupItem->next;
     }
     /*int arr[16] = { 0,0,560,0,560,16,464,16,464,128,480,144,512,176,0,176 };

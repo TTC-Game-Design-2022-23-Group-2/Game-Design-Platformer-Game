@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="31">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="32">
  <tileset firstgid="1" name="clouds2" tilewidth="16" tileheight="16" tilecount="476" columns="34">
   <image source="magic_clifs/clouds2.png" width="544" height="236"/>
  </tileset>
@@ -54131,6 +54131,11 @@
   </object>
   <object id="30" x="0" y="304">
    <polygon points="0,0 0,-304 3200,-304 3200,-192 3200,-304 0,-304"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="15" name="WinCon">
+  <object id="31" x="3200" y="0">
+   <polygon points="0,0 0,112 -96,112 -96,0"/>
   </object>
  </objectgroup>
  <objectgroup id="13" name="DeathCollision">

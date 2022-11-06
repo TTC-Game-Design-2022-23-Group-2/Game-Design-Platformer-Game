@@ -375,6 +375,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 				state = DYING;
 			}
 			break;
+		case ColliderType::WIN:
+			LOG("Collision WIN");
+			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
 			break;
