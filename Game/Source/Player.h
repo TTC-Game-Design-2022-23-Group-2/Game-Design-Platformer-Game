@@ -27,6 +27,8 @@ public:
 	// L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	void EndCollision(PhysBody* physA, PhysBody* physB);
+
 
 public:
 
@@ -36,8 +38,16 @@ public:
 	Animation statictodynamicleftanim;
 	Animation idleRightAnim;
 	Animation idleLeftAnim;
-	Animation runningRight;
-	Animation runningLeft;
+	Animation runningRightAnim;
+	Animation runningLeftAnim;
+	Animation dieRightAnim;
+	Animation dieLeftAnim;
+	Animation jumpRightAnim;
+	Animation jumpLeftAnim;
+	Animation fallRightAnim;
+	Animation fallLeftAnim;
+
+	bool isDying;
 
 private:
 
@@ -48,9 +58,11 @@ private:
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	int pickCoinFxId;
+	int deathTimer;
 	int state;
+	int pickCoinFxId;
 	bool facing;
+	bool canJump;
 
 };
 

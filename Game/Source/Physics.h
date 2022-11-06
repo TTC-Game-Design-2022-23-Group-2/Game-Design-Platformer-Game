@@ -27,7 +27,9 @@ enum class ColliderType {
 	PLAYER, 
 	ITEM,
 	PLATFORM, 
+	DEATH,
 	UNKNOWN
+
 	// ..
 };
 
@@ -44,6 +46,7 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+
 
 public:
 	int width, height;
@@ -72,9 +75,11 @@ public:
 	PhysBody* CreateCircle(int x, int y, int radious, bodyType type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, bodyType type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bodyType type);
+	PhysBody* CreateSensorChain(int x, int y, int* points, int size, bodyType type);
 	
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+	void EndContact(b2Contact* contact);
 
 private:
 

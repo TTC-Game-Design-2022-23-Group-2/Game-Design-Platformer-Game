@@ -69,6 +69,8 @@ bool SceneLevel1::Start()
 
 	app->win->SetTitle(title.GetString());
 
+	playerDeath = false;
+
 	return ret;
 }
 
@@ -113,6 +115,8 @@ bool SceneLevel1::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 		app->render->camera.y += 1;
 
+	if (player->isDying) playerDeath = true;
+
 	// Draw map
 	app->map->Draw();
 
@@ -124,7 +128,7 @@ bool SceneLevel1::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) || (playerDeath))
 		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
 
 	return ret;

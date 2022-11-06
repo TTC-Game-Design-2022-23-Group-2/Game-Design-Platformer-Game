@@ -551,7 +551,10 @@ bool Map::CreateColliders()
                     if (mapLayerItem->data->Get(x, y) == 3139)
                     {
                         iPoint pos = MapToWorld(x, y);
-                        collisions.Add(app->physics->CreateRectangle(pos.x + halfTileHeight, pos.y + halfTileWidth, mapData.tileWidth, mapData.tileHeight, STATIC));
+                        PhysBody* c1 = nullptr;
+                        c1 = app->physics->CreateRectangle(pos.x + halfTileHeight, pos.y + halfTileWidth, mapData.tileWidth, mapData.tileHeight, STATIC);
+                        c1->ctype = ColliderType::PLATFORM;
+                        collisions.Add(c1);
                     }
 
                 }
@@ -572,7 +575,26 @@ bool Map::CreateColliders()
             mapObjectItem = mapObjectGroupItem->data->objects.start;
             while (mapObjectItem != NULL)
             {
-                collisions.Add(app->physics->CreateChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC));
+                PhysBody* c1 = nullptr;
+                c1 = app->physics->CreateChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC);
+                c1->ctype = ColliderType::PLATFORM;
+                collisions.Add(c1);
+
+
+                mapObjectItem = mapObjectItem->next;
+            }
+        }
+        else if (mapObjectGroupItem->data->name == "DeathCollision")
+        {
+            ListItem<Object*>* mapObjectItem;
+            mapObjectItem = mapObjectGroupItem->data->objects.start;
+            while (mapObjectItem != NULL)
+            {
+                PhysBody* c1 = nullptr;
+                c1 = app->physics->CreateSensorChain(mapObjectItem->data->x, mapObjectItem->data->y, mapObjectItem->data->chainPoints, mapObjectItem->data->size, STATIC);
+                c1->ctype = ColliderType::DEATH;
+                collisions.Add(c1);
+
 
                 mapObjectItem = mapObjectItem->next;
             }
