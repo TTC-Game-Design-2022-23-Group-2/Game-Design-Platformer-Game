@@ -29,6 +29,8 @@ public:
 
 	void EndCollision(PhysBody* physA, PhysBody* physB);
 
+	int GetState() const { return state; }
+
 
 public:
 

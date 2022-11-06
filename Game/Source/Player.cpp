@@ -187,13 +187,26 @@ bool Player::Update()
 
 
 	if (app->scene->godMode) {
+		speed = 200.f;
 		vel = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			vel.y = -speed;
-		}
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			vel.y = speed;
+			//vel.x = speed;
+			b2Vec2 force = { 0, speed };
+			pbody->body->ApplyForceToCenter(force, true);
+			if (vel.y > 5)
+			{
+				vel.y = 5;
+			}
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			//vel.x = speed;
+			b2Vec2 force = { 0, -speed / 2 };
+			pbody->body->ApplyForceToCenter(force, true);
+			if (vel.y > -5)
+			{
+				vel.y = -5;
+			}
 		}
 	}
 	if (!app->scene->godMode) { pbody->body->SetGravityScale(1); }
@@ -206,11 +219,8 @@ bool Player::Update()
 			state = IDLE;
 			canJump = true;
 		}
-		//L02: DONE 4: modify the position of the player using arrow keys and render the texture		
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			state = DYING;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		//L02: DONE 4: modify the position of the player using arrow keys and render the texture
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 
 			b2Vec2 force = { -speed, 0 };
 			//el.x = -speed;
@@ -360,7 +370,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::DEATH:
 			LOG("Collision DEATH");
-			state = DYING;
+			if (!app->scene->godMode) {
+				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
+				state = DYING;
+			}
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");

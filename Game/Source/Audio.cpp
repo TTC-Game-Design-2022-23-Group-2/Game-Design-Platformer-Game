@@ -55,6 +55,8 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	executedFx = app->audio->LoadFx("Assets/Audio/Fx/Executed.wav");
+
 	return ret;
 }
 
