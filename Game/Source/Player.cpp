@@ -109,14 +109,26 @@ Player::Player() : Entity(EntityType::PLAYER)
 	// Jump Right
 	jumpRightAnim.PushBack({ 109 * 11, 71*4, 109, 71 });
 	jumpRightAnim.PushBack({ 109 * 6, 71*5, 109, 71 });
-	jumpRightAnim.loop = false;
-	jumpRightAnim.speed = 0.12f;
+	jumpRightAnim.loop = true;
+	jumpRightAnim.speed = 0.07f;
 
 	// Jump Left
-	jumpRightAnim.PushBack({ 109 * 5, 71 * 4, 109, 71 });
-	jumpRightAnim.PushBack({ 0, 71 * 5, 109, 71 });
-	jumpRightAnim.loop = false;
-	jumpRightAnim.speed = 0.12f;
+	jumpLeftAnim.PushBack({ 109 * 5, 71 * 4, 109, 71 });
+	jumpLeftAnim.PushBack({ 0, 71 * 5, 109, 71 });
+	jumpLeftAnim.loop = true;
+	jumpLeftAnim.speed = 0.07f;
+
+	// Fall Right
+	fallRightAnim.PushBack({ 109 * 7, 71 * 5, 109, 71 });
+	fallRightAnim.PushBack({ 109 * 8, 71 * 5, 109, 71 });
+	fallRightAnim.loop = true;
+	fallRightAnim.speed = 0.07f;
+
+	// Fall Left
+	fallLeftAnim.PushBack({ 109, 71 * 5, 109, 71 });
+	fallLeftAnim.PushBack({ 109 * 2, 71 * 5, 109, 71 });
+	fallLeftAnim.loop = true;
+	fallLeftAnim.speed = 0.07f;
 
 }
 
@@ -144,7 +156,8 @@ bool Player::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 32, 50, bodyType::DYNAMIC);
+	//pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 32, 50, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this; 
@@ -157,7 +170,8 @@ bool Player::Start() {
 
 	currentAnim = &idlestaticleftanim;
 	facing = FACING_RIGHT;
-
+	dieLeftAnim.Reset();
+	dieRightAnim.Reset();
 	return true;
 }
 
@@ -165,13 +179,15 @@ bool Player::Update()
 {
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	b2Vec2 vel;
-	int speed = 7; 
+	float speed = 100.0f; 
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
 
-	if (state != JUMPING)
+	if ((state != JUMPING) && (state != FALLING))
 	{
-		state = RUNNING;
+		state = IDLE;
+		canJump = true;
 	}
+	
 
 	if (app->scene->godMode) {
 		vel = b2Vec2(0, 0);
@@ -190,30 +206,48 @@ bool Player::Update()
 		state = DYING;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel.x = -speed;
+		
+		b2Vec2 force = { -speed, 0 };
+		//el.x = -speed;
+		pbody->body->ApplyForceToCenter(force, true);
+		if (vel.x < -5)
+		{
+			vel.x = -5;
+		}
 		facing = FACING_LEFT;
-		if (state != JUMPING)
+		if ((state != JUMPING) && (state != FALLING))
 		{
 			state = RUNNING;
+			canJump = true;
 		}
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel.x = speed;
+		//vel.x = speed;
+		b2Vec2 force = { speed, 0 };
+		pbody->body->ApplyForceToCenter(force, true);
+		if (vel.x > 5)
+		{
+			vel.x = 5;
+		}
+		
 		facing = FACING_RIGHT;
-		if (state != JUMPING)
+		if ((state != JUMPING) && (state != FALLING))
 		{
 			state = RUNNING;
+			canJump = true;
 		}
 	}
 	else { vel.x = 0; }
-	
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		float impulse = pbody->body->GetMass() * 10;
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);
+    
+	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (canJump == true)) {
+		vel.y = -10;
+		/*float impulse = pbody->body->GetMass() * 10;
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
 		state = JUMPING;
 	}
-	else{ pbody->body->SetLinearVelocity(vel); }
+	pbody->body->SetLinearVelocity(vel);
+
+	
 
 	//Set the velocity of the pbody of the player
 
@@ -253,6 +287,16 @@ bool Player::Update()
 		else if (facing == FACING_RIGHT)
 		{
 			currentAnim = &jumpRightAnim;
+		}
+		break;
+	case FALLING:
+		if (facing == FACING_LEFT)
+		{
+			currentAnim = &fallLeftAnim;
+		}
+		else if (facing == FACING_RIGHT)
+		{
+			currentAnim = &fallRightAnim;
 		}
 		break;
 	case DYING:
@@ -297,6 +341,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
 			state = IDLE;
+			canJump = true;
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
@@ -312,17 +357,24 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 	switch (physB->ctype)
 	{
 	case ColliderType::ITEM:
-		LOG("Collision ITEM");
+		LOG("END Collision ITEM");
 		break;
 	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
-		if (state == JUMPING)
+		LOG("END Collision PLATFORM");
+		canJump = false;
+
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			
+			state = JUMPING;
 		}
+		else
+		{
+			state = FALLING;
+		}
+		
 		break;
 	case ColliderType::UNKNOWN:
-		LOG("Collision UNKNOWN");
+		LOG("END Collision UNKNOWN");
 		break;
 	}
 }

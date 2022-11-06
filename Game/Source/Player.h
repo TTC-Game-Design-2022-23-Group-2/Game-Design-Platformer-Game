@@ -44,6 +44,8 @@ public:
 	Animation dieLeftAnim;
 	Animation jumpRightAnim;
 	Animation jumpLeftAnim;
+	Animation fallRightAnim;
+	Animation fallLeftAnim;
 
 private:
 
@@ -56,7 +58,9 @@ private:
 
 	int pickCoinFxId;
 	int state;
+	int velY;
 	bool facing;
+	bool canJump;
 
 };
 
