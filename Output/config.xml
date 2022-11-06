@@ -26,6 +26,7 @@
 	  <menu texturepath="Assets/Textures/Menu_sprite.png"/>
   </sceneMenu>
   <sceneLevel1>
+    <music path="Assets/Audio/Music/1_Astrub.ogg"/>
   	<player x="100" y="262" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>

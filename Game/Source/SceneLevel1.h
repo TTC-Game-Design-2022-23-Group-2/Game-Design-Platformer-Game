@@ -40,6 +40,7 @@ public:
 	Player* player;
 	bool godMode = false;
 	bool playerDeath;
+	const char* musicPath;
 
 private:
 	SDL_Texture* img;
