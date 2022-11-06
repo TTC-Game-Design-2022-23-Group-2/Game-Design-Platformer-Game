@@ -27,6 +27,8 @@ public:
 	// L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	void EndCollision(PhysBody* physA, PhysBody* physB);
+
 
 public:
 
@@ -36,8 +38,12 @@ public:
 	Animation statictodynamicleftanim;
 	Animation idleRightAnim;
 	Animation idleLeftAnim;
-	Animation runningRight;
-	Animation runningLeft;
+	Animation runningRightAnim;
+	Animation runningLeftAnim;
+	Animation dieRightAnim;
+	Animation dieLeftAnim;
+	Animation jumpRightAnim;
+	Animation jumpLeftAnim;
 
 private:
 

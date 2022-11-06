@@ -17,6 +17,7 @@
 #define JUMPING 4
 #define FALLING 5
 #define CHARGING 6
+#define DYING 7
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -47,14 +48,14 @@ Player::Player() : Entity(EntityType::PLAYER)
 	runningRight.loop = true;
 	runningRight.speed = 0.20f;*/
 
-	runningRight.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
-	runningRight.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
-	runningRight.PushBack({ 109 * 10, 71 * 2, 109, 71 });
-	runningRight.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
-	runningRight.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
-	runningRight.PushBack({ 109 * 10, 71 * 2, 109, 71 });
-	runningRight.loop = true;
-	runningRight.speed = 0.28f;
+	runningRightAnim.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
+	runningRightAnim.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
+	runningRightAnim.PushBack({ 109 * 10, 71 * 2, 109, 71 });
+	runningRightAnim.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
+	runningRightAnim.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
+	runningRightAnim.PushBack({ 109 * 10, 71 * 2, 109, 71 });
+	runningRightAnim.loop = true;
+	runningRightAnim.speed = 0.28f;
 
 	// running Left
 	/*runningLeft.PushBack({109 * 5, 71 * 2 - 2, 109, 71});
@@ -64,16 +65,16 @@ Player::Player() : Entity(EntityType::PLAYER)
 	runningLeft.loop = true;
 	runningLeft.speed = 0.20f;*/
 
-	runningLeft.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
-	runningLeft.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
-	runningLeft.PushBack({ 109 * 4, 71 * 2, 109, 71 });
-	runningLeft.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
-	runningLeft.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
-	runningLeft.PushBack({ 109 * 4, 71 * 2, 109, 71 });
-	runningLeft.loop = true;
-	runningLeft.speed = 0.28f;
+	runningLeftAnim.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
+	runningLeftAnim.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
+	runningLeftAnim.PushBack({ 109 * 4, 71 * 2, 109, 71 });
+	runningLeftAnim.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
+	runningLeftAnim.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
+	runningLeftAnim.PushBack({ 109 * 4, 71 * 2, 109, 71 });
+	runningLeftAnim.loop = true;
+	runningLeftAnim.speed = 0.28f;
 
-	// idle left
+	// idle right
 	idleRightAnim.PushBack({ 109 * 10, 0, 109, 71 });
 	idleRightAnim.PushBack({ 109 * 11, 0, 109, 71 });
 	idleRightAnim.PushBack({ 109 * 6, 71, 109, 71 });
@@ -88,6 +89,35 @@ Player::Player() : Entity(EntityType::PLAYER)
 	idleLeftAnim.PushBack({ 109 * 5, 0, 109, 71 });
 	idleLeftAnim.loop = true;
 	idleLeftAnim.speed = 0.12f;
+
+	// Die right
+	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
+	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
+	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
+	dieRightAnim.PushBack({ 0, 71 * 3, 109, 71 });
+	dieRightAnim.loop = false;
+	dieRightAnim.speed = 0.12f;
+
+	// Die left
+	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
+	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
+	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
+	dieLeftAnim.PushBack({ 0, 71 * 3, 109, 71 });
+	dieLeftAnim.loop = false;
+	dieLeftAnim.speed = 0.12f;
+
+	// Jump Right
+	jumpRightAnim.PushBack({ 109 * 11, 71*4, 109, 71 });
+	jumpRightAnim.PushBack({ 109 * 6, 71*5, 109, 71 });
+	jumpRightAnim.loop = false;
+	jumpRightAnim.speed = 0.12f;
+
+	// Jump Left
+	jumpRightAnim.PushBack({ 109 * 5, 71 * 4, 109, 71 });
+	jumpRightAnim.PushBack({ 0, 71 * 5, 109, 71 });
+	jumpRightAnim.loop = false;
+	jumpRightAnim.speed = 0.12f;
+
 }
 
 Player::~Player() {
@@ -136,9 +166,12 @@ bool Player::Update()
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	b2Vec2 vel;
 	int speed = 7; 
-	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.1f); 
+	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
 
-	state = IDLE;
+	if (state != JUMPING)
+	{
+		state = RUNNING;
+	}
 
 	if (app->scene->godMode) {
 		vel = b2Vec2(0, 0);
@@ -153,21 +186,32 @@ bool Player::Update()
 	if (!app->scene->godMode) { pbody->body->SetGravityScale(1); }
 
 	//L02: DONE 4: modify the position of the player using arrow keys and render the texture		
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		state = DYING;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel.x = -speed;
 		facing = FACING_LEFT;
-		state = RUNNING;
+		if (state != JUMPING)
+		{
+			state = RUNNING;
+		}
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel.x = speed;
 		facing = FACING_RIGHT;
-		state = RUNNING;
+		if (state != JUMPING)
+		{
+			state = RUNNING;
+		}
 	}
 	else { vel.x = 0; }
+	
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		float impulse = pbody->body->GetMass() * 10;
 		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);
+		state = JUMPING;
 	}
 	else{ pbody->body->SetLinearVelocity(vel); }
 
@@ -194,23 +238,34 @@ bool Player::Update()
 	case RUNNING:
 		if (facing == FACING_LEFT)
 		{
-			currentAnim = &runningLeft;
+			currentAnim = &runningLeftAnim;
 		}
 		else if(facing == FACING_RIGHT)
 		{
-			currentAnim = &runningRight;
+			currentAnim = &runningRightAnim;
 		}
 		break;
 	case JUMPING:
 		if (facing == FACING_LEFT)
 		{
-
+			currentAnim = &jumpLeftAnim;
 		}
 		else if (facing == FACING_RIGHT)
 		{
-
+			currentAnim = &jumpRightAnim;
 		}
 		break;
+	case DYING:
+		if (facing == FACING_LEFT)
+		{
+			currentAnim = &dieLeftAnim;
+		}
+		else if (facing == FACING_RIGHT)
+		{
+			currentAnim = &dieRightAnim;
+		}
+		break;
+
 	}
 
 	
@@ -241,6 +296,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
+			state = IDLE;
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
@@ -249,4 +305,24 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	
 
 
+}
+
+void Player::EndCollision(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
+	case ColliderType::ITEM:
+		LOG("Collision ITEM");
+		break;
+	case ColliderType::PLATFORM:
+		LOG("Collision PLATFORM");
+		if (state == JUMPING)
+		{
+			
+		}
+		break;
+	case ColliderType::UNKNOWN:
+		LOG("Collision UNKNOWN");
+		break;
+	}
 }
