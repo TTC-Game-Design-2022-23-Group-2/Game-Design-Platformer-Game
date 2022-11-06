@@ -70,6 +70,8 @@ bool SceneLevel1::Start()
 	app->win->SetTitle(title.GetString());
 
 	playerDeath = false;
+	musicPath = config.child("music").attribute("path").as_string();
+	app->audio->PlayMusic(musicPath);
 
 	return ret;
 }

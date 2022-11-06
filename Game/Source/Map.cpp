@@ -67,11 +67,34 @@ void Map::Draw()
 
                     SDL_Rect r = tileset->GetTileRect(gid);
                     iPoint pos = MapToWorld(x, y);
-
-                    app->render->DrawTexture(tileset->texture,
-                        pos.x,
-                        pos.y,
-                        &r);
+                    if (mapLayerItem->data->id == 5)
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x - ((app->render->camera.x)*(0.2)),
+                            pos.y,
+                            &r);
+                    }
+                    else if (mapLayerItem->data->id == 6)
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x - ((app->render->camera.x) * (0.3)),
+                            pos.y,
+                            &r);
+                    }
+                    else if (mapLayerItem->data->id == 7)
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x - ((app->render->camera.x) * (0.4)),
+                            pos.y,
+                            &r);
+                    }
+                    else
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x,
+                            pos.y,
+                            &r);
+                    }
                 }
             }
         }
