@@ -68,6 +68,7 @@ private:
 	int pickCoinFxId;
 	bool facing;
 	bool canJump;
+	int remainJumps;
 
 };
 

@@ -174,6 +174,7 @@ bool Player::Start() {
 	dieRightAnim.Reset();
 	deathTimer = 0;
 	isDying = 0;
+	remainJumps = 0;
 
 	return true;
 }
@@ -234,6 +235,7 @@ bool Player::Update()
 			{
 				state = RUNNING;
 				canJump = true;
+				remainJumps = 2;
 			}
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
@@ -250,15 +252,17 @@ bool Player::Update()
 			{
 				state = RUNNING;
 				canJump = true;
+				remainJumps = 2;
 			}
 		}
 		else { vel.x = 0; }
 
-		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (canJump == true)) {
-			vel.y = -10;
+		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && ((canJump == true) || (remainJumps > 0))) {
+			vel.y = -7.5f;
 			/*float impulse = pbody->body->GetMass() * 10;
 			pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
 			state = JUMPING;
+			remainJumps--;
 		}
 	}
 	
