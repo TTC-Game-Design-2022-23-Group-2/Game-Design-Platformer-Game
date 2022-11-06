@@ -30,7 +30,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio			 = new Audio(true);
 	//L07 DONE 2: Add Physics module
 	physics			 = new Physics(true);
-	scene			 = new SceneLevel1(false);
+	sceneLevel1			 = new SceneLevel1(false);
 	sceneIntro		 = new SceneIntro(false);
 	sceneMenu		 = new SceneMenu(true);
 	entityManager	 = new EntityManager(false);
@@ -47,7 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);			//5
 	AddModule(sceneMenu);		//6
 	AddModule(sceneIntro);		//7
-	AddModule(scene);			//8
+	AddModule(sceneLevel1);			//8
 	AddModule(entityManager);	//9
 	AddModule(map);				//10
 	AddModule(fade);			//11

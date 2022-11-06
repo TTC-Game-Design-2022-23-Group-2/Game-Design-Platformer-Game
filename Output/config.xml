@@ -18,7 +18,7 @@
 
   <audio>
     <music volume="128"/>
-    <fx volume="128"/>
+    <fx volume="128" executed="Assets/Audio/Fx/Executed.wav"/>
   </audio>
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
@@ -27,6 +27,7 @@
   </sceneMenu>
   <sceneLevel1>
     <music path="Assets/Audio/Music/1_Astrub.ogg"/>
+	<textures victory_defeat="Assets/Textures/victory_death.png" death_text="Assets/Textures/Death.png"/>
   	<player x="100" y="262" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>

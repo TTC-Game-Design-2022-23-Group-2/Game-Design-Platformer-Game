@@ -91,7 +91,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	SceneLevel1* scene;
+	SceneLevel1* sceneLevel1;
 	EntityManager* entityManager;
 	Map* map;
 	//L07 DONE 2: Add Physics module

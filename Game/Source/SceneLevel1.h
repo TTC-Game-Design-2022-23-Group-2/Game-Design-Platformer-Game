@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "Item.h"
+#include "Point.h"
 
 struct SDL_Texture;
 
@@ -42,9 +43,14 @@ public:
 	bool playerDeath;
 	const char* musicPath;
 
-private:
-	SDL_Texture* img;
+	Animation victory;
+	Animation defeat;
 
+	SDL_Point death_pos;
+
+private:
+	SDL_Texture* victory_defeat;
+	SDL_Texture* death_text;
 };
 
 #endif // __SCENE_H__

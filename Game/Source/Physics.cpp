@@ -265,10 +265,6 @@ PhysBody* Physics::CreateSensorChain(int x, int y, int* points, int size, bodyTy
 bool Physics::PostUpdate()
 {
 	bool ret = true;
-
-	// Activate or deactivate debug mode
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
 	
 	//  Iterate all objects in the world and draw the bodies
 	if (debug)

@@ -18,6 +18,7 @@
 #define FALLING 5
 #define CHARGING 6
 #define DYING 7
+#define WINING 8
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -172,8 +173,8 @@ bool Player::Start() {
 	facing = FACING_RIGHT;
 	dieLeftAnim.Reset();
 	dieRightAnim.Reset();
-	deathTimer = 0;
-	isDying = 0;
+	winLoseTimer = 0;
+	endLevel = 0;
 
 	return true;
 }
@@ -186,7 +187,7 @@ bool Player::Update()
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
 
 
-	if (app->scene->godMode) {
+	if (app->sceneLevel1->godMode) {
 		speed = 300.f;
 		vel = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
@@ -209,10 +210,10 @@ bool Player::Update()
 			}
 		}
 	}
-	if (!app->scene->godMode) { pbody->body->SetGravityScale(1); }
+	if (!app->sceneLevel1->godMode) { pbody->body->SetGravityScale(1); }
 
 	//PLAYER MOVEMENT
-	if ((state != DYING))
+	if ((state != DYING) && (state != WINING))
 	{
 		if ((state != JUMPING) && (state != FALLING))
 		{
@@ -267,10 +268,19 @@ bool Player::Update()
 	//DEATH SEQUENCE
 	if (state == DYING)
 	{
-		deathTimer++;
-		if ((state == DYING) && (deathTimer > 30))
+		winLoseTimer++;
+		if ((state == DYING) && (winLoseTimer > 30))
 		{
-			isDying = true;
+			endLevel = true;
+		}
+	}
+
+	if (state == WINING)
+	{
+		winLoseTimer++;
+		if ((state == WINING) && (winLoseTimer > 30))
+		{
+			endLevel = true;
 		}
 	}
 
@@ -334,7 +344,8 @@ bool Player::Update()
 			currentAnim = &dieRightAnim;
 		}
 		break;
-
+	default:
+		break;
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
@@ -370,13 +381,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::DEATH:
 			LOG("Collision DEATH");
-			if (!app->scene->godMode) {
+			if (!app->sceneLevel1->godMode) {
 				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
 				state = DYING;
 			}
 			break;
 		case ColliderType::WIN:
 			LOG("Collision WIN");
+			state = WINING;
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
