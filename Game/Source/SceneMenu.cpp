@@ -7,7 +7,7 @@
 #include "Input.h"
 #include "ModuleFadeToBlack.h"
 #include "SceneIntro.h"
-#include "Scene.h"
+#include "SceneLevel1.h"
 
 #include "Log.h"
 
@@ -27,18 +27,17 @@ bool SceneMenu::Start()
 {
 	LOG("Loading Scene Menu");
 
-	//lateralBarsAnim.PushBack({ 0,0,2,15 });//pink
-	//lateralBarsAnim.PushBack({ 2,0,2,15 });//red
-	//lateralBarsAnim.PushBack({ 4,0,2,15 });//orange
-	//lateralBarsAnim.PushBack({ 6,0,2,15 });//yellow
-	//lateralBarsAnim.PushBack({ 8,0,2,15 });//white
-	//lateralBarsAnim.PushBack({ 10,0,2,15 });//green
-	//lateralBarsAnim.PushBack({ 12,0,2,15 });//cyan
-	//lateralBarsAnim.PushBack({ 14,0,2,15 });//blue
-	//lateralBarsAnim.loop = true;
-	//lateralBarsAnim.speed = 0.2f;
+	pugi::xml_node configNode = app->LoadConfigFileToVar();
+	pugi::xml_node config = configNode.child(name.GetString());
 
-	modebgTexture = app->tex->Load("Assets/Textures/menu_provisional.png");
+	menu.PushBack({ 0,0,512,384 });
+	menu.PushBack({ 0,384,512,384 });
+	menu.PushBack({ 512,384,512,384 });
+	menu.PushBack({ 512,0,512,384 });
+	menu.loop = false;
+	menu.speed = 0.1f;
+
+	menuTexture = app->tex->Load(config.child("menu").attribute("texturepath").as_string());
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
@@ -48,11 +47,20 @@ bool SceneMenu::Start()
 
 bool SceneMenu::Update(float dt)
 {
-	//lateralBarsAnim.Update();
-	//lateralBarCounter++;
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->scene, 30);
+	if (appStart) {
+		if (iconCounter <= 120) {
+			appStart = false;
+		}
+		iconCounter--;
+	}
+	else if (iconCounter > 0) {
+		menu.Update();
+		iconCounter--;
+	}
+	else {
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			app->fade->FadeToBlack(this, (Module*)app->scene, 30);
+		}
 	}
 
 	return true;
@@ -63,7 +71,8 @@ bool SceneMenu::PostUpdate()
 	bool ret = true;
 
 	// Draw everything --------------------------------------
-	app->render->DrawTexture(modebgTexture, 0, 0);
+	SDL_Rect rect = menu.GetCurrentFrame();
+	app->render->DrawTexture(menuTexture, 0, 0, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -75,7 +84,7 @@ bool SceneMenu::CleanUp()
 {
 	LOG("Deleting background assets");
 
-	app->tex->Unload(modebgTexture);
+	app->tex->Unload(menuTexture);
 
 	return true;
 }

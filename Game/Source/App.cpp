@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-#include "Scene.h"
+#include "SceneLevel1.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
@@ -30,7 +30,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio			 = new Audio(true);
 	//L07 DONE 2: Add Physics module
 	physics			 = new Physics(true);
-	scene			 = new Scene(false);
+	scene			 = new SceneLevel1(false);
 	sceneIntro		 = new SceneIntro(false);
 	sceneMenu		 = new SceneMenu(true);
 	entityManager	 = new EntityManager(false);

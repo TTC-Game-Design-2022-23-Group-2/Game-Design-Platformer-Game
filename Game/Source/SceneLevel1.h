@@ -7,14 +7,14 @@
 
 struct SDL_Texture;
 
-class Scene : public Module
+class SceneLevel1 : public Module
 {
 public:
 
-	Scene(bool startEnabled);
+	SceneLevel1(bool startEnabled);
 
 	// Destructor
-	virtual ~Scene();
+	virtual ~SceneLevel1();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& config);

@@ -31,7 +31,12 @@ public:
 
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* modebgTexture = nullptr;
+	SDL_Texture* menuTexture = nullptr;
+	Animation menu;
+	Animation icon;
+
+	int iconCounter = 240;
+	bool appStart = true;
 };
 
 #endif

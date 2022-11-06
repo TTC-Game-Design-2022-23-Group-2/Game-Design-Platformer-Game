@@ -43,7 +43,7 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Source\Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
+    <ClCompile Include="Source\SceneLevel1.cpp">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleFadeToBlack.cpp">
@@ -117,7 +117,7 @@
     <ClInclude Include="Source\Player.h">
       <Filter>Source\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene.h">
+    <ClInclude Include="Source\SceneLevel1.h">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleFadeToBlack.h">

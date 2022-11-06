@@ -167,6 +167,27 @@ bool Map::CleanUp()
 
     collisions.Clear();
 
+    ListItem<ObjectGroup*>* ObjectGroupItem;
+    ObjectGroupItem = mapData.mapObjectGroups.start;
+
+    while (ObjectGroupItem != NULL)
+    {
+        ListItem<Object*>* ObjectItem;
+        ObjectItem = ObjectGroupItem->data->objects.start;
+
+        while (ObjectItem != NULL)
+        {
+            RELEASE(ObjectItem->data);
+            ObjectItem = ObjectItem->next;
+        }
+        ObjectGroupItem->data->objects.Clear();
+
+        RELEASE(ObjectGroupItem->data);
+        ObjectGroupItem = ObjectGroupItem->next;
+    }
+
+    mapData.mapObjectGroups.Clear();
+
     return true;
 }
 

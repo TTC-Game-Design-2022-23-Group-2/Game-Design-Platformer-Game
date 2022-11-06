@@ -4,7 +4,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "Scene.h"
+#include "SceneLevel1.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
@@ -12,25 +12,25 @@
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene(bool startEnabled) : Module(startEnabled)
+SceneLevel1::SceneLevel1(bool startEnabled) : Module(startEnabled)
 {
-	name.Create("scene");
+	name.Create("sceneLevel1");
 }
 
 // Destructor
-Scene::~Scene()
+SceneLevel1::~SceneLevel1()
 {}
 
 // Called before render is available
-bool Scene::Awake(pugi::xml_node& config)
+bool SceneLevel1::Awake(pugi::xml_node& config)
 {
 	return true;
 }
 
 // Called before the first frame
-bool Scene::Start()
+bool SceneLevel1::Start()
 {
-	LOG("Loading Scene");
+	LOG("Loading SceneLevel1");
 	bool ret = true;
 
 	pugi::xml_node configNode = app->LoadConfigFileToVar();
@@ -73,13 +73,13 @@ bool Scene::Start()
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate()
+bool SceneLevel1::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool Scene::Update(float dt)
+bool SceneLevel1::Update(float dt)
 {
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -120,7 +120,7 @@ bool Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool Scene::PostUpdate()
+bool SceneLevel1::PostUpdate()
 {
 	bool ret = true;
 
@@ -131,7 +131,7 @@ bool Scene::PostUpdate()
 }
 
 // Called before quitting
-bool Scene::CleanUp()
+bool SceneLevel1::CleanUp()
 {
 	LOG("Freeing scene");
 
