@@ -172,6 +172,9 @@ bool Player::Start() {
 	facing = FACING_RIGHT;
 	dieLeftAnim.Reset();
 	dieRightAnim.Reset();
+	deathTimer = 0;
+	isDying = 0;
+
 	return true;
 }
 
@@ -182,12 +185,6 @@ bool Player::Update()
 	float speed = 100.0f; 
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
 
-	if ((state != JUMPING) && (state != FALLING))
-	{
-		state = IDLE;
-		canJump = true;
-	}
-	
 
 	if (app->scene->godMode) {
 		vel = b2Vec2(0, 0);
@@ -201,53 +198,71 @@ bool Player::Update()
 	}
 	if (!app->scene->godMode) { pbody->body->SetGravityScale(1); }
 
-	//L02: DONE 4: modify the position of the player using arrow keys and render the texture		
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		state = DYING;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		
-		b2Vec2 force = { -speed, 0 };
-		//el.x = -speed;
-		pbody->body->ApplyForceToCenter(force, true);
-		if (vel.x < -5)
-		{
-			vel.x = -5;
-		}
-		facing = FACING_LEFT;
+	//PLAYER MOVEMENT
+	if ((state != DYING))
+	{
 		if ((state != JUMPING) && (state != FALLING))
 		{
-			state = RUNNING;
+			state = IDLE;
 			canJump = true;
 		}
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		//vel.x = speed;
-		b2Vec2 force = { speed, 0 };
-		pbody->body->ApplyForceToCenter(force, true);
-		if (vel.x > 5)
-		{
-			vel.x = 5;
+		//L02: DONE 4: modify the position of the player using arrow keys and render the texture		
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			state = DYING;
 		}
-		
-		facing = FACING_RIGHT;
-		if ((state != JUMPING) && (state != FALLING))
-		{
-			state = RUNNING;
-			canJump = true;
+		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+			b2Vec2 force = { -speed, 0 };
+			//el.x = -speed;
+			pbody->body->ApplyForceToCenter(force, true);
+			if (vel.x < -5)
+			{
+				vel.x = -5;
+			}
+			facing = FACING_LEFT;
+			if ((state != JUMPING) && (state != FALLING))
+			{
+				state = RUNNING;
+				canJump = true;
+			}
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			//vel.x = speed;
+			b2Vec2 force = { speed, 0 };
+			pbody->body->ApplyForceToCenter(force, true);
+			if (vel.x > 5)
+			{
+				vel.x = 5;
+			}
+
+			facing = FACING_RIGHT;
+			if ((state != JUMPING) && (state != FALLING))
+			{
+				state = RUNNING;
+				canJump = true;
+			}
+		}
+		else { vel.x = 0; }
+
+		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (canJump == true)) {
+			vel.y = -10;
+			/*float impulse = pbody->body->GetMass() * 10;
+			pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
+			state = JUMPING;
 		}
 	}
-	else { vel.x = 0; }
-    
-	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (canJump == true)) {
-		vel.y = -10;
-		/*float impulse = pbody->body->GetMass() * 10;
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
-		state = JUMPING;
-	}
+	
 	pbody->body->SetLinearVelocity(vel);
 
-	
+	//DEATH SEQUENCE
+	if (state == DYING)
+	{
+		deathTimer++;
+		if ((state == DYING) && (deathTimer > 30))
+		{
+			isDying = true;
+		}
+	}
 
 	//Set the velocity of the pbody of the player
 
@@ -256,7 +271,7 @@ bool Player::Update()
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
 
-	//ANIMATION LOGIC
+	//ANIMATION STATE MACHINE
 	switch(state)
 	{
 	case IDLE:
@@ -312,9 +327,6 @@ bool Player::Update()
 
 	}
 
-	
-
-
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	app->render->DrawTexture(texture, position.x -35, position.y-27, &rect);
 	currentAnim->Update();
@@ -340,8 +352,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
-			state = IDLE;
-			canJump = true;
+			if (state != DYING)
+			{
+				state = IDLE;
+				canJump = true;
+			}
+			break;
+		case ColliderType::DEATH:
+			LOG("Collision DEATH");
+			state = DYING;
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
@@ -363,11 +382,11 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 		LOG("END Collision PLATFORM");
 		canJump = false;
 
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (state != DYING))
 		{
 			state = JUMPING;
 		}
-		else
+		else if (state != DYING)
 		{
 			state = FALLING;
 		}

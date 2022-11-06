@@ -47,6 +47,8 @@ public:
 	Animation fallRightAnim;
 	Animation fallLeftAnim;
 
+	bool isDying;
+
 private:
 
 	//L02: DONE 1: Declare player parameters
@@ -56,9 +58,9 @@ private:
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	int pickCoinFxId;
+	int deathTimer;
 	int state;
-	int velY;
+	int pickCoinFxId;
 	bool facing;
 	bool canJump;
 
