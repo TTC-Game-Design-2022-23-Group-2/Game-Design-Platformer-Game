@@ -50,6 +50,10 @@ public:
 	Animation jumpLeftAnim;
 	Animation fallRightAnim;
 	Animation fallLeftAnim;
+	Animation initChargeAnim;
+	Animation chargeAnim;
+	Animation endChargeAnim;
+
 
 	bool isDying;
 
@@ -69,6 +73,8 @@ private:
 	bool facing;
 	bool canJump;
 	int remainJumps;
+	int chargeTimer;
+	bool isCharging;
 
 };
 

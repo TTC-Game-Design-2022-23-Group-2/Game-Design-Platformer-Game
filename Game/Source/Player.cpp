@@ -18,6 +18,8 @@
 #define FALLING 5
 #define CHARGING 6
 #define DYING 7
+#define INITCHARGING 8
+#define ENDCHARGING 9
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -130,6 +132,29 @@ Player::Player() : Entity(EntityType::PLAYER)
 	fallLeftAnim.loop = true;
 	fallLeftAnim.speed = 0.07f;
 
+	// init charge
+	initChargeAnim.PushBack({ 0, 71 * 3, 109, 71 });
+	initChargeAnim.PushBack({ 109, 71 * 3, 109, 71 });
+	initChargeAnim.PushBack({ 109 * 2, 71 * 3, 109, 71 });
+	initChargeAnim.PushBack({ 109 * 3, 71 * 3, 109, 71 });
+	initChargeAnim.PushBack({ 109 * 4, 71 * 3, 109, 71 });
+	initChargeAnim.PushBack({ 109 * 5, 71 * 3, 109, 71 });
+	initChargeAnim.loop = false;
+	initChargeAnim.speed = 0.2f;
+
+	// charge
+	chargeAnim.PushBack({ 0, 71 * 4, 109, 71 });
+	chargeAnim.PushBack({ 109, 71 * 4, 109, 71 });
+	chargeAnim.loop = true;
+	chargeAnim.speed = 0.2f;
+
+	// end charge
+	endChargeAnim.PushBack({ 109 * 2, 71 * 4, 109, 71 });
+	endChargeAnim.PushBack({ 109 * 3, 71 * 4, 109, 71 });
+	endChargeAnim.PushBack({ 109 * 4, 71 * 4, 109, 71 });
+	endChargeAnim.loop = false;
+	endChargeAnim.speed = 0.2f;
+
 }
 
 Player::~Player() {
@@ -175,6 +200,7 @@ bool Player::Start() {
 	deathTimer = 0;
 	isDying = 0;
 	remainJumps = 0;
+	isCharging = false;
 
 	return true;
 }
@@ -215,56 +241,101 @@ bool Player::Update()
 	//PLAYER MOVEMENT
 	if ((state != DYING))
 	{
-		if ((state != JUMPING) && (state != FALLING))
+		if (state != ENDCHARGING)
 		{
-			state = IDLE;
-			canJump = true;
-		}
-		//L02: DONE 4: modify the position of the player using arrow keys and render the texture
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-
-			b2Vec2 force = { -speed, 0 };
-			//el.x = -speed;
-			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.x < -5)
+			if ((state != JUMPING) && (state != FALLING) && (state != CHARGING))
 			{
-				vel.x = -5;
-			}
-			facing = FACING_LEFT;
-			if ((state != JUMPING) && (state != FALLING))
-			{
-				state = RUNNING;
+				state = IDLE;
 				canJump = true;
-				remainJumps = 2;
-			}
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			//vel.x = speed;
-			b2Vec2 force = { speed, 0 };
-			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.x > 5)
-			{
-				vel.x = 5;
 			}
 
-			facing = FACING_RIGHT;
-			if ((state != JUMPING) && (state != FALLING))
+			//L02: DONE 4: modify the position of the player using arrow keys and render the texture
+			if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 			{
-				state = RUNNING;
-				canJump = true;
-				remainJumps = 2;
+				vel.x = 0;
+				chargeTimer++;
+				isCharging = true;
+				if (chargeTimer < 40)
+				{
+					state = INITCHARGING;
+				}
+				else if (chargeTimer <= 59)
+				{
+					state = CHARGING;
+				}
+				else if (chargeTimer > 60)
+				{
+					chargeTimer = 59;
+					state = CHARGING;
+				}
+			}
+			else if ((app->input->GetKey(SDL_SCANCODE_E)) == KEY_IDLE && (state == CHARGING))
+			{
+					state = ENDCHARGING;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+				b2Vec2 force = { -speed, 0 };
+				//el.x = -speed;
+				pbody->body->ApplyForceToCenter(force, true);
+				if (vel.x < -5)
+				{
+					vel.x = -5;
+				}
+				facing = FACING_LEFT;
+				if ((state != JUMPING) && (state != FALLING))
+				{
+					state = RUNNING;
+					canJump = true;
+					remainJumps = 2;
+				}
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				//vel.x = speed;
+				b2Vec2 force = { speed, 0 };
+				pbody->body->ApplyForceToCenter(force, true);
+				if (vel.x > 5)
+				{
+					vel.x = 5;
+				}
+
+				facing = FACING_RIGHT;
+				if ((state != JUMPING) && (state != FALLING))
+				{
+					state = RUNNING;
+					canJump = true;
+					remainJumps = 2;
+				}
+			}
+			else if ((app->input->GetKey(SDL_SCANCODE_E)) == KEY_IDLE)
+			{
+				state = IDLE;
+				initChargeAnim.Reset();
+				endChargeAnim.Reset();
+				chargeTimer = 0;
+				vel.x = 0;
+			}
+
+			if (((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)) && ((canJump == true) || (remainJumps > 0))) {
+				vel.y = -7.5f;
+				/*float impulse = pbody->body->GetMass() * 10;
+				pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
+				state = JUMPING;
+				remainJumps--;
 			}
 		}
-		else { vel.x = 0; }
-
-		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && ((canJump == true) || (remainJumps > 0))) {
-			vel.y = -7.5f;
-			/*float impulse = pbody->body->GetMass() * 10;
-			pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
-			state = JUMPING;
-			remainJumps--;
+		else
+		{
+			chargeTimer++;
+			if (chargeTimer > 80)
+			{
+				chargeTimer = 0;
+				isCharging = false;
+				state = IDLE;
+			}
 		}
 	}
+		
 	
 	pbody->body->SetLinearVelocity(vel);
 
@@ -337,6 +408,15 @@ bool Player::Update()
 		{
 			currentAnim = &dieRightAnim;
 		}
+		break;
+	case INITCHARGING:
+			currentAnim = &initChargeAnim;
+		break;
+	case CHARGING:
+		currentAnim = &chargeAnim;
+		break;
+	case ENDCHARGING:
+		currentAnim = &endChargeAnim;
 		break;
 
 	}
