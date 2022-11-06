@@ -413,3 +413,8 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 		break;
 	}
 }
+
+PhysBody* Player::getpBody()
+{
+	return pbody;
+}

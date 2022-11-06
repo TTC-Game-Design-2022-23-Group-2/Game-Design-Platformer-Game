@@ -31,6 +31,8 @@ public:
 
 	int GetState() const { return state; }
 
+	PhysBody* getpBody();
+
 
 public:
 
@@ -50,6 +52,7 @@ public:
 	Animation fallLeftAnim;
 
 	bool isDying;
+
 
 private:
 

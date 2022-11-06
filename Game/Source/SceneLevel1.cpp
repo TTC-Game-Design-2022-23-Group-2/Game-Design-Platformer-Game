@@ -85,20 +85,9 @@ bool SceneLevel1::PreUpdate()
 // Called each loop iteration
 bool SceneLevel1::Update(float dt)
 {
-	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (godMode) { godMode = false; }
-		if (!godMode) { godMode = true; }
-	}
 
 	if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {
-		app->render->camera.x = ((player->position.x - 400 / app->win->GetScale())*-1)* app->win->GetScale();
+		app->render->camera.x = ((player->position.x - 400 / app->win->GetScale()) * -1) * app->win->GetScale();
 	}
 
 	if (player->position.y > 300 / app->win->GetScale() && player->position.y < ((app->map->mapData.tileHeight * app->map->mapData.height) - 458 / app->win->GetScale())) {
@@ -116,6 +105,21 @@ bool SceneLevel1::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 		app->render->camera.y += 1;
+
+
+	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->SaveGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (godMode) { godMode = false; }
+		if (!godMode) { godMode = true; }
+	}
+
+	
 
 	if (player->isDying) playerDeath = true;
 
@@ -147,6 +151,27 @@ bool SceneLevel1::CleanUp()
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+
+	return true;
+}
+
+bool SceneLevel1::LoadState(pugi::xml_node& data)
+{
+	PhysBody* pbody = player->getpBody();
+
+	pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
+
+	return true;
+}
+
+// L03: DONE 8: Create a method to save the state of the renderer
+// using append_child and append_attribute
+bool SceneLevel1::SaveState(pugi::xml_node& data)
+{
+	pugi::xml_node playerNude = data.append_child("player");
+
+	playerNude.append_attribute("x") = player->position.x + 16;
+	playerNude.append_attribute("y") = player->position.y + 16;
 
 	return true;
 }
