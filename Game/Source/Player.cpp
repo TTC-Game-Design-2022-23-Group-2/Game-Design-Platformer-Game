@@ -308,21 +308,23 @@ bool Player::Update()
 					remainJumps = 2;
 				}
 			}
-			else if ((app->input->GetKey(SDL_SCANCODE_E)) == KEY_IDLE)
+			else if ((app->input->GetKey(SDL_SCANCODE_E) == KEY_IDLE) && (state != JUMPING) && (state != FALLING))
 			{
 				state = IDLE;
 				initChargeAnim.Reset();
 				endChargeAnim.Reset();
 				chargeTimer = 0;
 				vel.x = 0;
+				remainJumps = 2;
 			}
 
-			if (((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)) && ((canJump == true) || (remainJumps > 0))) {
+			if (((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) && ((canJump == true) || (remainJumps > 0))) {
 				vel.y = -7.5f;
 				/*float impulse = pbody->body->GetMass() * 10;
 				pbody->body->ApplyLinearImpulse(b2Vec2(0, -impulse), pbody->body->GetWorldCenter(), true);*/
 				state = JUMPING;
 				remainJumps--;
+				canJump = false;
 			}
 		}
 		else

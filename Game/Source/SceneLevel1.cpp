@@ -137,22 +137,6 @@ bool SceneLevel1::Update(float dt)
 		app->render->camera.y += 1;
 
 
-	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (godMode) { godMode = false; }
-		if (!godMode) { godMode = true; }
-	}
-
-	
-
-	if (player->isDying) playerDeath = true;
-
 	// Draw map
 	app->map->Draw();
 
