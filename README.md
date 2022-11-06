@@ -6,13 +6,15 @@
 
 ## Key Features
 
- - {Feature}
+ - {Collision chains loaded from TMX}
+ - {Double Jump}
  
 ## Controls
 
 - {A - Move to left}
 - {D - Move to right}
 - {Space - Jump}
+- {E - Charging skill (maintaining pressed the button)}
 - {F1 - Begin first level}
 - {F2 - }
 - {F3 - Restart current level}
@@ -23,8 +25,8 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
+ - {Kiko Ferrerós} - {Programming & Design} -
+ - {Alex Delgado} - {Programming & Design} 
 
 ## License
 
