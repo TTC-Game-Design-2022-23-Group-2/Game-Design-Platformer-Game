@@ -279,9 +279,9 @@ bool Player::Update()
 				b2Vec2 force = { -speed, 0 };
 				//el.x = -speed;
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x < -5)
+				if (vel.x < -4)
 				{
-					vel.x = -5;
+					vel.x = -4;
 				}
 				facing = FACING_LEFT;
 				if ((state != JUMPING) && (state != FALLING))
@@ -295,9 +295,9 @@ bool Player::Update()
 				//vel.x = speed;
 				b2Vec2 force = { speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x > 5)
+				if (vel.x > 4)
 				{
-					vel.x = 5;
+					vel.x = 4;
 				}
 
 				facing = FACING_RIGHT;
@@ -338,10 +338,7 @@ bool Player::Update()
 			}
 		}
 	}
-		
 	
-	pbody->body->SetLinearVelocity(vel);
-
 	//DEATH SEQUENCE
 	if (state == DYING)
 	{
@@ -354,12 +351,15 @@ bool Player::Update()
 
 	if (state == WINING)
 	{
+		vel.x = 0;
 		winLoseTimer++;
 		if ((state == WINING) && (winLoseTimer > 30))
 		{
 			endLevel = true;
 		}
 	}
+
+	pbody->body->SetLinearVelocity(vel);
 
 	//Set the velocity of the pbody of the player
 
@@ -460,7 +460,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
-			if (state != DYING)
+			if ((state != DYING) && (state != WINING))
 			{
 				state = IDLE;
 				canJump = true;
@@ -496,15 +496,15 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PLATFORM:
 		LOG("END Collision PLATFORM");
 		canJump = false;
-
-		if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (state != DYING))
-		{
-			state = JUMPING;
-		}
+	    if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (state != DYING))
+			{
+				state = JUMPING;
+			}
 		else if (state != DYING)
-		{
-			state = FALLING;
-		}
+			{
+				state = FALLING;
+			}
+		
 		
 		break;
 	case ColliderType::UNKNOWN:
