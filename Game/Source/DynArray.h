@@ -3,12 +3,7 @@
 
 #include "Defs.h"
 
-#define DYN_ARRAY_BLOCK_SIZE 
-
-
-
-
-
+#define DYN_ARRAY_BLOCK_SIZE 16
 
 template<class VALUE>
 class DynArray
@@ -67,7 +62,7 @@ public:
 	{
 		if(numElements >= memCapacity)
 		{
-			Alloc(memCapacity + DYN_ARRAY_BLOCK_SIZE);
+			Alloc(memCapacity + (DYN_ARRAY_BLOCK_SIZE));
 		}
 
 		data[numElements++] = element;

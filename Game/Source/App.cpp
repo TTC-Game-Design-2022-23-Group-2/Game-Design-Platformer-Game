@@ -11,6 +11,7 @@
 #include "ModuleFadeToBlack.h"
 #include "SceneIntro.h"
 #include "SceneMenu.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -30,7 +31,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio			 = new Audio(true);
 	//L07 DONE 2: Add Physics module
 	physics			 = new Physics(true);
-	sceneLevel1			 = new SceneLevel1(false);
+	pathfinding      = new PathFinding();
+	sceneLevel1	     = new SceneLevel1(false);
 	sceneIntro		 = new SceneIntro(false);
 	sceneMenu		 = new SceneMenu(true);
 	entityManager	 = new EntityManager(false);
@@ -45,15 +47,16 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);			//4
 	//L07 DONE 2: Add Physics module
 	AddModule(physics);			//5
-	AddModule(sceneMenu);		//6
-	AddModule(sceneIntro);		//7
-	AddModule(sceneLevel1);			//8
-	AddModule(entityManager);	//9
-	AddModule(map);				//10
-	AddModule(fade);			//11
+	AddModule(pathfinding);     //6
+	AddModule(sceneMenu);		//7
+	AddModule(sceneIntro);		//8
+	AddModule(sceneLevel1);	    //9
+	AddModule(entityManager);	//10
+	AddModule(map);				//11
+	AddModule(fade);			//12
 
 	// Render last to swap buffer
-	AddModule(render);			//10
+	AddModule(render);			//13
 }
 
 // Destructor

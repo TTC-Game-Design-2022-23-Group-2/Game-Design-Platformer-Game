@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
 #include "Physics.h"
+#include "PathFinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -66,13 +67,30 @@ bool SceneLevel1::Start()
 	defeat.speed = 0.1f;
 
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
-	
-	// L03: DONE: Load map
-	app->map->Load(name.GetString());
 
 	playerDeath = false;
 	musicPath = config.child("music").attribute("path").as_string();
 	app->audio->PlayMusic(musicPath);
+
+	// Texture to highligh mouse position 
+	mouseTileTex = app->tex->Load("Assets/Maps/path.png");
+	// Texture to show path origin 
+	originTex = app->tex->Load("Assets/Maps/x.png");
+
+	// L03: DONE: Load map
+	bool retLoad = app->map->Load(name.GetString());
+
+	// L12 Create walkability map
+	if (retLoad) {
+		int w, h;
+		uchar* data = NULL;
+
+		bool retWalkMap = app->map->CreateWalkabilityMap(w, h, &data);
+		if (retWalkMap) app->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+
+	}
 
 	return ret;
 }
@@ -135,6 +153,43 @@ bool SceneLevel1::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 		app->render->camera.y += 1;
+
+	int mouseX, mouseY;
+	app->input->GetMousePosition(mouseX, mouseY);
+	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
+		mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
+
+	//Convert again the tile coordinates to world coordinates to render the texture of the tile
+	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
+	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+
+	//Test compute path function
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (originSelected == true)
+		{
+			app->pathfinding->CreatePath(origin, mouseTile);
+			originSelected = false;
+		}
+		else
+		{
+			origin = mouseTile;
+			originSelected = true;
+			app->pathfinding->ClearLastPath();
+		}
+	}
+
+	// L12: Get the latest calculated path and draw
+	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
+	}
+
+	// L12: Debug pathfinding
+	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
+	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
 
 
 	// Draw map
