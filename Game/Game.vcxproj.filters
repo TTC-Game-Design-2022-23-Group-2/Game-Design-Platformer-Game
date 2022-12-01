@@ -144,6 +144,9 @@
     <ClInclude Include="Source\Pathfinding.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MemLeaks.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
