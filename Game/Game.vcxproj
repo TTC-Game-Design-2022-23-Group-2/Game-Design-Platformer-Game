@@ -117,6 +117,7 @@
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\MemLeaks.h" />
     <ClInclude Include="Source\ModuleFadeToBlack.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\Physics.h" />
