@@ -23,6 +23,7 @@ class Physics;
 class ModuleFadeToBlack;
 class SceneIntro;
 class SceneMenu;
+class PathFinding;
 
 class App
 {
@@ -99,6 +100,7 @@ public:
 	ModuleFadeToBlack* fade;
 	SceneMenu* sceneMenu;
 	SceneIntro* sceneIntro;
+	PathFinding* pathfinding;
 
 private:
 

@@ -55,6 +55,9 @@
     <ClCompile Include="Source\SceneMenu.cpp">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Pathfinding.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneMenu.h">
       <Filter>Source\Gameplay\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pathfinding.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
