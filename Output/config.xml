@@ -35,7 +35,9 @@
   	</map>
   </sceneLevel1>
   <sceneLevel2>
-  	<player x="100" y="100" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
+	<music path="Assets/Audio/Music/.ogg"/>
+	<textures victory_defeat="Assets/Textures/victory_death.png" death_text="Assets/Textures/Death.png"/>
+  	<player x="10" y="0" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/second_level.tmx"/>

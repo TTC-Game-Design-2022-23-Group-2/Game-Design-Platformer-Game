@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "SceneLevel1.h"
+#include "SceneLevel2.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
@@ -30,13 +31,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex				 = new Textures(true);
 	audio			 = new Audio(true);
 	//L07 DONE 2: Add Physics module
-	physics			 = new Physics(true);
+	physics			 = new Physics(false);
 	pathfinding      = new PathFinding();
 	sceneLevel1	     = new SceneLevel1(false);
+	sceneLevel2		 = new SceneLevel2(false);
 	sceneIntro		 = new SceneIntro(false);
 	sceneMenu		 = new SceneMenu(true);
 	entityManager	 = new EntityManager(false);
-	map				 = new Map(true);
+	map				 = new Map(false);
 	fade			 = new ModuleFadeToBlack(true);
 
 	// Ordered for awake / Start / Update
@@ -51,12 +53,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneMenu);		//7
 	AddModule(sceneIntro);		//8
 	AddModule(sceneLevel1);	    //9
-	AddModule(entityManager);	//10
-	AddModule(map);				//11
-	AddModule(fade);			//12
+	AddModule(sceneLevel2);		//10
+	AddModule(entityManager);	//11
+	AddModule(map);				//12
+	AddModule(fade);			//13
 
 	// Render last to swap buffer
-	AddModule(render);			//13
+	AddModule(render);			//14
 }
 
 // Destructor

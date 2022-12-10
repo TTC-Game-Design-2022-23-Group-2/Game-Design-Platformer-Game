@@ -58,6 +58,9 @@
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneLevel2.cpp">
+      <Filter>Source\Gameplay\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="Source\MemLeaks.h">
       <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLevel2.h">
+      <Filter>Source\Gameplay\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
