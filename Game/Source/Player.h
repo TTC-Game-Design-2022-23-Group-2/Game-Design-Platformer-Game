@@ -56,7 +56,7 @@ public:
 
 
 	bool endLevel;
-
+	bool godMode = false;
 
 private:
 

@@ -214,7 +214,7 @@ bool Player::Update()
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
 
 
-	if (app->sceneLevel1->godMode) {
+	if (godMode) {
 		speed = 300.f;
 		vel = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
@@ -237,7 +237,7 @@ bool Player::Update()
 			}
 		}
 	}
-	if (!app->sceneLevel1->godMode) { pbody->body->SetGravityScale(1); }
+	if (!godMode) { pbody->body->SetGravityScale(1); }
 
 	//PLAYER MOVEMENT
 	if ((state != DYING) && (state != WINING))
@@ -468,7 +468,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::DEATH:
 			LOG("Collision DEATH");
-			if (!app->sceneLevel1->godMode) {
+			if (!godMode) {
 				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
 				state = DYING;
 			}

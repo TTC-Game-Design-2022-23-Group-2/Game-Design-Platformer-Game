@@ -134,8 +134,8 @@ bool SceneLevel1::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (godMode) { godMode = false; }
-		else if (!godMode) { godMode = true; }
+		if (player->godMode) { player->godMode = false; }
+		else if (!player->godMode) { player->godMode = true; }
 	}
 
 	if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {

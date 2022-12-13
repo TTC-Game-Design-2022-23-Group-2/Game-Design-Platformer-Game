@@ -43,7 +43,6 @@ public:
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
-	bool godMode = false;
 	bool playerDeath;
 	const char* musicPath;
 
