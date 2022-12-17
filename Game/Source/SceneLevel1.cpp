@@ -77,9 +77,9 @@ bool SceneLevel1::Start()
 	app->audio->PlayMusic(musicPath);
 
 	// Texture to highligh mouse position 
-	mouseTileTex = app->tex->Load("Assets/Maps/path.png");
+	mouseTileTex = app->tex->Load("Assets/Maps/path_square (1).png");
 	// Texture to show path origin 
-	originTex = app->tex->Load("Assets/Maps/x.png");
+	originTex = app->tex->Load("Assets/Maps/x_square (1).png");
 
 	// L03: DONE: Load map
 	if (!app->map->isEnabled) { app->map->Enable(); }
@@ -122,10 +122,13 @@ bool SceneLevel1::Update(float dt)
 		app->render->camera.y = ((player->position.y - 300 / app->win->GetScale()) * -1) * app->win->GetScale();
 	}
 
+	// Draw map
+	app->map->Draw();
+
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
-		mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
+	iPoint mouseTile = app->map->WorldToMap(mouseX +8 - (app->render->camera.x * (float)1 / app->win->GetScale()) - app->map->mapData.tileWidth / 2,
+		mouseY +8 - (app->render->camera.y * (float) 1/app->win->GetScale()) - app->map->mapData.tileHeight / 2);
 
 	//Convert again the tile coordinates to world coordinates to render the texture of the tile
 	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
@@ -158,10 +161,6 @@ bool SceneLevel1::Update(float dt)
 	// L12: Debug pathfinding
 	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
 	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
-
-
-	// Draw map
-	app->map->Draw();
 
 	return true;
 }

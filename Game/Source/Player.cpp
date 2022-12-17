@@ -450,10 +450,13 @@ bool Player::CleanUp()
 // L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
+	isColliding = true;
+
 	// L07 DONE 7: Detect the type of collision
 
 	switch (physB->ctype)
 	{
+
 		case ColliderType::ITEM:
 			LOG("Collision ITEM");
 			app->audio->PlayFx(pickCoinFxId);
@@ -500,7 +503,7 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 			{
 				state = JUMPING;
 			}
-		else if (state != DYING)
+		else if (state != DYING && !isColliding)
 			{
 				state = FALLING;
 			}
@@ -511,6 +514,7 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 		LOG("END Collision UNKNOWN");
 		break;
 	}
+	isColliding = false;
 }
 
 PhysBody* Player::getpBody()
