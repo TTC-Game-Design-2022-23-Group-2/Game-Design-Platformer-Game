@@ -21,6 +21,7 @@
 #define INITCHARGING 8
 #define ENDCHARGING 9
 #define WINING 10
+#define ATTACKING 11
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -156,6 +157,13 @@ Player::Player() : Entity(EntityType::PLAYER)
 	endChargeAnim.loop = false;
 	endChargeAnim.speed = 0.2f;
 
+	// attack right
+	attackRightAnim.PushBack({ 109 * 6, 71 * 2, 109, 71 });
+	attackRightAnim.PushBack({ 109 * 7, 71 * 2, 109, 71 });
+	attackRightAnim.PushBack({ 109 * 8, 71 * 2, 109, 71 });
+	attackRightAnim.loop = false;
+	attackRightAnim.speed = 0.32f;
+
 }
 
 Player::~Player() {
@@ -242,8 +250,9 @@ bool Player::Update()
 	//PLAYER MOVEMENT
 	if ((state != DYING) && (state != WINING))
 	{
-		if (state != ENDCHARGING)
+		if ((state != ENDCHARGING) && (state != ATTACKING))
 		{
+			// IDLE
 			if ((state != JUMPING) && (state != FALLING) && (state != CHARGING))
 			{
 				state = IDLE;
@@ -251,6 +260,9 @@ bool Player::Update()
 			}
 
 			//L02: DONE 4: modify the position of the player using arrow keys and render the texture
+		
+
+			// CHARGE
 			if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 			{
 				vel.x = 0;
@@ -274,6 +286,17 @@ bool Player::Update()
 			{
 					state = ENDCHARGING;
 			}
+
+			// ATTACK
+			else if ((app->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) && (state != JUMPING) && (state != FALLING))
+			{
+				vel.x = 0;
+				state = ATTACKING;
+				canJump = true;
+				remainJumps = 2;
+			}
+
+			// MOVE LEFT
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 
 				b2Vec2 force = { -speed, 0 };
@@ -291,6 +314,8 @@ bool Player::Update()
 					remainJumps = 2;
 				}
 			}
+
+			// MOVE RIGHT
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				//vel.x = speed;
 				b2Vec2 force = { speed, 0 };
@@ -308,6 +333,8 @@ bool Player::Update()
 					remainJumps = 2;
 				}
 			}
+
+			// IDLE
 			else if ((app->input->GetKey(SDL_SCANCODE_E) == KEY_IDLE) && (state != JUMPING) && (state != FALLING))
 			{
 				state = IDLE;
@@ -318,6 +345,7 @@ bool Player::Update()
 				remainJumps = 2;
 			}
 
+			// JUMP
 			if (((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) && ((canJump == true) || (remainJumps > 0))) {
 				vel.y = -7.5f;
 				/*float impulse = pbody->body->GetMass() * 10;
@@ -330,6 +358,14 @@ bool Player::Update()
 		else
 		{
 			chargeTimer++;
+			if ((state == ATTACKING) && (chargeTimer > 12))
+			{
+				chargeTimer = 0;
+				isCharging = false;
+				state = IDLE;
+
+				attackRightAnim.Reset();
+			}
 			if (chargeTimer > 80)
 			{
 				chargeTimer = 0;
@@ -349,6 +385,7 @@ bool Player::Update()
 		}
 	}
 
+	//WINNING SEQUENCE
 	if (state == WINING)
 	{
 		vel.x = 0;
@@ -429,6 +466,16 @@ bool Player::Update()
 		break;
 	case ENDCHARGING:
 		currentAnim = &endChargeAnim;
+		break;
+	case ATTACKING:
+		if (facing == FACING_LEFT)
+		{
+			currentAnim = &attackLeftAnim;
+		}
+		else if (facing == FACING_RIGHT)
+		{
+			currentAnim = &attackRightAnim;
+		}
 		break;
 	default:
 		break;
