@@ -50,10 +50,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//L07 DONE 2: Add Physics module
 	AddModule(physics);			//5
 	AddModule(pathfinding);     //6
-	AddModule(sceneMenu);		//7
-	AddModule(sceneIntro);		//8
-	AddModule(sceneLevel1);	    //9
-	AddModule(sceneLevel2);		//10
+	AddModule(sceneIntro);		//7
+	AddModule(sceneLevel1);	    //8
+	AddModule(sceneLevel2);		//9
+	AddModule(sceneMenu);		//10
 	AddModule(entityManager);	//11
 	AddModule(map);				//12
 	AddModule(fade);			//13

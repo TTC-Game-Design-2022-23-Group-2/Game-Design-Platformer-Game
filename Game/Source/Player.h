@@ -56,6 +56,7 @@ public:
 
 
 	bool endLevel;
+	bool endLevelDie;
 	bool godMode = false;
 
 private:

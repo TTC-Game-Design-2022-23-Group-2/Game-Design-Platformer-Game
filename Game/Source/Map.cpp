@@ -132,6 +132,20 @@ void Map::Draw()
                             pos.y,
                             &r);
                     }
+                    else if (mapLayerItem->data->id == 18)
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x - ((app->render->camera.x) * (0.1)),
+                            pos.y,
+                            &r);
+                    }
+                    else if (mapLayerItem->data->id == 17)
+                    {
+                        app->render->DrawTexture(tileset->texture,
+                            pos.x + ((app->render->camera.x) * (0.1)),
+                            pos.y,
+                            &r);
+                    }
                     else
                     {
                         app->render->DrawTexture(tileset->texture,

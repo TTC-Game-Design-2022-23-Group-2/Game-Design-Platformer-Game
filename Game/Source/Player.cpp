@@ -345,7 +345,7 @@ bool Player::Update()
 		winLoseTimer++;
 		if ((state == DYING) && (winLoseTimer > 30))
 		{
-			endLevel = true;
+			endLevelDie = true;
 		}
 	}
 

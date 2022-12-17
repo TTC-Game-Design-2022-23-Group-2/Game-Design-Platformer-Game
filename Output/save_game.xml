@@ -4,9 +4,20 @@
 	<window />
 	<textures />
 	<audio />
-	<scene />
+	<:anonymous />
+	<pathfinding />
+	<sceneIntro />
+	<sceneLevel1 />
+	<sceneLevel2>
+		<player x="1113" y="267" />
+	</sceneLevel2>
+	<sceneMenu>
+		<scene level="2" />
+	</sceneMenu>
 	<entitymanager />
+	<map />
+	<fade />
 	<renderer>
-		<camera x="195" y="36" />
+		<camera x="-1794" y="-186" />
 	</renderer>
 </save_state>

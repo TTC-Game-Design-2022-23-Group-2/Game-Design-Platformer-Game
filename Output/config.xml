@@ -24,6 +24,7 @@
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
   <sceneMenu>
 	  <menu texturepath="Assets/Textures/Menu_sprite.png"/>
+	  <buttons texturepath="Assets/Textures/Buttons.png"/>
   </sceneMenu>
   <sceneLevel1>
     <music path="Assets/Audio/Music/1_Astrub.ogg"/>

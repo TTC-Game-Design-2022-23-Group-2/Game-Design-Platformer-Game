@@ -65,6 +65,15 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
+	int GetMouseX() const
+	{
+		return mouseX;
+	}
+
+	int GetMouseY() const
+	{
+		return mouseY;
+	}
 private:
 	bool windowEvents[WE_COUNT];
 	KeyState*	keyboard;

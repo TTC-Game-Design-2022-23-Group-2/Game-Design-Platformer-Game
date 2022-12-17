@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "SceneLevel1.h"
+#include "SceneMenu.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
@@ -96,6 +97,11 @@ bool SceneLevel1::Start()
 
 	}
 
+	if (app->sceneMenu->loadPrevious) {
+		app->LoadGameRequest();
+		app->sceneMenu->loadPrevious = false;
+	}
+
 	return ret;
 }
 
@@ -108,36 +114,6 @@ bool SceneLevel1::PreUpdate()
 // Called each loop iteration
 bool SceneLevel1::Update(float dt)
 {
-	//DEBUG KEYS
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->sceneLevel1, 0);
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 0);
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, this, 0);
-	}
-
-	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
-		if (app->physics->debug) { app->physics->debug = false; }
-		else if (!app->physics->debug) { app->physics->debug = true; }
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (player->godMode) { player->godMode = false; }
-		else if (!player->godMode) { player->godMode = true; }
-	}
-
 	if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {
 		app->render->camera.x = ((player->position.x - 400 / app->win->GetScale()) * -1) * app->win->GetScale();
 	}
@@ -207,8 +183,37 @@ bool SceneLevel1::PostUpdate()
 		app->render->DrawTexture(victory_defeat, ((app->render->camera.x) * -1) / app->win->GetScale(), ((app->render->camera.y) * -1) / app->win->GetScale(), &rect);
 	}
 
-	if((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) || (player->endLevel))
+	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || player->endLevelDie)
 		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
+
+	//DEBUG KEYS
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, (Module*)app->sceneLevel1, 0);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || player->endLevel) {
+		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 0);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, this, 0);
+	}
+	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->SaveGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+		if (app->physics->debug) { app->physics->debug = false; }
+		else if (!app->physics->debug) { app->physics->debug = true; }
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (player->godMode) { player->godMode = false; }
+		else if (!player->godMode) { player->godMode = true; }
+	}
 
 	return ret;
 }
@@ -235,9 +240,13 @@ bool SceneLevel1::CleanUp()
 
 bool SceneLevel1::LoadState(pugi::xml_node& data)
 {
-	PhysBody* pbody = player->getpBody();
+	if(isEnabled){
+		PhysBody* pbody = player->getpBody();
 
-	pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
+		pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
+		player->position.x = (pbody->body->GetPosition().x) + 16;
+		player->position.y = (pbody->body->GetPosition().x) + 16;
+	}
 
 	return true;
 }
@@ -246,10 +255,14 @@ bool SceneLevel1::LoadState(pugi::xml_node& data)
 // using append_child and append_attribute
 bool SceneLevel1::SaveState(pugi::xml_node& data)
 {
-	pugi::xml_node playerNude = data.append_child("player");
+	if(isEnabled){
+		pugi::xml_node playerNude = data.append_child("player");
 
-	playerNude.append_attribute("x") = player->position.x + 16;
-	playerNude.append_attribute("y") = player->position.y + 16;
+		playerNude.append_attribute("x") = player->position.x + 16;
+		playerNude.append_attribute("y") = player->position.y + 16;
+
+		app->sceneMenu->currentLevel = 1;
+	}
 
 	return true;
 }
