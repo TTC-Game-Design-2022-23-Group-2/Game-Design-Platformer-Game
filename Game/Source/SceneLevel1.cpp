@@ -122,6 +122,9 @@ bool SceneLevel1::Update(float dt)
 		app->render->camera.y = ((player->position.y - 300 / app->win->GetScale()) * -1) * app->win->GetScale();
 	}
 
+	// Draw map
+	app->map->Draw();
+
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
@@ -158,10 +161,6 @@ bool SceneLevel1::Update(float dt)
 	// L12: Debug pathfinding
 	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
 	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
-
-
-	// Draw map
-	app->map->Draw();
 
 	return true;
 }

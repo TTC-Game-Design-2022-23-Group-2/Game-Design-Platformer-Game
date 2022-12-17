@@ -401,6 +401,17 @@ bool Map::LoadMap(pugi::xml_node mapFile)
         mapData.tileWidth = map.attribute("tilewidth").as_int();
     }
 
+    // L08: DONE 2: Read the prientation of the map
+    mapData.type = MAPTYPE_UNKNOWN;
+    if (strcmp(map.attribute("orientation").as_string(), "isometric") == 0)
+    {
+        mapData.type = MAPTYPE_ISOMETRIC;
+    }
+    if (strcmp(map.attribute("orientation").as_string(), "orthogonal") == 0)
+    {
+        mapData.type = MAPTYPE_ORTHOGONAL;
+    }
+
     return ret;
 }
 
