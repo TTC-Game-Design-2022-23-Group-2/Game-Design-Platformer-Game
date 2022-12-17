@@ -76,6 +76,7 @@ private:
 	int remainJumps;
 	int chargeTimer;
 	bool isCharging;
+	bool isColliding;
 
 };
 
