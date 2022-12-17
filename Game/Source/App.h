@@ -104,7 +104,7 @@ public:
 	SceneIntro* sceneIntro;
 	PathFinding* pathfinding;
 
-	int FPS = 60;
+	int FPS = 30;
 
 private:
 

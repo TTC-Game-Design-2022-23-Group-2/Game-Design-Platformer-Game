@@ -164,6 +164,13 @@ Player::Player() : Entity(EntityType::PLAYER)
 	attackRightAnim.loop = false;
 	attackRightAnim.speed = 0.32f;
 
+	// attack left
+	attackLeftAnim.PushBack({ 0, 71 * 2, 109, 71 });
+	attackLeftAnim.PushBack({ 109, 71 * 2, 109, 71 });
+	attackLeftAnim.PushBack({ 109 * 2, 71 * 2, 109, 71 });
+	attackLeftAnim.loop = false;
+	attackLeftAnim.speed = 0.32f;
+
 }
 
 Player::~Player() {
@@ -365,6 +372,7 @@ bool Player::Update()
 				state = IDLE;
 
 				attackRightAnim.Reset();
+				attackLeftAnim.Reset();
 			}
 			if (chargeTimer > 80)
 			{

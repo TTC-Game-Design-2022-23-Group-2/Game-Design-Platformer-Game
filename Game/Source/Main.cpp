@@ -119,7 +119,7 @@ int main(int argc, char* args[])
 			state = EXIT;
 			break;
 		}
-		if (state == UPDATE)
+		if (state == LOOP)
 		{
 			capFramerate(startingTick);
 		}
