@@ -32,6 +32,8 @@ public:
 	uint GetHeight() const { return height; };
 	uint GetWidth() const { return width; };
 
+	void Window::SetIcon(const char* new_icon);
+
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;

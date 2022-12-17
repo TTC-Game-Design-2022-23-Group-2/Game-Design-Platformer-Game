@@ -153,6 +153,7 @@
     <ClInclude Include="Source\SceneLevel2.h">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -182,5 +183,11 @@
     <Filter Include="Source\Gameplay\Headers">
       <UniqueIdentifier>{e5528f7f-4ee5-4a82-b5b7-c7632625ebc8}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Output\Assets\Icon\Ionia_Tale_icon.ico" />
   </ItemGroup>
 </Project>

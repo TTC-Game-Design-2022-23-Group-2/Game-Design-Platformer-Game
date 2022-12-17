@@ -5,6 +5,7 @@
 #include "Log.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
 
 
 Window::Window(bool startEnabled) : Module(startEnabled)
@@ -61,6 +62,7 @@ bool Window::Awake(pugi::xml_node& config)
 		{
 			// Get window surface
 			screenSurface = SDL_GetWindowSurface(window);
+			SetIcon("Assets/Icon/Ionia_Tale_icon.png");
 		}
 	}
 
@@ -88,6 +90,12 @@ void Window::SetTitle(const char* new_title)
 {
 	//title.create(new_title);
 	SDL_SetWindowTitle(window, new_title);
+}
+
+void Window::SetIcon(const char* new_icon)
+{
+	SDL_Surface* surface = IMG_Load(new_icon);
+	SDL_SetWindowIcon(window, surface);
 }
 
 void Window::GetWindowSize(uint& width, uint& height) const
