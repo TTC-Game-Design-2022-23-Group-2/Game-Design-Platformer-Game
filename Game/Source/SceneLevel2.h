@@ -1,5 +1,5 @@
-#ifndef __SCENE_H__
-#define __SCENE_H__
+#ifndef __SCENELEVEL2__
+#define __SCENELEVEL2__
 
 #include "Module.h"
 #include "Player.h"
@@ -9,14 +9,14 @@
 
 struct SDL_Texture;
 
-class SceneLevel1 : public Module
+class SceneLevel2 : public Module
 {
 public:
 
-	SceneLevel1(bool startEnabled);
+	SceneLevel2(bool startEnabled);
 
 	// Destructor
-	virtual ~SceneLevel1();
+	virtual ~SceneLevel2();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& config);
@@ -63,4 +63,4 @@ private:
 	bool originSelected = false;
 };
 
-#endif // __SCENE_H__
+#endif // __SCENELEVEL2__

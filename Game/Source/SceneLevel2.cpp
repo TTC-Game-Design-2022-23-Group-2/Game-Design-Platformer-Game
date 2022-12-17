@@ -4,7 +4,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "SceneLevel1.h"
+#include "SceneLevel2.h"
 #include "SceneMenu.h"
 #include "EntityManager.h"
 #include "Map.h"
@@ -15,25 +15,25 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneLevel1::SceneLevel1(bool startEnabled) : Module(startEnabled)
+SceneLevel2::SceneLevel2(bool startEnabled) : Module(startEnabled)
 {
-	name.Create("sceneLevel1");
+	name.Create("sceneLevel2");
 }
 
 // Destructor
-SceneLevel1::~SceneLevel1()
+SceneLevel2::~SceneLevel2()
 {}
 
 // Called before render is available
-bool SceneLevel1::Awake(pugi::xml_node& config)
+bool SceneLevel2::Awake(pugi::xml_node& config)
 {
 	return true;
 }
 
 // Called before the first frame
-bool SceneLevel1::Start()
+bool SceneLevel2::Start()
 {
-	LOG("Loading SceneLevel1");
+	LOG("Loading SceneLevel2");
 	bool ret = true;
 
 	pugi::xml_node configNode = app->LoadConfigFileToVar();
@@ -52,12 +52,12 @@ bool SceneLevel1::Start()
 	//L02: DONE 3: Instantiate the player using the entity manager
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
-	
+
 	app->render->camera.x = 0;
-	app->render->camera.y = -192;
+	app->render->camera.y = 0;
 
 	//IMPORTANT, ENTITY MANAGER IS DISABLED BY DEFAULT
-	if(!app->entityManager->isEnabled) { app->entityManager->Enable(); }
+	if (!app->entityManager->isEnabled) { app->entityManager->Enable(); }
 
 	victory_defeat = app->tex->Load(config.child("textures").attribute("victory_defeat").as_string());
 	death_text = app->tex->Load(config.child("textures").attribute("death_text").as_string());
@@ -69,8 +69,6 @@ bool SceneLevel1::Start()
 	defeat.PushBack({ 0,384,512,384 });
 	defeat.loop = false;
 	defeat.speed = 0.1f;
-
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
 	playerDeath = false;
 	musicPath = config.child("music").attribute("path").as_string();
@@ -97,7 +95,7 @@ bool SceneLevel1::Start()
 
 	}
 
-	if (app->sceneMenu->loadPrevious) {
+	if(app->sceneMenu->loadPrevious){ 
 		app->LoadGameRequest();
 		app->sceneMenu->loadPrevious = false;
 	}
@@ -106,20 +104,22 @@ bool SceneLevel1::Start()
 }
 
 // Called each loop iteration
-bool SceneLevel1::PreUpdate()
+bool SceneLevel2::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool SceneLevel1::Update(float dt)
+bool SceneLevel2::Update(float dt)
 {
-	if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {
-		app->render->camera.x = ((player->position.x - 400 / app->win->GetScale()) * -1) * app->win->GetScale();
-	}
+	if (!app->physics->debug) {
+		if (player->position.x > 400 / app->win->GetScale() && player->position.x < ((app->map->mapData.tileWidth * app->map->mapData.width) - 616 / app->win->GetScale())) {
+			app->render->camera.x = ((player->position.x - 400 / app->win->GetScale()) * -1) * app->win->GetScale();
+		}
 
-	if (player->position.y > 300 / app->win->GetScale() && player->position.y < ((app->map->mapData.tileHeight * app->map->mapData.height) - 458 / app->win->GetScale())) {
-		app->render->camera.y = ((player->position.y - 300 / app->win->GetScale()) * -1) * app->win->GetScale();
+		if (player->position.y > 300 / app->win->GetScale() && player->position.y < ((app->map->mapData.tileHeight * app->map->mapData.height) - 458 / app->win->GetScale())) {
+			app->render->camera.y = ((player->position.y - 300 / app->win->GetScale()) * -1) * app->win->GetScale();
+		}
 	}
 
 	int mouseX, mouseY;
@@ -167,7 +167,7 @@ bool SceneLevel1::Update(float dt)
 }
 
 // Called each loop iteration
-bool SceneLevel1::PostUpdate()
+bool SceneLevel2::PostUpdate()
 {
 	bool ret = true;
 
@@ -175,7 +175,7 @@ bool SceneLevel1::PostUpdate()
 		app->render->DrawTexture(death_text, ((app->render->camera.x) * -1) / app->win->GetScale(), ((app->render->camera.y) * -1) / app->win->GetScale());
 
 		SDL_Rect rect = defeat.GetCurrentFrame();
-		app->render->DrawTexture(victory_defeat, ((app->render->camera.x)*-1)/ app->win->GetScale(), ((app->render->camera.y)*-1)/app->win->GetScale(), &rect);
+		app->render->DrawTexture(victory_defeat, ((app->render->camera.x) * -1) / app->win->GetScale(), ((app->render->camera.y) * -1) / app->win->GetScale(), &rect);
 	}
 
 	if (player->GetState() == 10) {
@@ -183,21 +183,22 @@ bool SceneLevel1::PostUpdate()
 		app->render->DrawTexture(victory_defeat, ((app->render->camera.x) * -1) / app->win->GetScale(), ((app->render->camera.y) * -1) / app->win->GetScale(), &rect);
 	}
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || player->endLevelDie)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || player->endLevel || player->endLevelDie)
 		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
-
+	
 	//DEBUG KEYS
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		app->fade->FadeToBlack(this, (Module*)app->sceneLevel1, 0);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || player->endLevel) {
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 0);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->fade->FadeToBlack(this, this, 0);
 	}
+
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
@@ -219,7 +220,7 @@ bool SceneLevel1::PostUpdate()
 }
 
 // Called before quitting
-bool SceneLevel1::CleanUp()
+bool SceneLevel2::CleanUp()
 {
 	LOG("Freeing sceneLevel1");
 
@@ -238,9 +239,9 @@ bool SceneLevel1::CleanUp()
 	return true;
 }
 
-bool SceneLevel1::LoadState(pugi::xml_node& data)
+bool SceneLevel2::LoadState(pugi::xml_node& data)
 {
-	if(isEnabled){
+	if (isEnabled) {
 		PhysBody* pbody = player->getpBody();
 
 		pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
@@ -253,7 +254,7 @@ bool SceneLevel1::LoadState(pugi::xml_node& data)
 
 // L03: DONE 8: Create a method to save the state of the renderer
 // using append_child and append_attribute
-bool SceneLevel1::SaveState(pugi::xml_node& data)
+bool SceneLevel2::SaveState(pugi::xml_node& data)
 {
 	if(isEnabled){
 		pugi::xml_node playerNude = data.append_child("player");
@@ -261,7 +262,7 @@ bool SceneLevel1::SaveState(pugi::xml_node& data)
 		playerNude.append_attribute("x") = player->position.x + 16;
 		playerNude.append_attribute("y") = player->position.y + 16;
 
-		app->sceneMenu->currentLevel = 1;
+		app->sceneMenu->currentLevel = 2;
 	}
 
 	return true;

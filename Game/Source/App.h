@@ -16,6 +16,7 @@ class Render;
 class Textures;
 class Audio;
 class SceneLevel1;
+class SceneLevel2;
 class EntityManager;
 class Map;
 //L07 DONE 2: Add Physics module
@@ -93,6 +94,7 @@ public:
 	Textures* tex;
 	Audio* audio;
 	SceneLevel1* sceneLevel1;
+	SceneLevel2* sceneLevel2;
 	EntityManager* entityManager;
 	Map* map;
 	//L07 DONE 2: Add Physics module

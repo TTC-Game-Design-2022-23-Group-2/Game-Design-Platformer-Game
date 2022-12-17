@@ -29,14 +29,21 @@ public:
 
 	bool CleanUp();
 
+	bool SaveState(pugi::xml_node& data);
+
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* menuTexture = nullptr;
+	SDL_Texture* buttonTexture = nullptr;
 	Animation menu;
 	Animation icon;
+	Animation buttons;
 
 	int iconCounter = 240;
 	bool appStart = true;
+
+	int currentLevel;
+	bool loadPrevious;
 };
 
 #endif
