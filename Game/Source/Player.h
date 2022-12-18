@@ -55,6 +55,8 @@ public:
 	Animation endChargeAnim;
 	Animation attackRightAnim;
 	Animation attackLeftAnim;
+	Animation specialRightAnim;
+	Animation specialLeftAnim;
 
 
 	bool endLevel;

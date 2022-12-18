@@ -22,6 +22,7 @@
 #define ENDCHARGING 9
 #define WINING 10
 #define ATTACKING 11
+#define SPECIAL 12
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -162,14 +163,30 @@ Player::Player() : Entity(EntityType::PLAYER)
 	attackRightAnim.PushBack({ 109 * 7, 71 * 2, 109, 71 });
 	attackRightAnim.PushBack({ 109 * 8, 71 * 2, 109, 71 });
 	attackRightAnim.loop = false;
-	attackRightAnim.speed = 0.32f;
+	attackRightAnim.speed = 0.3f;
 
 	// attack left
 	attackLeftAnim.PushBack({ 0, 71 * 2, 109, 71 });
 	attackLeftAnim.PushBack({ 109, 71 * 2, 109, 71 });
 	attackLeftAnim.PushBack({ 109 * 2, 71 * 2, 109, 71 });
 	attackLeftAnim.loop = false;
-	attackLeftAnim.speed = 0.32f;
+	attackLeftAnim.speed = 0.3f;
+
+	// special attack right
+	specialRightAnim.PushBack({ 109 * 7, 71, 109, 71 });
+	specialRightAnim.PushBack({ 109 * 8, 71, 109, 71 });
+	specialRightAnim.PushBack({ 109 * 9, 71, 109, 71 });
+	specialRightAnim.PushBack({ 109 * 10, 71, 109, 71 });
+	specialRightAnim.loop = false;
+	specialRightAnim.speed = 0.3f;
+
+	// special attack left
+	specialLeftAnim.PushBack({ 109, 71, 109, 71 });
+	specialLeftAnim.PushBack({ 109 * 2, 71, 109, 71 });
+	specialLeftAnim.PushBack({ 109 * 3, 71, 109, 71 });
+	specialLeftAnim.PushBack({ 109 * 4, 71, 109, 71 });
+	specialLeftAnim.loop = false;
+	specialLeftAnim.speed = 0.3f;
 
 }
 
@@ -257,7 +274,7 @@ bool Player::Update()
 	//PLAYER MOVEMENT
 	if ((state != DYING) && (state != WINING))
 	{
-		if ((state != ENDCHARGING) && (state != ATTACKING))
+		if ((state != ENDCHARGING) && (state != ATTACKING) && (state != SPECIAL))
 		{
 			// IDLE
 			if ((state != JUMPING) && (state != FALLING) && (state != CHARGING))
@@ -303,16 +320,24 @@ bool Player::Update()
 				remainJumps = 2;
 			}
 
+			// SPECIAL ATTACK
+			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)/* && (state != JUMPING) && (state != FALLING)*/)
+			{
+				state = SPECIAL;
+				canJump = true;
+				remainJumps = 2;
+			}
+
 			// MOVE LEFT
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 
 				b2Vec2 force = { -speed, 0 };
-				//el.x = -speed;
 				pbody->body->ApplyForceToCenter(force, true);
 				if (vel.x < -4)
 				{
 					vel.x = -4;
 				}
+
 				facing = FACING_LEFT;
 				if ((state != JUMPING) && (state != FALLING))
 				{
@@ -324,7 +349,7 @@ bool Player::Update()
 
 			// MOVE RIGHT
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				//vel.x = speed;
+				
 				b2Vec2 force = { speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
 				if (vel.x > 4)
@@ -365,7 +390,7 @@ bool Player::Update()
 		else
 		{
 			chargeTimer++;
-			if ((state == ATTACKING) && (chargeTimer > 12))
+			if ((state == ATTACKING) && (chargeTimer > 10))
 			{
 				chargeTimer = 0;
 				isCharging = false;
@@ -374,7 +399,78 @@ bool Player::Update()
 				attackRightAnim.Reset();
 				attackLeftAnim.Reset();
 			}
-			if (chargeTimer > 80)
+			else if ((state == SPECIAL))
+			{
+				if (chargeTimer > 17)
+				{
+					vel.x = 0;
+					chargeTimer = 0;
+					isCharging = false;
+					state = IDLE;
+
+					specialRightAnim.Reset();
+					specialLeftAnim.Reset();
+				}
+				else if (chargeTimer > 9)
+				{
+					vel.x = 0;
+				}
+				else if (chargeTimer > 6)
+				{
+					if (facing == FACING_LEFT)
+					{
+						vel.x = -60;
+						/*b2Vec2 force = { -speed, 0 };
+						pbody->body->ApplyForceToCenter(force, true);
+						if (vel.x < -10)
+						{
+							vel.x = -10;
+						}*/
+					}
+					else if (facing == FACING_RIGHT)
+					{
+						vel.x = 60;
+						/*b2Vec2 force = { speed, 0 };
+						pbody->body->ApplyForceToCenter(force, true);
+						if (vel.x < 10)
+						{
+							vel.x = 10;
+						}*/
+					}
+				}
+				else if (chargeTimer > 3)
+				{
+					vel.x = 0;
+				}
+				else if (chargeTimer > 1)
+				{
+					if (facing == FACING_LEFT)
+					{
+						vel.x = 30;
+						/*b2Vec2 force = { speed, 0 };
+						pbody->body->ApplyForceToCenter(force, true);
+						if (vel.x < 3)
+						{
+							vel.x = 3;
+						}*/
+					}
+					else if (facing == FACING_RIGHT)
+					{
+						vel.x = -30;
+						/*b2Vec2 force = { -speed, 0 };
+						pbody->body->ApplyForceToCenter(force, true);
+						if (vel.x < -3)
+						{
+							vel.x = -3;
+						}*/
+					}
+				}
+				else if (chargeTimer > 0)
+				{
+					vel.x = 0;
+				}
+			}
+			else if ((state == ENDCHARGING) && (chargeTimer > 80))
 			{
 				chargeTimer = 0;
 				isCharging = false;
@@ -483,6 +579,16 @@ bool Player::Update()
 		else if (facing == FACING_RIGHT)
 		{
 			currentAnim = &attackRightAnim;
+		}
+		break;
+	case SPECIAL:
+		if (facing == FACING_LEFT)
+		{
+			currentAnim = &specialLeftAnim;
+		}
+		else if (facing == FACING_RIGHT)
+		{
+			currentAnim = &specialRightAnim;
 		}
 		break;
 	default:
