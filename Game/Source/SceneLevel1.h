@@ -6,7 +6,6 @@
 #include "Item.h"
 #include "TerrestreEnemyBig.h"
 #include "TerrestreEnemySmall.h"
-#include "FlyingEnemy.h"
 #include "Point.h"
 #include "Physics.h"
 
@@ -49,7 +48,6 @@ public:
 
 	List<TerrestreEnemySmall*> terrestreSmallEnemies;
 	List<TerrestreEnemyBig*> terrestreBigEnemies;
-	List<FlyingEnemy*> flyingEnemies;
 
 	bool playerDeath;
 	const char* musicPath;
@@ -68,6 +66,7 @@ private:
 	SDL_Texture* originTex = nullptr;
 	// L12: Debug pathfing
 	iPoint origin;
+	iPoint destination;
 	bool originSelected = false;
 };
 

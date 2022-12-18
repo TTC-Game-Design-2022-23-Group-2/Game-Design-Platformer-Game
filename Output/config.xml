@@ -42,8 +42,8 @@
   <sceneLevel2>
 	  <music path="Assets/Audio/Music/.ogg"/>
 	  <textures victory_defeat="Assets/Textures/victory_death.png" death_text="Assets/Textures/Death.png" path="Assets/Textures/path.png" x="Assets/Textures/x.png"/>
-  	<player x="10" y="0" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
-    <terrestreenemysmall x="0" y="0" texturepath="Assets/Textures/piku_spritesheet.png"/>
+  	<player x="30" y="100" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
+	<flyingenemy x="288" y="80" texturepath="Assets/Textures/bird_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/second_level.tmx"/>
