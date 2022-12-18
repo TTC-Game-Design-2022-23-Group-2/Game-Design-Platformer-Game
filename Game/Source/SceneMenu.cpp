@@ -70,7 +70,7 @@ bool SceneMenu::Update(float dt)
 			app->input->GetMouseX() < 379 &&
 			app->input->GetMouseY() > 118 &&
 			app->input->GetMouseY() < 188) {
-			app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 30);
+			app->fade->FadeToBlack(this, (Module*)app->sceneLevel1, 30);
 		}
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN &&
 			app->input->GetMouseX() > 136 &&
