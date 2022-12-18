@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+#include "Map.h"
 
 #define FACING_LEFT false
 #define FACING_RIGHT true
@@ -154,7 +155,7 @@ bool TerrestreEnemySmall::Start() {
 
 bool TerrestreEnemySmall::Update()
 {
-	b2Vec2 vel;
+	b2Vec2 vel, force;
 	float speed = 50.0f;
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f);
 
@@ -164,7 +165,6 @@ bool TerrestreEnemySmall::Update()
 	{
 		if ((state != ATTACKING) && (state != CHARGING))
 		{
-			vel.x = 0;
 
 			if ((position.DistanceTo(app->sceneLevel1->player->position) > 200))
 			{
@@ -179,17 +179,31 @@ bool TerrestreEnemySmall::Update()
 
 				state = CHARGING;
 			}
-			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (objective.x + PIXEL_TO_METERS(8) > (PIXEL_TO_METERS(position.x)))) {
-
-				vel.x = 4;
-				facing = FACING_RIGHT;
+			else if (position.DistanceTo(app->sceneLevel1->player->position) < 200) {
 				state = CHASING;
-			}
-			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (objective.x - PIXEL_TO_METERS(8) < (PIXEL_TO_METERS(position.x)))) {
 
-				vel.x = -4;
-				facing = FACING_LEFT;
-				state = CHASING;
+				//movimiento
+				if (abs(objective.x + app->map->mapData.tileWidth / 2 - pbody->body->GetPosition().x) <= 1)
+				{
+					facing = FACING_LEFT;
+					vel.x = 0;
+				}
+				else if (objective.x + app->map->mapData.tileWidth / 2 <= METERS_TO_PIXELS(pbody->body->GetPosition().x)) {
+					facing = FACING_LEFT;
+					force = { -speed, 0 };
+					pbody->body->ApplyForceToCenter(force, true);
+					if (vel.x < -3) {
+						vel.x = -3;
+					}
+				}
+				else if (objective.x + app->map->mapData.tileWidth / 2 > METERS_TO_PIXELS(pbody->body->GetPosition().x)) {
+					facing = FACING_RIGHT;
+					force = { speed, 0 };
+					pbody->body->ApplyForceToCenter(force, true);
+					if (vel.x > 3) {
+						vel.x = 3;
+					}
+				}
 			}
 		}
 		else
