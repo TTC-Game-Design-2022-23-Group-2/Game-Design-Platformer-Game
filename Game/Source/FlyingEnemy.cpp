@@ -23,71 +23,69 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::PLAYER)
 {
 	name.Create("FlyingEnemy");
 
-	// running Right
-	flyingRightAnim.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
-	flyingRightAnim.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
-	flyingRightAnim.PushBack({ 109 * 10, 71 * 2, 109, 71 });
-	flyingRightAnim.PushBack({ 109 * 9, 71 * 2 + 2, 109, 71 });
-	flyingRightAnim.PushBack({ 109 * 11, 71 * 2 - 2, 109, 71 });
-	flyingRightAnim.PushBack({ 109 * 10, 71 * 2, 109, 71 });
-	flyingRightAnim.loop = true;
-	flyingRightAnim.speed = 0.28f;
-
-	// running Left
-	flyingLeftAnim.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
-	flyingLeftAnim.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
-	flyingLeftAnim.PushBack({ 109 * 4, 71 * 2, 109, 71 });
-	flyingLeftAnim.PushBack({ 109 * 3, 71 * 2 + 2, 109, 71 });
-	flyingLeftAnim.PushBack({ 109 * 5, 71 * 2 - 2, 109, 71 });
-	flyingLeftAnim.PushBack({ 109 * 4, 71 * 2, 109, 71 });
-	flyingLeftAnim.loop = true;
-	flyingLeftAnim.speed = 0.28f;
-
 	// idle right
-	idleRightAnim.PushBack({ 109 * 10, 0, 109, 71 });
-	idleRightAnim.PushBack({ 109 * 11, 0, 109, 71 });
-	idleRightAnim.PushBack({ 109 * 6, 71, 109, 71 });
-	idleRightAnim.PushBack({ 109 * 11, 0, 109, 71 });
-	idleRightAnim.loop = true;
-	idleRightAnim.speed = 0.12f;
+	idleRightAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
+	idleRightAnim.loop = false;
+	idleRightAnim.speed = 0.1f;
 
 	// idle left
-	idleLeftAnim.PushBack({ 109 * 4, 0, 109, 71 });
-	idleLeftAnim.PushBack({ 109 * 5, 0, 109, 71 });
-	idleLeftAnim.PushBack({ 0, 71, 109, 71 });
-	idleLeftAnim.PushBack({ 109 * 5, 0, 109, 71 });
-	idleLeftAnim.loop = true;
+	idleLeftAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
+	idleLeftAnim.loop = false;
+	idleLeftAnim.speed = 0.1f;
+
+	// running Right
+	flyingRightAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	flyingRightAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	flyingRightAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	flyingRightAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
+	flyingRightAnim.loop = false;
+	flyingRightAnim.speed = 0.1f;
+
+	// running Left
+	flyingLeftAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	flyingLeftAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	flyingLeftAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	flyingLeftAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
+	flyingLeftAnim.loop = false;
+	flyingLeftAnim.speed = 0.1f;
 
 	// attack right
-	attackRightAnim.PushBack({ 109 * 6, 71 * 2, 109, 71 });
-	attackRightAnim.PushBack({ 109 * 7, 71 * 2, 109, 71 });
-	attackRightAnim.PushBack({ 109 * 8, 71 * 2, 109, 71 });
+	attackRightAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	attackRightAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	attackRightAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	attackRightAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
 	attackRightAnim.loop = false;
-	attackRightAnim.speed = 0.3f;
+	attackRightAnim.speed = 0.1f;
 
 	// attack left
-	attackLeftAnim.PushBack({ 0, 71 * 2, 109, 71 });
-	attackLeftAnim.PushBack({ 109, 71 * 2, 109, 71 });
-	attackLeftAnim.PushBack({ 109 * 2, 71 * 2, 109, 71 });
+	attackLeftAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	attackLeftAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	attackLeftAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	attackLeftAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
 	attackLeftAnim.loop = false;
-	attackLeftAnim.speed = 0.3f;
-	idleLeftAnim.speed = 0.12f;
+	attackLeftAnim.speed = 0.1f;
 
 	// Die right
-	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
-	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
-	dieRightAnim.PushBack({ 109 * 5, 71, 109, 71 });
-	dieRightAnim.PushBack({ 0, 71 * 3, 109, 71 });
+	dieRightAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	dieRightAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	dieRightAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	dieRightAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
 	dieRightAnim.loop = false;
-	dieRightAnim.speed = 0.12f;
+	dieRightAnim.speed = 0.1f;
 
 	// Die left
-	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
-	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
-	dieLeftAnim.PushBack({ 109 * 11, 71, 109, 71 });
-	dieLeftAnim.PushBack({ 0, 71 * 3, 109, 71 });
+	dieLeftAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
+	dieLeftAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
+	dieLeftAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
+	dieLeftAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
 	dieLeftAnim.loop = false;
-	dieLeftAnim.speed = 0.12f;
+	dieLeftAnim.speed = 0.1f;
 
 }
 
