@@ -28,19 +28,10 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Source\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Item.cpp">
-      <Filter>Source\Gameplay</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Map.cpp">
       <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
-      <Filter>Source\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
       <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneLevel1.cpp">
@@ -60,6 +51,24 @@
     </ClCompile>
     <ClCompile Include="Source\SceneLevel2.cpp">
       <Filter>Source\Gameplay\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Item.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyingEnemy.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TerrestreEnemyBig.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TerrestreEnemySmall.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,19 +117,10 @@
     <ClInclude Include="Source\App.h">
       <Filter>Source\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Source\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Item.h">
-      <Filter>Source\Gameplay</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Map.h">
       <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics.h">
-      <Filter>Source\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
       <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneLevel1.h">
@@ -154,6 +154,24 @@
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyingEnemy.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrestreEnemyBig.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrestreEnemySmall.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -182,6 +200,9 @@
     </Filter>
     <Filter Include="Source\Gameplay\Headers">
       <UniqueIdentifier>{e5528f7f-4ee5-4a82-b5b7-c7632625ebc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gameplay\Entities">
+      <UniqueIdentifier>{5b6a391e-ce0a-457d-a0b8-503c3d47afc3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

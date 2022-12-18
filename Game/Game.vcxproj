@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\EntityManager.cpp" />
+    <ClCompile Include="Source\FlyingEnemy.cpp" />
     <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
@@ -111,12 +112,15 @@
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\SceneLevel2.cpp" />
     <ClCompile Include="Source\SceneMenu.cpp" />
+    <ClCompile Include="Source\TerrestreEnemyBig.cpp" />
+    <ClCompile Include="Source\TerrestreEnemySmall.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
+    <ClInclude Include="Source\FlyingEnemy.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\MemLeaks.h" />
@@ -134,6 +138,8 @@
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneLevel2.h" />
     <ClInclude Include="Source\SceneMenu.h" />
+    <ClInclude Include="Source\TerrestreEnemyBig.h" />
+    <ClInclude Include="Source\TerrestreEnemySmall.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Defs.h" />

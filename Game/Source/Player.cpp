@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "SceneLevel1.h"
+#include "SceneLevel2.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
