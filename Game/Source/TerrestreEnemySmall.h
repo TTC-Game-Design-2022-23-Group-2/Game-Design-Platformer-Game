@@ -41,14 +41,14 @@ public:
 
 	Animation idleRightAnim;
 	Animation idleLeftAnim;
-	Animation statictodynamicleftanim;
-	Animation statictodynamicRightanim;
+	Animation statictodynamicLeftAnim;
+	Animation statictodynamicRightAnim;
 	Animation runningRightAnim;
 	Animation attackRightAnim;
 	Animation attackLeftAnim;
 	Animation runningLeftAnim;
-	/*Animation dieRightAnim;
-	Animation dieLeftAnim;*/
+	Animation dieRightAnim;
+	Animation dieLeftAnim;
 
 private:
 

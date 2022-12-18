@@ -30,9 +30,10 @@
     <music path="Assets/Audio/Music/1_Astrub.ogg"/>
 	  <textures victory_defeat="Assets/Textures/victory_death.png" death_text="Assets/Textures/Death.png" path="Assets/Textures/path.png" x="Assets/Textures/x.png"/>
   	<player x="100" y="262" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
-    <terrestreenemysmall x="100" y="100" texturepath="Assets/Textures/piku_spritesheet.png"/>
-    <terrestreenemybig x="200" y="100" texturepath="Assets/Textures/mama_piku_spritesheet.png"/>
-    <flyingenemy x="300" y="100" texturepath="Assets/Textures/bilrd_spritesheet.png"/>
+    <terrestreenemysmall x="750" y="200" texturepath="Assets/Textures/piku_spritesheet.png"/>
+    <terrestreenemysmall x="1700" y="200" texturepath="Assets/Textures/piku_spritesheet.png"/>
+    <terrestreenemysmall x="1770" y="200" texturepath="Assets/Textures/piku_spritesheet.png"/>
+    <terrestreenemysmall x="1850" y="300" texturepath="Assets/Textures/piku_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/first_level.tmx"/>

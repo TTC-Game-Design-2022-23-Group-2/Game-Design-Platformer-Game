@@ -28,82 +28,80 @@ TerrestreEnemySmall::TerrestreEnemySmall() : Entity(EntityType::PLAYER)
 	idleRightAnim.PushBack({ 50 * 5, 40 * 0, 50, 40 });
 	idleRightAnim.PushBack({ 50 * 6, 40 * 0, 50, 40 });
 	//idleRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	idleRightAnim.loop = false;
-	idleRightAnim.speed = 0.1f;
+	idleRightAnim.loop = true;
+	idleRightAnim.speed = 0.15f;
 
 	// idle left
 	idleLeftAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
 	idleLeftAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
 	idleLeftAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
 	//idleLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	idleLeftAnim.loop = false;
-	idleLeftAnim.speed = 0.1f;
+	idleLeftAnim.loop = true;
+	idleLeftAnim.speed = 0.15f;
 
 	// static to dynamic Left
-	statictodynamicleftanim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	statictodynamicleftanim.loop = false;
-	statictodynamicleftanim.speed = 0.1f;
+	statictodynamicLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	statictodynamicLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	statictodynamicLeftAnim.loop = false;
+	statictodynamicLeftAnim.speed = 0.1f;
 
 	// static to dynamic Right
-	statictodynamicleftanim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	statictodynamicleftanim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	statictodynamicleftanim.loop = false;
-	statictodynamicleftanim.speed = 0.1f;
+	statictodynamicRightAnim.PushBack({ 50 * 7, 40 * 0, 50, 40 });
+	statictodynamicRightAnim.PushBack({ 50 * 7, 40 * 0, 50, 40 });
+	statictodynamicRightAnim.loop = false;
+	statictodynamicRightAnim.speed = 0.1f;
 
 	// running Right
 	runningRightAnim.PushBack({ 50 * 4, 40 * 1, 50, 40 });
-	runningRightAnim.PushBack({ 50 * 7, 40 * 1, 50, 40 });
+	runningRightAnim.PushBack({ 50 * 5, 40 * 1 +2, 50, 40 });
 	runningRightAnim.PushBack({ 50 * 6, 40 * 1, 50, 40 });
-	runningRightAnim.PushBack({ 50 * 5, 40 * 1, 50, 40 });
-	runningRightAnim.loop = false;
-	runningRightAnim.speed = 0.1f;
+	runningRightAnim.PushBack({ 50 * 7, 40 * 1 +2, 50, 40 });
+	runningRightAnim.loop = true;
+	runningRightAnim.speed = 0.2f;
 
 	// running Left
 	runningLeftAnim.PushBack({ 50 * 0, 40 * 1, 50, 40 });
-	runningLeftAnim.PushBack({ 50 * 3, 40 * 1, 50, 40 });
+	runningLeftAnim.PushBack({ 50 * 1, 40 * 1 +2, 50, 40 });
 	runningLeftAnim.PushBack({ 50 * 2, 40 * 1, 50, 40 });
-	runningLeftAnim.PushBack({ 50 * 1, 40 * 1, 50, 40 });
-	runningLeftAnim.loop = false;
-	runningLeftAnim.speed = 0.1f;
+	runningLeftAnim.PushBack({ 50 * 3, 40 * 1 +2, 50, 40 });
+	runningLeftAnim.loop = true;
+	runningLeftAnim.speed = 0.2f;
 
 	// attack right	
 	attackRightAnim.PushBack({ 50 * 4, 40 * 2, 50, 40 });
 	attackRightAnim.PushBack({ 50 * 5, 40 * 2, 50, 40 });
 	attackRightAnim.PushBack({ 50 * 6, 40 * 2, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 6, 40 * 2, 50, 40 });
 	attackRightAnim.PushBack({ 50 * 7, 40 * 2, 50, 40 });
 	attackRightAnim.PushBack({ 50 * 4, 40 * 3, 50, 40 });
 	attackRightAnim.loop = false;
-	attackRightAnim.speed = 0.1f;
+	attackRightAnim.speed = 0.2f;
 
 	// attack left 
 	attackLeftAnim.PushBack({ 50 * 0, 40 * 2, 50, 40 });
 	attackLeftAnim.PushBack({ 50 * 1, 40 * 2, 50, 40 });
 	attackLeftAnim.PushBack({ 50 * 2, 40 * 2, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 2, 40 * 2, 50, 40 });
 	attackLeftAnim.PushBack({ 50 * 3, 40 * 2, 50, 40 });
 	attackLeftAnim.PushBack({ 50 * 0, 40 * 3, 50, 40 });
 	attackLeftAnim.loop = false;
-	attackLeftAnim.speed = 0.1f;
+	attackLeftAnim.speed = 0.2f;
 
-	//// Die right
-	//dieRightAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	//dieRightAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	//dieRightAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	//dieRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	//dieRightAnim.loop = false;
-	//dieRightAnim.speed = 0.1f;
+	// Die right
+	dieRightAnim.PushBack({ 50 * 6, 40 * 2 -2, 50, 40 });
+	dieRightAnim.PushBack({ 50 * 6, 40 * 2 -2, 50, 40 });
+	dieRightAnim.PushBack({ 50 * 7, 40 * 2 -2, 50, 40 });
+	dieRightAnim.PushBack({ 50 * 5, 40 * 2, 50, 40 });
+	dieRightAnim.loop = false;
+	dieRightAnim.speed = 0.1f;
 
-	//// Die left
-	//dieLeftAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	//dieLeftAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	//dieLeftAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	//dieLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
-	//dieLeftAnim.loop = false;
-	//dieLeftAnim.speed = 0.1f;
+	// Die left
+	dieLeftAnim.PushBack({ 50 * 2, 40 * 2 -2, 50, 40 });
+	dieLeftAnim.PushBack({ 50 * 2, 40 * 2 -2, 50, 40 });
+	dieLeftAnim.PushBack({ 50 * 3, 40 * 2 -2, 50, 40 });
+	dieLeftAnim.PushBack({ 50 * 1, 40 * 2, 50, 40 });
+	dieLeftAnim.loop = false;
+	dieLeftAnim.speed = 0.2f;
 
 }
 
@@ -128,7 +126,7 @@ bool TerrestreEnemySmall::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x+16, position.y+16, 32, 50, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x, position.y, 20, 20, bodyType::DYNAMIC);
 	//pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
@@ -144,17 +142,118 @@ bool TerrestreEnemySmall::Start() {
 	//pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
 	currentAnim = &idleRightAnim;
-	facing = FACING_RIGHT;
+	facing = FACING_LEFT;
 	state = IDLE;
 	alive = true;
-	/*dieLeftAnim.Reset();
-	dieRightAnim.Reset();*/
+	attackTimer = 0;
+	dieLeftAnim.Reset();
+	dieRightAnim.Reset();
 
 	return true;
 }
 
 bool TerrestreEnemySmall::Update()
 {
+	b2Vec2 vel;
+	float speed = 50.0f;
+	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f);
+
+
+	
+	if (state != DYING)
+	{
+		if ((state != ATTACKING) && (state != CHARGING))
+		{
+			vel.x = 0;
+			state = IDLE;
+
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+
+				state = ATTACKING;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+
+				state = CHARGING;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+
+				vel.x = 4;
+				facing = FACING_RIGHT;
+				state = CHASING;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+
+				vel.x = -4;
+				facing = FACING_LEFT;
+				state = CHASING;
+			}
+		}
+		else
+		{
+			attackTimer++;
+			if (state == ATTACKING)
+			{
+				if (attackTimer > 23)
+				{
+					vel.x = 0;
+					state = IDLE;
+					attackLeftAnim.Reset();
+					attackRightAnim.Reset();
+					attackTimer = 0;
+				}
+				else if (attackTimer > 4)
+				{
+				}
+				else if (attackTimer > 3)
+				{
+					if (facing == FACING_LEFT)
+					{
+						vel.y = -6;
+						vel.x = -7;
+					}
+					else if (facing == FACING_RIGHT)
+					{
+						vel.y = -6;
+						vel.x = 7;
+					}
+				}
+				else if (attackTimer > 0)
+				{
+					vel.x = 0;
+				}
+			}
+			else if (state == CHARGING)
+			{
+				if (attackTimer > 7)
+				{
+					vel.x = 0;
+					state = IDLE;
+					statictodynamicLeftAnim.Reset();
+					statictodynamicRightAnim.Reset();
+					attackTimer = 0;
+				}
+				else if (attackTimer > 0)
+				{
+					vel.x = 0;
+				}
+			}
+		}
+	}
+
+
+	if (state == DYING)
+	{
+		pbody->body->SetActive(false);
+		attackTimer++;
+		if ((state == DYING) && (attackTimer > 30))
+		{
+			pbody->body->DestroyFixture(pbody->body->GetFixtureList());
+			active = false;
+		}
+	}
+	
+	pbody->body->SetLinearVelocity(vel);
+
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
@@ -182,6 +281,7 @@ bool TerrestreEnemySmall::Update()
 		{
 			currentAnim = &runningRightAnim;
 		}
+		break;
 	case ATTACKING:
 		if (facing == FACING_LEFT)
 		{
@@ -192,15 +292,24 @@ bool TerrestreEnemySmall::Update()
 			currentAnim = &attackRightAnim;
 		}
 		break;
+	case CHARGING:
+		if (facing == FACING_LEFT)
+		{
+			currentAnim = &statictodynamicLeftAnim;
+		}
+		else if (facing == FACING_RIGHT)
+		{
+			currentAnim = &statictodynamicRightAnim;
+		}
 		break;
 	case DYING:
 		if (facing == FACING_LEFT)
 		{
-			//currentAnim = &dieLeftAnim;
+			currentAnim = &dieLeftAnim;
 		}
 		else if (facing == FACING_RIGHT)
 		{
-			//currentAnim = &dieRightAnim;
+			currentAnim = &dieRightAnim;
 		}
 		break;
 	default:
@@ -209,7 +318,14 @@ bool TerrestreEnemySmall::Update()
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x, position.y, &rect);
+	if (state == DYING)
+	{
+		app->render->DrawTexture(texture, position.x - 10 + attackTimer, position.y - 7, &rect);
+	}
+	else
+	{
+		app->render->DrawTexture(texture, position.x - 10, position.y - 7, &rect);
+	}
 	currentAnim->Update();
 
 	return true;
@@ -231,6 +347,10 @@ void TerrestreEnemySmall::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		break;
+	case ColliderType::ATTACK:
+		LOG("ENEMY Collision ATTACK");
+		state = DYING;
 		break;
 	}
 
