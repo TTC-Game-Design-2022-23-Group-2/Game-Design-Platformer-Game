@@ -340,6 +340,7 @@ bool Player::Update()
 					attackCollision->ctype = ColliderType::ATTACK;
 					attackCollisions.Add(attackCollision);
 				}
+				app->audio->PlayFx(app->audio->slashFx);
 			}
 
 			// SPECIAL ATTACK
@@ -348,21 +349,7 @@ bool Player::Update()
 				state = SPECIAL;
 				canJump = true;
 				remainJumps = 2;
-				/*if (facing == FACING_LEFT)
-				{
-					PhysBody* attackCollision = nullptr;
-					attackCollision = app->physics->CreateRectangleSensor(position.x - 75, position.y + 15, 150, 30, STATIC);
-					attackCollision->ctype = ColliderType::ATTACK;
-					attackCollisions.Add(attackCollision);
-					
-				}
-				else if (facing == FACING_RIGHT)
-				{
-					PhysBody* attackCollision = nullptr;
-					attackCollision = app->physics->CreateRectangleSensor(position.x + 75, position.y + 15, 150, 30, STATIC);
-					attackCollision->ctype = ColliderType::ATTACK;
-					attackCollisions.Add(attackCollision);
-				}*/
+				app->audio->PlayFx(app->audio->specialFx);
 			}
 
 			// MOVE LEFT
