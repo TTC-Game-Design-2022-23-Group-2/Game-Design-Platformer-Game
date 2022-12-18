@@ -10,6 +10,8 @@
  - {Double Jump}
  - {Parallax effect on the background}
  - {Upgraded the program to support two levels (we have not had enough time to design a second level)}
+ - {Skills with cooldown}
+ - {Music feedback}
  
 ## Controls
 
@@ -17,6 +19,8 @@
 - {D - Move to right}
 - {Space - Jump}
 - {E - Charging skill (maintaining pressed the button)}
+- {K - Special attack}
+- {J - Attack}
 - {F1 - Begin first level}
 - {F2 - }
 - {F3 - Restart current level}
@@ -24,6 +28,7 @@
 - {F6 - Load State}
 - {F9 - Show Hitboxes}
 - {F10 - Activate God Mode (can't die and move in 2 dimensions (fly) with W A S D)}
+- {F9 - Alternate FPS 30/60}
 
 ## Developers
 

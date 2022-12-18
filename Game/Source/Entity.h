@@ -12,6 +12,9 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
+	PIKU,
+	MAMAPIKU,
+	FLYING,
 	UNKNOWN
 };
 

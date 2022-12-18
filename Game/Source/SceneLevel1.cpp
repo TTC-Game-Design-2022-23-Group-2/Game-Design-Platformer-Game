@@ -49,6 +49,26 @@ bool SceneLevel1::Start()
 		item->parameters = itemNode;
 	}
 
+    configNode = app->LoadConfigFileToVar();
+	config = configNode.child(name.GetString());
+	// SMALL TERR ENEMIES
+	for (pugi::xml_node pikuEnemyNode = config.child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+	{
+		TerrestreEnemySmall* pikuEnemy = (TerrestreEnemySmall*)app->entityManager->CreateEntity(EntityType::PIKU);
+		pikuEnemy->parameters = pikuEnemyNode;
+		terrestreSmallEnemies.Add(pikuEnemy);
+	}
+
+	configNode = app->LoadConfigFileToVar();
+	config = configNode.child(name.GetString());
+	// BIG TERR ENEMIES
+	for (pugi::xml_node mamapikuEnemyNode = config.child("terrestreenemybig"); mamapikuEnemyNode; mamapikuEnemyNode = mamapikuEnemyNode.next_sibling("terrestreenemybig"))
+	{
+		TerrestreEnemyBig* mamapikuEnemy = (TerrestreEnemyBig*)app->entityManager->CreateEntity(EntityType::MAMAPIKU);
+		mamapikuEnemy->parameters = mamapikuEnemyNode;
+		terrestreBigEnemies.Add(mamapikuEnemy);
+	}
+
 	//L02: DONE 3: Instantiate the player using the entity manager
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
@@ -125,42 +145,45 @@ bool SceneLevel1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX +8 - (app->render->camera.x * (float)1 / app->win->GetScale()) - app->map->mapData.tileWidth / 2,
-		mouseY +8 - (app->render->camera.y * (float) 1/app->win->GetScale()) - app->map->mapData.tileHeight / 2);
+	//ENEMY PATHFINDING
+	//Terrestre small enemies
 
-	//Convert again the tile coordinates to world coordinates to render the texture of the tile
-	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+	ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
 
-	//Test compute path function
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	while (terrestreSmallEnemyItem != NULL)
 	{
-		if (originSelected == true)
-		{
-			app->pathfinding->CreatePath(origin, mouseTile);
-			originSelected = false;
-		}
-		else
-		{
-			origin = mouseTile;
-			originSelected = true;
+		if (terrestreSmallEnemyItem != NULL && terrestreSmallEnemyItem->data->GetState() == 2) {
 			app->pathfinding->ClearLastPath();
+
+			//Define origin of path
+			origin.x = METERS_TO_PIXELS(terrestreSmallEnemyItem->data->getpBody()->body->GetPosition().x);
+			origin.y = METERS_TO_PIXELS(terrestreSmallEnemyItem->data->getpBody()->body->GetPosition().y);
+			origin = app->map->WorldToMap(origin.x, origin.y);
+
+			//Define destination of path
+			destination.x = METERS_TO_PIXELS(player->getpBody()->body->GetPosition().x);
+			destination.y = METERS_TO_PIXELS(player->getpBody()->body->GetPosition().y);
+			destination = app->map->WorldToMap(destination.x, destination.y);
+
+			app->pathfinding->CreatePath(origin, destination);
+
+			const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+			for (uint i = 0; i < path->Count(); ++i)
+			{
+				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+				if (i == 1) {
+					//Pass the movement info to the enemy
+					terrestreSmallEnemyItem->data->objective.x = pos.x;
+					terrestreSmallEnemyItem->data->objective.y = pos.y;
+				}
+				if (app->physics->debug) { app->render->DrawTexture(mouseTileTex, pos.x, pos.y); }
+			}
+			//Draw path
+			iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
+			if (app->physics->debug) { app->render->DrawTexture(originTex, originScreen.x, originScreen.y); }
 		}
+		terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
 	}
-
-	// L12: Get the latest calculated path and draw
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-	}
-
-	// L12: Debug pathfinding
-	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
-	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
 
 	return true;
 }
@@ -219,6 +242,40 @@ bool SceneLevel1::PostUpdate()
 		else if (app->FPS == 30) { app->FPS = 60; }
 	}
 
+	if (app->physics->debug) {
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+
+		while (terrestreSmallEnemyItem != NULL)
+		{
+			if (terrestreSmallEnemyItem->data->active) {
+				PhysBody* pbodyP = player->getpBody();
+				PhysBody* pbodyE = terrestreSmallEnemyItem->data->getpBody();
+				app->render->DrawLine(METERS_TO_PIXELS(pbodyE->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyE->body->GetPosition().y),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().y), 255, 0, 0);
+			}
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+		}
+	}
+
+	if (app->physics->debug) {
+		ListItem<TerrestreEnemyBig*>* terrestreBigEnemyItem = terrestreBigEnemies.start;
+
+		while (terrestreBigEnemyItem != NULL)
+		{
+			if (terrestreBigEnemyItem->data->active) {
+				PhysBody* pbodyP = player->getpBody();
+				PhysBody* pbodyE = terrestreBigEnemyItem->data->getpBody();
+				app->render->DrawLine(METERS_TO_PIXELS(pbodyE->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyE->body->GetPosition().y),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().y), 255, 0, 0);
+			}
+			terrestreBigEnemyItem = terrestreBigEnemyItem->next;
+		}
+	}
+
 	return ret;
 }
 
@@ -242,6 +299,16 @@ bool SceneLevel1::CleanUp()
 	app->tex->Unload(mouseTileTex);
 	app->tex->Unload(originTex);
 
+	ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+
+	while (terrestreSmallEnemyItem != NULL)
+	{
+		RELEASE(terrestreSmallEnemyItem->data);
+		terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+	}
+	terrestreSmallEnemies.Clear();
+
+
 	return true;
 }
 
@@ -252,7 +319,19 @@ bool SceneLevel1::LoadState(pugi::xml_node& data)
 
 		pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
 		player->position.x = (pbody->body->GetPosition().x) + 16;
-		player->position.y = (pbody->body->GetPosition().x) + 16;
+		player->position.y = (pbody->body->GetPosition().y) + 16;
+
+		int i = 0;
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+		{
+			terrestreSmallEnemyItem->data->pbody->SetPosition(pikuEnemyNode.attribute("x").as_int(), pikuEnemyNode.attribute("y").as_int());
+			terrestreSmallEnemies.At(i)->data->position.x = terrestreSmallEnemyItem->data->pbody->body->GetPosition().x;
+			terrestreSmallEnemies.At(i)->data->position.y = terrestreSmallEnemyItem->data->pbody->body->GetPosition().y;
+			terrestreSmallEnemies.At(i)->data->pbody = terrestreSmallEnemyItem->data->pbody;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+			i++;
+		}
 	}
 
 	return true;
@@ -269,6 +348,14 @@ bool SceneLevel1::SaveState(pugi::xml_node& data)
 		playerNude.append_attribute("y") = player->position.y + 16;
 
 		app->sceneMenu->currentLevel = 1;
+
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.append_child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+		{
+			pikuEnemyNode.append_attribute("x") = terrestreSmallEnemyItem->data->position.x +16;
+			pikuEnemyNode.append_attribute("y") = terrestreSmallEnemyItem->data->position.y +16;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+		}
 	}
 
 	return true;

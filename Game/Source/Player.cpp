@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "SceneLevel1.h"
+#include "SceneLevel2.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
@@ -234,6 +235,7 @@ bool Player::Start() {
 	endLevel = 0;
 	remainJumps = 0;
 	isCharging = false;
+	specialCooldown = app->FPS * 5;
 
 	return true;
 }
@@ -244,6 +246,10 @@ bool Player::Update()
 	b2Vec2 vel;
 	float speed = 100.0f; 
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
+	if (specialCooldown < (app->FPS * 5))
+	{
+		specialCooldown++;
+	}
 
 
 	if (godMode) {
@@ -254,18 +260,18 @@ bool Player::Update()
 			//vel.x = speed;
 			b2Vec2 force = { 0, speed };
 			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.y > 5)
+			if (vel.y > 10)
 			{
-				vel.y = 5;
+				vel.y = 10;
 			}
 		}
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			//vel.x = speed;
 			b2Vec2 force = { 0, -speed / 2 };
 			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.y > -5)
+			if (vel.y > -10)
 			{
-				vel.y = -5;
+				vel.y = -10;
 			}
 		}
 	}
@@ -334,29 +340,16 @@ bool Player::Update()
 					attackCollision->ctype = ColliderType::ATTACK;
 					attackCollisions.Add(attackCollision);
 				}
+				app->audio->PlayFx(app->audio->slashFx);
 			}
 
 			// SPECIAL ATTACK
-			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)/* && (state != JUMPING) && (state != FALLING)*/)
+			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) && (specialCooldown >= (app->FPS * 5))/* && (state != JUMPING) && (state != FALLING)*/)
 			{
 				state = SPECIAL;
 				canJump = true;
 				remainJumps = 2;
-				/*if (facing == FACING_LEFT)
-				{
-					PhysBody* attackCollision = nullptr;
-					attackCollision = app->physics->CreateRectangleSensor(position.x - 75, position.y + 15, 150, 30, STATIC);
-					attackCollision->ctype = ColliderType::ATTACK;
-					attackCollisions.Add(attackCollision);
-					
-				}
-				else if (facing == FACING_RIGHT)
-				{
-					PhysBody* attackCollision = nullptr;
-					attackCollision = app->physics->CreateRectangleSensor(position.x + 75, position.y + 15, 150, 30, STATIC);
-					attackCollision->ctype = ColliderType::ATTACK;
-					attackCollisions.Add(attackCollision);
-				}*/
+				app->audio->PlayFx(app->audio->specialFx);
 			}
 
 			// MOVE LEFT
@@ -364,7 +357,11 @@ bool Player::Update()
 
 				b2Vec2 force = { -speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x < -4)
+				if ((godMode) && (vel.x < -10))
+				{
+					vel.x = -10;
+				}
+				else if (vel.x < -4)
 				{
 					vel.x = -4;
 				}
@@ -383,7 +380,11 @@ bool Player::Update()
 				
 				b2Vec2 force = { speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x > 4)
+				if ((godMode) && (vel.x > 10))
+				{
+					vel.x = 10;
+				}
+				else if (vel.x > 4)
 				{
 					vel.x = 4;
 				}
@@ -451,6 +452,7 @@ bool Player::Update()
 					chargeTimer = 0;
 					isCharging = false;
 					state = IDLE;
+					specialCooldown = 0;
 
 					specialRightAnim.Reset();
 					specialLeftAnim.Reset();
@@ -662,7 +664,7 @@ bool Player::Update()
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x -35, position.y-27, &rect);
+	app->render->DrawTexture(texture, position.x -38, position.y-27, &rect);
 	currentAnim->Update();
 
 	return true;
@@ -697,6 +699,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::DEATH:
 			LOG("Collision DEATH");
+			if (!godMode) {
+				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
+				state = DYING;
+			}
+			break;
+		case ColliderType::ENEMY:
+			LOG("Collision ENEMY");
 			if (!godMode) {
 				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
 				state = DYING;

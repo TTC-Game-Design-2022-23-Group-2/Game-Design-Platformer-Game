@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Point.h"
 #include "Physics.h"
+#include "FlyingEnemy.h"
 
 struct SDL_Texture;
 
@@ -40,6 +41,7 @@ public:
 	bool SaveState(pugi::xml_node& data);
 
 public:
+	List<FlyingEnemy*> flyingEnemies;
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
@@ -60,6 +62,7 @@ private:
 	SDL_Texture* originTex = nullptr;
 	// L12: Debug pathfing
 	iPoint origin;
+	iPoint destination;
 	bool originSelected = false;
 };
 

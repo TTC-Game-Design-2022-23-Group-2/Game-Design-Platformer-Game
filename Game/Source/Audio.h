@@ -33,6 +33,9 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
 	uint executedFx;
+	uint slashFx;
+	uint specialFx;
+	uint enemy_deathFx;
 
 private:
 

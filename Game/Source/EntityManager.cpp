@@ -4,6 +4,7 @@
 #include "App.h"
 #include "Textures.h"
 #include "SceneLevel1.h"
+#include "SceneLevel2.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -85,6 +86,16 @@ Entity* EntityManager::CreateEntity(EntityType type)
 
 	case EntityType::ITEM:
 		entity = new Item();
+		break;
+
+	case EntityType::PIKU:
+		entity = new TerrestreEnemySmall();
+		break;
+	case EntityType::MAMAPIKU:
+		entity = new TerrestreEnemyBig();
+		break;
+	case EntityType::FLYING:
+		entity = new FlyingEnemy();
 		break;
 
 	default: break;
