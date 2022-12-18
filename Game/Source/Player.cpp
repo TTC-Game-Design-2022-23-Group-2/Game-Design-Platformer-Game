@@ -255,18 +255,18 @@ bool Player::Update()
 			//vel.x = speed;
 			b2Vec2 force = { 0, speed };
 			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.y > 5)
+			if (vel.y > 10)
 			{
-				vel.y = 5;
+				vel.y = 10;
 			}
 		}
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			//vel.x = speed;
 			b2Vec2 force = { 0, -speed / 2 };
 			pbody->body->ApplyForceToCenter(force, true);
-			if (vel.y > -5)
+			if (vel.y > -10)
 			{
-				vel.y = -5;
+				vel.y = -10;
 			}
 		}
 	}
@@ -365,7 +365,11 @@ bool Player::Update()
 
 				b2Vec2 force = { -speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x < -4)
+				if ((godMode) && (vel.x < -10))
+				{
+					vel.x = -10;
+				}
+				else if (vel.x < -4)
 				{
 					vel.x = -4;
 				}
@@ -384,7 +388,11 @@ bool Player::Update()
 				
 				b2Vec2 force = { speed, 0 };
 				pbody->body->ApplyForceToCenter(force, true);
-				if (vel.x > 4)
+				if ((godMode) && (vel.x > 10))
+				{
+					vel.x = 10;
+				}
+				else if (vel.x > 4)
 				{
 					vel.x = 4;
 				}
@@ -663,7 +671,7 @@ bool Player::Update()
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x -35, position.y-27, &rect);
+	app->render->DrawTexture(texture, position.x -38, position.y-27, &rect);
 	currentAnim->Update();
 
 	return true;
@@ -702,6 +710,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
 				state = DYING;
 			}
+			break;
+		case ColliderType::ENEMY:
+			LOG("Collision ENEMY");
+			//state = DYING;
 			break;
 		case ColliderType::WIN:
 			LOG("Collision WIN");
