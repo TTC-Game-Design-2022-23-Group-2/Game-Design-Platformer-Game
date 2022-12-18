@@ -4,6 +4,9 @@
 #include "Module.h"
 #include "Player.h"
 #include "Item.h"
+#include "TerrestreEnemyBig.h"
+#include "TerrestreEnemySmall.h"
+#include "FlyingEnemy.h"
 #include "Point.h"
 #include "Physics.h"
 
@@ -43,6 +46,11 @@ public:
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
+
+	List<TerrestreEnemySmall*> terrestreSmallEnemies;
+	List<TerrestreEnemyBig*> terrestreBigEnemies;
+	List<FlyingEnemy*> flyingEnemies;
+
 	bool playerDeath;
 	const char* musicPath;
 

@@ -87,6 +87,16 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		entity = new Item();
 		break;
 
+	case EntityType::PIKU:
+		entity = new TerrestreEnemySmall();
+		break;
+	case EntityType::MAMAPIKU:
+		entity = new TerrestreEnemyBig();
+		break;
+	case EntityType::FLYING:
+		entity = new FlyingEnemy();
+		break;
+
 	default: break;
 	}
 

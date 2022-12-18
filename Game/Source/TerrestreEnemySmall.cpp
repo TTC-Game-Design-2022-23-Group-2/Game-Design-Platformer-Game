@@ -24,10 +24,10 @@ TerrestreEnemySmall::TerrestreEnemySmall() : Entity(EntityType::PLAYER)
 	name.Create("TerrestreEnemySmall");
 
 	// idle right
-	idleRightAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	idleRightAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	idleRightAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	idleRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	idleRightAnim.PushBack({ 50 * 4, 40 * 0, 50, 40 });
+	idleRightAnim.PushBack({ 50 * 5, 40 * 0, 50, 40 });
+	idleRightAnim.PushBack({ 50 * 6, 40 * 0, 50, 40 });
+	//idleRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
 	idleRightAnim.loop = false;
 	idleRightAnim.speed = 0.1f;
 
@@ -35,7 +35,7 @@ TerrestreEnemySmall::TerrestreEnemySmall() : Entity(EntityType::PLAYER)
 	idleLeftAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
 	idleLeftAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
 	idleLeftAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	idleLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	//idleLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
 	idleLeftAnim.loop = false;
 	idleLeftAnim.speed = 0.1f;
 
@@ -56,34 +56,36 @@ TerrestreEnemySmall::TerrestreEnemySmall() : Entity(EntityType::PLAYER)
 	statictodynamicleftanim.speed = 0.1f;
 
 	// running Right
-	runningRightAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	runningRightAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	runningRightAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	runningRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	runningRightAnim.PushBack({ 50 * 4, 40 * 1, 50, 40 });
+	runningRightAnim.PushBack({ 50 * 7, 40 * 1, 50, 40 });
+	runningRightAnim.PushBack({ 50 * 6, 40 * 1, 50, 40 });
+	runningRightAnim.PushBack({ 50 * 5, 40 * 1, 50, 40 });
 	runningRightAnim.loop = false;
 	runningRightAnim.speed = 0.1f;
 
 	// running Left
-	runningLeftAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	runningLeftAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	runningLeftAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	runningLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	runningLeftAnim.PushBack({ 50 * 0, 40 * 1, 50, 40 });
+	runningLeftAnim.PushBack({ 50 * 3, 40 * 1, 50, 40 });
+	runningLeftAnim.PushBack({ 50 * 2, 40 * 1, 50, 40 });
+	runningLeftAnim.PushBack({ 50 * 1, 40 * 1, 50, 40 });
 	runningLeftAnim.loop = false;
 	runningLeftAnim.speed = 0.1f;
 
 	// attack right	
-	attackRightAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	attackRightAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	attackRightAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	attackRightAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 4, 40 * 2, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 5, 40 * 2, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 6, 40 * 2, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 7, 40 * 2, 50, 40 });
+	attackRightAnim.PushBack({ 50 * 4, 40 * 3, 50, 40 });
 	attackRightAnim.loop = false;
 	attackRightAnim.speed = 0.1f;
 
 	// attack left 
-	attackLeftAnim.PushBack({ 50 * 0, 40 * 0, 50, 40 });
-	attackLeftAnim.PushBack({ 50 * 1, 40 * 0, 50, 40 });
-	attackLeftAnim.PushBack({ 50 * 2, 40 * 0, 50, 40 });
-	attackLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 0, 40 * 2, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 1, 40 * 2, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 2, 40 * 2, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 3, 40 * 2, 50, 40 });
+	attackLeftAnim.PushBack({ 50 * 0, 40 * 3, 50, 40 });
 	attackLeftAnim.loop = false;
 	attackLeftAnim.speed = 0.1f;
 

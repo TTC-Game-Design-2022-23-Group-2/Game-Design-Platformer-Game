@@ -49,6 +49,36 @@ bool SceneLevel1::Start()
 		item->parameters = itemNode;
 	}
 
+    configNode = app->LoadConfigFileToVar();
+	config = configNode.child(name.GetString());
+	// SMALL TERR ENEMIES
+	for (pugi::xml_node pikuEnemyNode = config.child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+	{
+		TerrestreEnemySmall* pikuEnemy = (TerrestreEnemySmall*)app->entityManager->CreateEntity(EntityType::PIKU);
+		pikuEnemy->parameters = pikuEnemyNode;
+		terrestreSmallEnemies.Add(pikuEnemy);
+	}
+
+	configNode = app->LoadConfigFileToVar();
+	config = configNode.child(name.GetString());
+	// BIG TERR ENEMIES
+	for (pugi::xml_node mamapikuEnemyNode = config.child("terrestreenemybig"); mamapikuEnemyNode; mamapikuEnemyNode = mamapikuEnemyNode.next_sibling("terrestreenemybig"))
+	{
+		TerrestreEnemyBig* mamapikuEnemy = (TerrestreEnemyBig*)app->entityManager->CreateEntity(EntityType::MAMAPIKU);
+		mamapikuEnemy->parameters = mamapikuEnemyNode;
+		terrestreBigEnemies.Add(mamapikuEnemy);
+	}
+
+	configNode = app->LoadConfigFileToVar();
+	config = configNode.child(name.GetString());
+	// FLYING ENEMIES
+	for (pugi::xml_node flyingEnemyNode = config.child("flyingenemy"); flyingEnemyNode; flyingEnemyNode = flyingEnemyNode.next_sibling("flyingenemy"))
+	{
+		FlyingEnemy* flyingEnemy = (FlyingEnemy*)app->entityManager->CreateEntity(EntityType::FLYING);
+		flyingEnemy->parameters = flyingEnemyNode;
+		flyingEnemies.Add(flyingEnemy);
+	}
+
 	//L02: DONE 3: Instantiate the player using the entity manager
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
