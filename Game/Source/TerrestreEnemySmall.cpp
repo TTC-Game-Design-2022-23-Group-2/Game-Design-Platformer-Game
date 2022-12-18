@@ -43,13 +43,13 @@ TerrestreEnemySmall::TerrestreEnemySmall() : Entity(EntityType::PLAYER)
 	statictodynamicLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
 	statictodynamicLeftAnim.PushBack({ 50 * 3, 40 * 0, 50, 40 });
 	statictodynamicLeftAnim.loop = false;
-	statictodynamicLeftAnim.speed = 0.1f;
+	statictodynamicLeftAnim.speed = 0.05f;
 
 	// static to dynamic Right
 	statictodynamicRightAnim.PushBack({ 50 * 7, 40 * 0, 50, 40 });
 	statictodynamicRightAnim.PushBack({ 50 * 7, 40 * 0, 50, 40 });
 	statictodynamicRightAnim.loop = false;
-	statictodynamicRightAnim.speed = 0.1f;
+	statictodynamicRightAnim.speed = 0.05f;
 
 	// running Right
 	runningRightAnim.PushBack({ 50 * 4, 40 * 1, 50, 40 });
@@ -126,7 +126,7 @@ bool TerrestreEnemySmall::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x, position.y, 20, 20, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x, position.y, 21, 21, bodyType::DYNAMIC);
 	//pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
@@ -165,23 +165,27 @@ bool TerrestreEnemySmall::Update()
 		if ((state != ATTACKING) && (state != CHARGING))
 		{
 			vel.x = 0;
-			state = IDLE;
+
+			if ((position.DistanceTo(app->sceneLevel1->player->position) > 200))
+			{
+				state = IDLE;
+			}
 
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 
 				state = ATTACKING;
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (state != CHASING)) {
 
 				state = CHARGING;
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (objective.x + PIXEL_TO_METERS(8) > (PIXEL_TO_METERS(position.x)))) {
 
 				vel.x = 4;
 				facing = FACING_RIGHT;
 				state = CHASING;
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (objective.x - PIXEL_TO_METERS(8) < (PIXEL_TO_METERS(position.x)))) {
 
 				vel.x = -4;
 				facing = FACING_LEFT;
@@ -224,10 +228,10 @@ bool TerrestreEnemySmall::Update()
 			}
 			else if (state == CHARGING)
 			{
-				if (attackTimer > 7)
+				if (attackTimer > 15)
 				{
 					vel.x = 0;
-					state = IDLE;
+					state = CHASING;
 					statictodynamicLeftAnim.Reset();
 					statictodynamicRightAnim.Reset();
 					attackTimer = 0;
@@ -349,6 +353,10 @@ void TerrestreEnemySmall::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision UNKNOWN");
 		break;
 	case ColliderType::ATTACK:
+		LOG("ENEMY Collision ATTACK");
+		state = DYING;
+		break;
+	case ColliderType::DEATH:
 		LOG("ENEMY Collision ATTACK");
 		state = DYING;
 		break;
