@@ -173,8 +173,8 @@ bool SceneLevel1::Update(float dt)
 				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 				if (i == 1) {
 					//Pass the movement info to the enemy
-					terrestreSmallEnemyItem->data->objective.x = PIXEL_TO_METERS(pos.x);
-					terrestreSmallEnemyItem->data->objective.y = PIXEL_TO_METERS(pos.y);
+					terrestreSmallEnemyItem->data->objective.x = pos.x;
+					terrestreSmallEnemyItem->data->objective.y = pos.y;
 				}
 				if (app->physics->debug) { app->render->DrawTexture(mouseTileTex, pos.x, pos.y); }
 			}
