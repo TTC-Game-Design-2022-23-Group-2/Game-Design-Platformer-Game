@@ -24,18 +24,20 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::PLAYER)
 	name.Create("FlyingEnemy");
 
 	// idle right
-	idleRightAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
-	idleRightAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
-	idleRightAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
-	idleRightAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
-	idleRightAnim.loop = false;
-	idleRightAnim.speed = 0.1f;
+	idleRightAnim.PushBack({ 64 * 3 + 512, 64 * 2, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 4 + 512, 64 * 2, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 5 + 512, 64 * 2, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 6 + 512, 64 * 2, 64, 64 });
+	idleRightAnim.PushBack({ 64 * 7 + 512, 64 * 2, 64, 64 });
+	idleRightAnim.loop = true;
+	idleRightAnim.speed = 0.2f;
 
 	// idle left
-	idleLeftAnim.PushBack({ 64 * 0, 64 * 0, 64, 64 });
-	idleLeftAnim.PushBack({ 64 * 1, 64 * 1, 64, 64 });
-	idleLeftAnim.PushBack({ 64 * 2, 64 * 2, 64, 64 });
-	idleLeftAnim.PushBack({ 64 * 3, 64 * 3, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 3, 64 * 2, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 4, 64 * 2, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 5, 64 * 2, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 6, 64 * 2, 64, 64 });
+	idleLeftAnim.PushBack({ 64 * 7, 64 * 2, 64, 64 });
 	idleLeftAnim.loop = false;
 	idleLeftAnim.speed = 0.1f;
 
@@ -110,8 +112,8 @@ bool FlyingEnemy::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x + 16, position.y + 16, 32, 50, bodyType::DYNAMIC);
-	//pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
+	//pbody = app->physics->CreateRectangle(position.x + 16, position.y + 16, 32, 50, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 
 	// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -120,6 +122,7 @@ bool FlyingEnemy::Start() {
 	pbody->ctype = ColliderType::ENEMY;
 
 	pbody->body->SetFixedRotation(1);
+	pbody->body->SetGravityScale(0);
 	//app->map->enemies.Add(pbody);
 
 	//initialize audio effect - !! Path is hardcoded, should be loaded from config.xml

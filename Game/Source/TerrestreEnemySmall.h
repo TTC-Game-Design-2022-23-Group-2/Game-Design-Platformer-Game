@@ -50,6 +50,8 @@ public:
 	/*Animation dieRightAnim;
 	Animation dieLeftAnim;*/
 
+	iPoint objective;
+
 private:
 
 	//L02: DONE 1: Declare player parameters

@@ -69,16 +69,6 @@ bool SceneLevel1::Start()
 		terrestreBigEnemies.Add(mamapikuEnemy);
 	}
 
-	configNode = app->LoadConfigFileToVar();
-	config = configNode.child(name.GetString());
-	// FLYING ENEMIES
-	for (pugi::xml_node flyingEnemyNode = config.child("flyingenemy"); flyingEnemyNode; flyingEnemyNode = flyingEnemyNode.next_sibling("flyingenemy"))
-	{
-		FlyingEnemy* flyingEnemy = (FlyingEnemy*)app->entityManager->CreateEntity(EntityType::FLYING);
-		flyingEnemy->parameters = flyingEnemyNode;
-		flyingEnemies.Add(flyingEnemy);
-	}
-
 	//L02: DONE 3: Instantiate the player using the entity manager
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
@@ -155,42 +145,45 @@ bool SceneLevel1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX +8 - (app->render->camera.x * (float)1 / app->win->GetScale()) - app->map->mapData.tileWidth / 2,
-		mouseY +8 - (app->render->camera.y * (float) 1/app->win->GetScale()) - app->map->mapData.tileHeight / 2);
+	//ENEMY PATHFINDING
+	//Terrestre small enemies
 
-	//Convert again the tile coordinates to world coordinates to render the texture of the tile
-	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+	ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
 
-	//Test compute path function
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	while (terrestreSmallEnemyItem != NULL)
 	{
-		if (originSelected == true)
-		{
-			app->pathfinding->CreatePath(origin, mouseTile);
-			originSelected = false;
-		}
-		else
-		{
-			origin = mouseTile;
-			originSelected = true;
+		if (terrestreSmallEnemyItem != NULL/* && terrestreSmallEnemyItem->data->GetState() == 2*/) {
 			app->pathfinding->ClearLastPath();
+
+			//Define origin of path
+			origin.x = METERS_TO_PIXELS(terrestreSmallEnemyItem->data->getpBody()->body->GetPosition().x);
+			origin.y = METERS_TO_PIXELS(terrestreSmallEnemyItem->data->getpBody()->body->GetPosition().y);
+			origin = app->map->WorldToMap(origin.x, origin.y);
+
+			//Define destination of path
+			destination.x = METERS_TO_PIXELS(player->getpBody()->body->GetPosition().x);
+			destination.y = METERS_TO_PIXELS(player->getpBody()->body->GetPosition().y);
+			destination = app->map->WorldToMap(destination.x, destination.y);
+
+			app->pathfinding->CreatePath(origin, destination);
+
+			const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+			for (uint i = 0; i < path->Count(); ++i)
+			{
+				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+				if (i == 1) {
+					//Pass the movement info to the enemy
+					terrestreSmallEnemyItem->data->objective.x = PIXEL_TO_METERS(pos.x);
+					terrestreSmallEnemyItem->data->objective.y = PIXEL_TO_METERS(pos.y);
+				}
+				if (app->physics->debug) { app->render->DrawTexture(mouseTileTex, pos.x, pos.y); }
+			}
+			//Draw path
+			iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
+			if (app->physics->debug) { app->render->DrawTexture(originTex, originScreen.x, originScreen.y); }
 		}
+		terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
 	}
-
-	// L12: Get the latest calculated path and draw
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-	}
-
-	// L12: Debug pathfinding
-	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
-	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
 
 	return true;
 }

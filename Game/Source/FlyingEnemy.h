@@ -48,6 +48,8 @@ public:
 	Animation attackRightAnim;
 	Animation attackLeftAnim;
 
+	iPoint objective;
+
 private:
 
 	//L02: DONE 1: Declare player parameters
