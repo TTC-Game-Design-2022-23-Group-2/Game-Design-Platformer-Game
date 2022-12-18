@@ -12,7 +12,7 @@
 		<player x="29" y="91" />
 	</sceneLevel2>
 	<sceneMenu>
-		<scene level="2" />
+		<scene level="1" />
 	</sceneMenu>
 	<entitymanager />
 	<map />

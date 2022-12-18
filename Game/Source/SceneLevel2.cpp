@@ -271,6 +271,15 @@ bool SceneLevel2::CleanUp()
 	app->tex->Unload(mouseTileTex);
 	app->tex->Unload(originTex);
 
+	ListItem<FlyingEnemy*>* flyingEnemyItem = flyingEnemies.start;
+
+	while (flyingEnemyItem != NULL)
+	{
+		RELEASE(flyingEnemyItem->data);
+		flyingEnemyItem = flyingEnemyItem->next;
+	}
+	flyingEnemies.Clear();
+
 	return true;
 }
 
@@ -282,6 +291,18 @@ bool SceneLevel2::LoadState(pugi::xml_node& data)
 		pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
 		player->position.x = (pbody->body->GetPosition().x) + 16;
 		player->position.y = (pbody->body->GetPosition().x) + 16;
+
+		int i = 0;
+		ListItem<FlyingEnemy*>* terrestreSmallEnemyItem = flyingEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.child("flyingenemy"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("flyingenemy"))
+		{
+			terrestreSmallEnemyItem->data->pbody->SetPosition(pikuEnemyNode.attribute("x").as_int(), pikuEnemyNode.attribute("y").as_int());
+			flyingEnemies.At(i)->data->position.x = terrestreSmallEnemyItem->data->pbody->body->GetPosition().x;
+			flyingEnemies.At(i)->data->position.y = terrestreSmallEnemyItem->data->pbody->body->GetPosition().y;
+			flyingEnemies.At(i)->data->pbody = terrestreSmallEnemyItem->data->pbody;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+			i++;
+		}
 	}
 
 	return true;
@@ -298,6 +319,14 @@ bool SceneLevel2::SaveState(pugi::xml_node& data)
 		playerNude.append_attribute("y") = player->position.y + 16;
 
 		app->sceneMenu->currentLevel = 2;
+
+		ListItem<FlyingEnemy*>* terrestreSmallEnemyItem = flyingEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.append_child("flyingenemy"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("flyingenemy"))
+		{
+			pikuEnemyNode.append_attribute("x") = terrestreSmallEnemyItem->data->position.x + 16;
+			pikuEnemyNode.append_attribute("y") = terrestreSmallEnemyItem->data->position.y + 16;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+		}
 	}
 
 	return true;

@@ -299,6 +299,16 @@ bool SceneLevel1::CleanUp()
 	app->tex->Unload(mouseTileTex);
 	app->tex->Unload(originTex);
 
+	ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+
+	while (terrestreSmallEnemyItem != NULL)
+	{
+		RELEASE(terrestreSmallEnemyItem->data);
+		terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+	}
+	terrestreSmallEnemies.Clear();
+
+
 	return true;
 }
 
@@ -309,7 +319,19 @@ bool SceneLevel1::LoadState(pugi::xml_node& data)
 
 		pbody->SetPosition(data.child("player").attribute("x").as_int(), data.child("player").attribute("y").as_int());
 		player->position.x = (pbody->body->GetPosition().x) + 16;
-		player->position.y = (pbody->body->GetPosition().x) + 16;
+		player->position.y = (pbody->body->GetPosition().y) + 16;
+
+		int i = 0;
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+		{
+			terrestreSmallEnemyItem->data->pbody->SetPosition(pikuEnemyNode.attribute("x").as_int(), pikuEnemyNode.attribute("y").as_int());
+			terrestreSmallEnemies.At(i)->data->position.x = terrestreSmallEnemyItem->data->pbody->body->GetPosition().x;
+			terrestreSmallEnemies.At(i)->data->position.y = terrestreSmallEnemyItem->data->pbody->body->GetPosition().y;
+			terrestreSmallEnemies.At(i)->data->pbody = terrestreSmallEnemyItem->data->pbody;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+			i++;
+		}
 	}
 
 	return true;
@@ -326,6 +348,14 @@ bool SceneLevel1::SaveState(pugi::xml_node& data)
 		playerNude.append_attribute("y") = player->position.y + 16;
 
 		app->sceneMenu->currentLevel = 1;
+
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+		for (pugi::xml_node pikuEnemyNode = data.append_child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
+		{
+			pikuEnemyNode.append_attribute("x") = terrestreSmallEnemyItem->data->position.x +16;
+			pikuEnemyNode.append_attribute("y") = terrestreSmallEnemyItem->data->position.y +16;
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+		}
 	}
 
 	return true;

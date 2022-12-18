@@ -52,6 +52,8 @@ public:
 
 	iPoint objective;
 
+	PhysBody* pbody;
+
 private:
 
 	//L02: DONE 1: Declare player parameters
@@ -59,7 +61,7 @@ private:
 	const char* texturePath;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
-	PhysBody* pbody;
+	
 	List<PhysBody*> attackCollisions;
 
 	int state;

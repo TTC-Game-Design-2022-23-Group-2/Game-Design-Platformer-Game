@@ -235,6 +235,7 @@ bool Player::Start() {
 	endLevel = 0;
 	remainJumps = 0;
 	isCharging = false;
+	specialCooldown = app->FPS * 5;
 
 	return true;
 }
@@ -245,6 +246,10 @@ bool Player::Update()
 	b2Vec2 vel;
 	float speed = 100.0f; 
 	vel = pbody->body->GetLinearVelocity() + b2Vec2(0, -GRAVITY_Y * 0.05f); 
+	if (specialCooldown < (app->FPS * 5))
+	{
+		specialCooldown++;
+	}
 
 
 	if (godMode) {
@@ -338,7 +343,7 @@ bool Player::Update()
 			}
 
 			// SPECIAL ATTACK
-			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)/* && (state != JUMPING) && (state != FALLING)*/)
+			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) && (specialCooldown >= (app->FPS * 5))/* && (state != JUMPING) && (state != FALLING)*/)
 			{
 				state = SPECIAL;
 				canJump = true;
@@ -460,6 +465,7 @@ bool Player::Update()
 					chargeTimer = 0;
 					isCharging = false;
 					state = IDLE;
+					specialCooldown = 0;
 
 					specialRightAnim.Reset();
 					specialLeftAnim.Reset();
