@@ -271,6 +271,15 @@ bool SceneLevel2::CleanUp()
 	app->tex->Unload(mouseTileTex);
 	app->tex->Unload(originTex);
 
+	ListItem<FlyingEnemy*>* flyingEnemyItem = flyingEnemies.start;
+
+	while (flyingEnemyItem != NULL)
+	{
+		RELEASE(flyingEnemyItem->data);
+		flyingEnemyItem = flyingEnemyItem->next;
+	}
+	flyingEnemies.Clear();
+
 	return true;
 }
 

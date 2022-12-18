@@ -299,6 +299,16 @@ bool SceneLevel1::CleanUp()
 	app->tex->Unload(mouseTileTex);
 	app->tex->Unload(originTex);
 
+	ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+
+	while (terrestreSmallEnemyItem != NULL)
+	{
+		RELEASE(terrestreSmallEnemyItem->data);
+		terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+	}
+	terrestreSmallEnemies.Clear();
+
+
 	return true;
 }
 
