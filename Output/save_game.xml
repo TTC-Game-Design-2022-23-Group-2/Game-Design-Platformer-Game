@@ -7,17 +7,18 @@
 	<:anonymous />
 	<pathfinding />
 	<sceneIntro />
-	<sceneLevel1 />
-	<sceneLevel2>
-		<player x="1113" y="267" />
-	</sceneLevel2>
+	<sceneLevel1>
+		<player x="984" y="315" />
+		<terrestreenemysmall x="772" y="260" />
+	</sceneLevel1>
+	<sceneLevel2 />
 	<sceneMenu>
-		<scene level="2" />
+		<scene level="1" />
 	</sceneMenu>
 	<entitymanager />
 	<map />
 	<fade />
 	<renderer>
-		<camera x="-1794" y="-186" />
+		<camera x="-1536" y="-198" />
 	</renderer>
 </save_state>

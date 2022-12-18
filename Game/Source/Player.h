@@ -83,6 +83,7 @@ private:
 	int chargeTimer;
 	bool isCharging;
 	bool isColliding;
+	int specialCooldown;
 
 };
 

@@ -49,6 +49,7 @@ public:
 	Animation attackLeftAnim;
 
 	iPoint objective;
+	PhysBody* pbody;
 
 private:
 
@@ -57,7 +58,7 @@ private:
 	const char* texturePath;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
-	PhysBody* pbody;
+	
 	List<PhysBody*> attackCollisions;
 
 	int state;
