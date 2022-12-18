@@ -171,9 +171,10 @@ bool TerrestreEnemySmall::Update()
 				state = IDLE;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+			if (position.DistanceTo(app->sceneLevel1->player->position) < 100) {
 
 				state = ATTACKING;
+				//app->audio->PlayFx(app->audio->enemy_attackFx);
 			}
 			else if ((position.DistanceTo(app->sceneLevel1->player->position) < 200) && (state != CHASING)) {
 

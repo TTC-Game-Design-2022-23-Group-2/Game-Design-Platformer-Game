@@ -60,6 +60,7 @@ bool Audio::Awake(pugi::xml_node& config)
 	slashFx = app->audio->LoadFx(config.child("fx").attribute("slash").as_string());
 	specialFx = app->audio->LoadFx(config.child("fx").attribute("special").as_string());
 	enemy_deathFx = app->audio->LoadFx(config.child("fx").attribute("enemy_death").as_string());
+	enemy_attackFx = app->audio->LoadFx(config.child("fx").attribute("enemy_attack").as_string());
 
 	return ret;
 }

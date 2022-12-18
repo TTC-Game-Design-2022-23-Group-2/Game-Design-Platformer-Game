@@ -18,7 +18,7 @@
 
   <audio>
     <music volume="128"/>
-    <fx volume="128" executed="Assets/Audio/Fx/Executed.wav" slash="Assets/Audio/Fx/slash.wav" special="Assets/Audio/Fx/special.wav" enemy_death="Assets/Audio/Fx/enemy_death.wav"/>
+    <fx volume="128" executed="Assets/Audio/Fx/Executed.wav" slash="Assets/Audio/Fx/slash.wav" special="Assets/Audio/Fx/special.wav" enemy_death="Assets/Audio/Fx/enemy_death.wav" enemy_attack="Assets/Audio/Fx/enemy_attack.wav"/>
   </audio>
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
