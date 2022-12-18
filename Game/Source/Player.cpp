@@ -318,14 +318,45 @@ bool Player::Update()
 				state = ATTACKING;
 				canJump = true;
 				remainJumps = 2;
+
+				if (facing == FACING_LEFT)
+				{
+					PhysBody* attackCollision = nullptr;
+					attackCollision = app->physics->CreateRectangleSensor(position.x + 10, position.y + 15, 85, 80, STATIC);
+					attackCollision->ctype = ColliderType::ATTACK;
+					attackCollisions.Add(attackCollision);
+
+				}
+				else if (facing == FACING_RIGHT)
+				{
+					PhysBody* attackCollision = nullptr;
+					attackCollision = app->physics->CreateRectangleSensor(position.x + 30, position.y + 15, 85, 80, STATIC);
+					attackCollision->ctype = ColliderType::ATTACK;
+					attackCollisions.Add(attackCollision);
+				}
 			}
 
 			// SPECIAL ATTACK
-			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)/* && (state != JUMPING) && (state != FALLING)*/)
+			else if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)/* && (state != JUMPING) && (state != FALLING)*/)
 			{
 				state = SPECIAL;
 				canJump = true;
 				remainJumps = 2;
+				/*if (facing == FACING_LEFT)
+				{
+					PhysBody* attackCollision = nullptr;
+					attackCollision = app->physics->CreateRectangleSensor(position.x - 75, position.y + 15, 150, 30, STATIC);
+					attackCollision->ctype = ColliderType::ATTACK;
+					attackCollisions.Add(attackCollision);
+					
+				}
+				else if (facing == FACING_RIGHT)
+				{
+					PhysBody* attackCollision = nullptr;
+					attackCollision = app->physics->CreateRectangleSensor(position.x + 75, position.y + 15, 150, 30, STATIC);
+					attackCollision->ctype = ColliderType::ATTACK;
+					attackCollisions.Add(attackCollision);
+				}*/
 			}
 
 			// MOVE LEFT
@@ -392,12 +423,25 @@ bool Player::Update()
 			chargeTimer++;
 			if ((state == ATTACKING) && (chargeTimer > 10))
 			{
+				vel.x = 0;
 				chargeTimer = 0;
 				isCharging = false;
 				state = IDLE;
 
 				attackRightAnim.Reset();
 				attackLeftAnim.Reset();
+
+				ListItem<PhysBody*>* attackCollisionsItem;
+				attackCollisionsItem = attackCollisions.start;
+
+				while (attackCollisionsItem != NULL)
+				{
+					attackCollisionsItem->data->body->DestroyFixture(attackCollisionsItem->data->body->GetFixtureList());
+					RELEASE(attackCollisionsItem->data);
+					attackCollisionsItem = attackCollisionsItem->next;
+				}
+
+				attackCollisions.Clear();
 			}
 			else if ((state == SPECIAL))
 			{
@@ -410,6 +454,19 @@ bool Player::Update()
 
 					specialRightAnim.Reset();
 					specialLeftAnim.Reset();
+
+					ListItem<PhysBody*>* attackCollisionsItem;
+					attackCollisionsItem = attackCollisions.start;
+
+					while (attackCollisionsItem != NULL)
+					{
+						attackCollisionsItem->data->body->DestroyFixture(attackCollisionsItem->data->body->GetFixtureList());
+						RELEASE(attackCollisionsItem->data);
+						attackCollisionsItem = attackCollisionsItem->next;
+					}
+
+					attackCollisions.Clear();
+					//attackCollision->body->DestroyFixture(attackCollision->body->GetFixtureList());
 				}
 				else if (chargeTimer > 9)
 				{
@@ -426,6 +483,10 @@ bool Player::Update()
 						{
 							vel.x = -10;
 						}*/
+						PhysBody* attackCollision = nullptr;
+						attackCollision = app->physics->CreateRectangleSensor(position.x - 70, position.y + 15, 120, 40, STATIC);
+						attackCollision->ctype = ColliderType::ATTACK;
+						attackCollisions.Add(attackCollision);
 					}
 					else if (facing == FACING_RIGHT)
 					{
@@ -436,6 +497,10 @@ bool Player::Update()
 						{
 							vel.x = 10;
 						}*/
+						PhysBody* attackCollision = nullptr;
+						attackCollision = app->physics->CreateRectangleSensor(position.x + 110, position.y + 15, 120, 40, STATIC);
+						attackCollision->ctype = ColliderType::ATTACK;
+						attackCollisions.Add(attackCollision);
 					}
 				}
 				else if (chargeTimer > 3)
@@ -624,7 +689,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
-			if ((state != DYING) && (state != WINING))
+			if ((state != DYING) && (state != WINING) && (state != SPECIAL))
 			{
 				state = IDLE;
 				canJump = true;
@@ -660,11 +725,11 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PLATFORM:
 		LOG("END Collision PLATFORM");
 		canJump = false;
-	    if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (state != DYING))
+	    if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (state != DYING) && (state != SPECIAL))
 			{
 				state = JUMPING;
 			}
-		else if (state != DYING && !isColliding)
+		else if (state != DYING && !isColliding && (state != SPECIAL))
 			{
 				state = FALLING;
 			}

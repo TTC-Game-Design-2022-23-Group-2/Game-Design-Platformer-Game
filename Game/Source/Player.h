@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "Animation.h"
 #include "SDL/include/SDL.h"
+#include "List.h"
 
 struct SDL_Texture;
 
@@ -71,6 +72,7 @@ private:
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
+	List<PhysBody*> attackCollisions;
 
 	int winLoseTimer;
 	int state;
