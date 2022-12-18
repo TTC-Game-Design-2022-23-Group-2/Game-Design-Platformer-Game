@@ -152,7 +152,7 @@ bool SceneLevel1::Update(float dt)
 
 	while (terrestreSmallEnemyItem != NULL)
 	{
-		if (terrestreSmallEnemyItem != NULL/* && terrestreSmallEnemyItem->data->GetState() == 2*/) {
+		if (terrestreSmallEnemyItem != NULL && terrestreSmallEnemyItem->data->GetState() == 2) {
 			app->pathfinding->ClearLastPath();
 
 			//Define origin of path
@@ -240,6 +240,40 @@ bool SceneLevel1::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
 		if (app->FPS == 60) { app->FPS = 30; }
 		else if (app->FPS == 30) { app->FPS = 60; }
+	}
+
+	if (app->physics->debug) {
+		ListItem<TerrestreEnemySmall*>* terrestreSmallEnemyItem = terrestreSmallEnemies.start;
+
+		while (terrestreSmallEnemyItem != NULL)
+		{
+			if (terrestreSmallEnemyItem->data->active) {
+				PhysBody* pbodyP = player->getpBody();
+				PhysBody* pbodyE = terrestreSmallEnemyItem->data->getpBody();
+				app->render->DrawLine(METERS_TO_PIXELS(pbodyE->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyE->body->GetPosition().y),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().y), 255, 0, 0);
+			}
+			terrestreSmallEnemyItem = terrestreSmallEnemyItem->next;
+		}
+	}
+
+	if (app->physics->debug) {
+		ListItem<TerrestreEnemyBig*>* terrestreBigEnemyItem = terrestreBigEnemies.start;
+
+		while (terrestreBigEnemyItem != NULL)
+		{
+			if (terrestreBigEnemyItem->data->active) {
+				PhysBody* pbodyP = player->getpBody();
+				PhysBody* pbodyE = terrestreBigEnemyItem->data->getpBody();
+				app->render->DrawLine(METERS_TO_PIXELS(pbodyE->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyE->body->GetPosition().y),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().x),
+					METERS_TO_PIXELS(pbodyP->body->GetPosition().y), 255, 0, 0);
+			}
+			terrestreBigEnemyItem = terrestreBigEnemyItem->next;
+		}
 	}
 
 	return ret;
