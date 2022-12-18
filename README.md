@@ -12,6 +12,10 @@
  - {Upgraded the program to support two levels (we have not had enough time to design a second level)}
  - {Skills with cooldown}
  - {Music feedback}
+ - {Load from menu}
+ - {2 levels}
+ - {Enemy sprites of our own}
+ - {Menu selection with mouse}
  
 ## Controls
 
@@ -19,7 +23,7 @@
 - {D - Move to right}
 - {Space - Jump}
 - {E - Charging skill (maintaining pressed the button)}
-- {K - Special attack}
+- {K - Special attack (5 seconds cooldown)}
 - {J - Attack}
 - {F1 - Begin first level}
 - {F2 - }
