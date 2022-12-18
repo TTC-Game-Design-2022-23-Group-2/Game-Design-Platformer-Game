@@ -713,7 +713,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::ENEMY:
 			LOG("Collision ENEMY");
-			//state = DYING;
+			if (!godMode) {
+				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
+				state = DYING;
+			}
 			break;
 		case ColliderType::WIN:
 			LOG("Collision WIN");

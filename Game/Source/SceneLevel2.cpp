@@ -140,7 +140,7 @@ bool SceneLevel2::Update(float dt)
 
 	while (flyingEnemyItem != NULL)
 	{
-		if (flyingEnemyItem != NULL/* && flyingEnemyItem->data->GetState() == 2*/) {
+		if (flyingEnemyItem != NULL && flyingEnemyItem->data->GetState() == 2) {
 			app->pathfinding->ClearLastPath();
 
 			//Define origin of path
@@ -161,8 +161,8 @@ bool SceneLevel2::Update(float dt)
 				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 				if (i == 1) {
 					//Pass the movement info to the enemy
-					flyingEnemyItem->data->objective.x = PIXEL_TO_METERS(pos.x);
-					flyingEnemyItem->data->objective.y = PIXEL_TO_METERS(pos.y);
+					flyingEnemyItem->data->objective.x = pos.x;
+					flyingEnemyItem->data->objective.y = pos.y;
 				}
 				if (app->physics->debug) { app->render->DrawTexture(mouseTileTex, pos.x, pos.y); }
 			}

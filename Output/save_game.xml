@@ -9,7 +9,7 @@
 	<sceneIntro />
 	<sceneLevel1 />
 	<sceneLevel2>
-		<player x="1113" y="267" />
+		<player x="29" y="91" />
 	</sceneLevel2>
 	<sceneMenu>
 		<scene level="2" />
@@ -18,6 +18,6 @@
 	<map />
 	<fade />
 	<renderer>
-		<camera x="-1794" y="-186" />
+		<camera x="0" y="0" />
 	</renderer>
 </save_state>
