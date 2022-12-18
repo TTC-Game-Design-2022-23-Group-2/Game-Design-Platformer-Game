@@ -75,9 +75,9 @@ bool SceneLevel2::Start()
 	app->audio->PlayMusic(musicPath);
 
 	// Texture to highligh mouse position 
-	mouseTileTex = app->tex->Load("Assets/Maps/path.png");
+	mouseTileTex = app->tex->Load(config.child("textures").attribute("path").as_string());
 	// Texture to show path origin 
-	originTex = app->tex->Load("Assets/Maps/x.png");
+	originTex = app->tex->Load(config.child("textures").attribute("x").as_string());
 
 	// L03: DONE: Load map
 	if (!app->map->isEnabled) { app->map->Enable(); }
@@ -122,10 +122,13 @@ bool SceneLevel2::Update(float dt)
 		}
 	}
 
+	// Draw map
+	app->map->Draw();
+
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
-		mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
+	iPoint mouseTile = app->map->WorldToMap(mouseX + 8 - (app->render->camera.x * (float)1 / app->win->GetScale()) - app->map->mapData.tileWidth / 2,
+		mouseY + 8 - (app->render->camera.y * (float)1 / app->win->GetScale()) - app->map->mapData.tileHeight / 2);
 
 	//Convert again the tile coordinates to world coordinates to render the texture of the tile
 	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
@@ -158,10 +161,6 @@ bool SceneLevel2::Update(float dt)
 	// L12: Debug pathfinding
 	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
 	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
-
-
-	// Draw map
-	app->map->Draw();
 
 	return true;
 }
@@ -216,6 +215,11 @@ bool SceneLevel2::PostUpdate()
 		else if (!player->godMode) { player->godMode = true; }
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+		if (app->FPS == 60) { app->FPS = 30; }
+		else if (app->FPS == 30) { app->FPS = 60; }
+	}
+
 	return ret;
 }
 
@@ -235,6 +239,9 @@ bool SceneLevel2::CleanUp()
 
 	app->tex->Unload(victory_defeat);
 	app->tex->Unload(death_text);
+
+	app->tex->Unload(mouseTileTex);
+	app->tex->Unload(originTex);
 
 	return true;
 }

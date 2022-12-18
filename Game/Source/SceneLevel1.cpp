@@ -77,9 +77,9 @@ bool SceneLevel1::Start()
 	app->audio->PlayMusic(musicPath);
 
 	// Texture to highligh mouse position 
-	mouseTileTex = app->tex->Load("Assets/Maps/path_square (1).png");
+	mouseTileTex = app->tex->Load(config.child("textures").attribute("path").as_string());
 	// Texture to show path origin 
-	originTex = app->tex->Load("Assets/Maps/x_square (1).png");
+	originTex = app->tex->Load(config.child("textures").attribute("x").as_string());
 
 	// L03: DONE: Load map
 	if (!app->map->isEnabled) { app->map->Enable(); }
@@ -214,6 +214,11 @@ bool SceneLevel1::PostUpdate()
 		else if (!player->godMode) { player->godMode = true; }
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+		if (app->FPS == 60) { app->FPS = 30; }
+		else if (app->FPS == 30) { app->FPS = 60; }
+	}
+
 	return ret;
 }
 
@@ -233,6 +238,9 @@ bool SceneLevel1::CleanUp()
 
 	app->tex->Unload(victory_defeat);
 	app->tex->Unload(death_text);
+
+	app->tex->Unload(mouseTileTex);
+	app->tex->Unload(originTex);
 
 	return true;
 }
