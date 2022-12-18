@@ -35,6 +35,7 @@ public:
 	uint executedFx;
 	uint slashFx;
 	uint specialFx;
+	uint enemy_deathFx;
 
 private:
 

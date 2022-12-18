@@ -356,6 +356,7 @@ void FlyingEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ATTACK:
 		LOG("ENEMY Collision ATTACK");
+		app->audio->PlayFx(app->audio->enemy_deathFx);
 		state = DYING;
 		break;
 	}

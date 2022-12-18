@@ -369,10 +369,12 @@ void TerrestreEnemySmall::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ATTACK:
 		LOG("ENEMY Collision ATTACK");
 		state = DYING;
+		app->audio->PlayFx(app->audio->enemy_deathFx);
 		break;
 	case ColliderType::DEATH:
 		LOG("ENEMY Collision ATTACK");
 		state = DYING;
+		app->audio->PlayFx(app->audio->enemy_deathFx);
 		break;
 	}
 

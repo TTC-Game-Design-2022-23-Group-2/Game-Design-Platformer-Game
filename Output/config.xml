@@ -18,7 +18,7 @@
 
   <audio>
     <music volume="128"/>
-    <fx volume="128" executed="Assets/Audio/Fx/Executed.wav" slash="Assets/Audio/Fx/slash.wav" special="Assets/Audio/Fx/special.wav"/>
+    <fx volume="128" executed="Assets/Audio/Fx/Executed.wav" slash="Assets/Audio/Fx/slash.wav" special="Assets/Audio/Fx/special.wav" enemy_death="Assets/Audio/Fx/enemy_death.wav"/>
   </audio>
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
@@ -43,7 +43,12 @@
 	  <music path="Assets/Audio/Music/2_Bonta.ogg"/>
 	  <textures victory_defeat="Assets/Textures/victory_death.png" death_text="Assets/Textures/Death.png" path="Assets/Textures/path.png" x="Assets/Textures/x.png"/>
   	<player x="30" y="100" texturepath="Assets/Textures/young_yasuo_spritesheet.png"/>
-	<flyingenemy x="288" y="80" texturepath="Assets/Textures/bird_spritesheet.png"/>
+	  <flyingenemy x="288" y="80" texturepath="Assets/Textures/bird_spritesheet.png"/>
+    <flyingenemy x="1288" y="80" texturepath="Assets/Textures/bird_spritesheet.png"/>
+    <flyingenemy x="700" y="290" texturepath="Assets/Textures/bird_spritesheet.png"/>
+    <flyingenemy x="2588" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
+    <flyingenemy x="2788" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
+    <flyingenemy x="2988" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/second_level.tmx"/>
