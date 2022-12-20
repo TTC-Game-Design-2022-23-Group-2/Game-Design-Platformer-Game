@@ -32,7 +32,7 @@
 - {F6 - Load State}
 - {F9 - Show Hitboxes}
 - {F10 - Activate God Mode (can't die and move in 2 dimensions (fly) with W A S D)}
-- {F9 - Alternate FPS 30/60}
+- {F11 - Alternate FPS 30/60}
 
 ## Developers
 
