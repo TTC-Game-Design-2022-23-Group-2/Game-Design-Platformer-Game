@@ -34,6 +34,7 @@
 - {F9 - Show Hitboxes}
 - {F10 - Activate God Mode (can't die and move in 2 dimensions (fly) with W A S D)}
 - {F11 - Alternate FPS 30/60}
+- {Esc - Access to pause menu}
 
 ## Developers
 
