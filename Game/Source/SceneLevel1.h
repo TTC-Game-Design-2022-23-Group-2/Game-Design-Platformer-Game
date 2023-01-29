@@ -3,7 +3,8 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Item.h"
+#include "Coin.h"
+#include "Life.h"
 #include "TerrestreEnemyBig.h"
 #include "TerrestreEnemySmall.h"
 #include "Point.h"
@@ -48,6 +49,8 @@ public:
 
 	List<TerrestreEnemySmall*> terrestreSmallEnemies;
 	List<TerrestreEnemyBig*> terrestreBigEnemies;
+	List<Coin*> coins;
+	List<Life*> lifes;
 
 	bool playerDeath;
 	const char* musicPath;

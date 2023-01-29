@@ -10,6 +10,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "Map.h"
+#include "SceneGui.h"
 
 #define FACING_LEFT false
 #define FACING_RIGHT true
@@ -330,6 +331,10 @@ bool FlyingEnemy::Update()
 		break;
 	}
 
+	return true;
+}
+
+bool FlyingEnemy::PostUpdate() {
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	app->render->DrawTexture(texture, position.x - 16, position.y - 16, &rect);
 	currentAnim->Update();
@@ -358,6 +363,8 @@ void FlyingEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("ENEMY Collision ATTACK");
 		app->audio->PlayFx(app->audio->enemy_deathFx);
 		state = DYING;
+		app->sceneGui->money += 100;
+		app->sceneGui->money_anim.Reset();
 		break;
 	}
 }

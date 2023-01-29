@@ -2,6 +2,7 @@
   <app>
     <title>Ionia Tale</title>
     <organization>UPC</organization>
+	  <frcap value="16"/>
   </app>
 
   <renderer>
@@ -20,11 +21,17 @@
     <music volume="128"/>
     <fx volume="128" executed="Assets/Audio/Fx/Executed.wav" slash="Assets/Audio/Fx/slash.wav" special="Assets/Audio/Fx/special.wav" enemy_death="Assets/Audio/Fx/enemy_death.wav" enemy_attack="Assets/Audio/Fx/enemy_attack.wav"/>
   </audio>
-
-  <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
+  <pauseMenus>
+  	  <texturepaths background="Assets/Textures/MenuMark.png" credits="Assets/Textures/Credits.png" buttons="Assets/Textures/Buttons.png" buttonsselected="Assets/Textures/ButtonsSelected.png"/>
+  	  <settingsdata />
+  </pauseMenus>
+  <sceneGui>
+	  <texturepaths lives="Assets/Textures/Lives.png" money="Assets/Textures/Money.png" fontyellow="Assets/Textures/Numbers_yellow.png"/>
+	  <gamedata lives="2" money="10"/>
+  </sceneGui>
   <sceneMenu>
 	  <menu texturepath="Assets/Textures/Menu_sprite.png"/>
-	  <buttons texturepath="Assets/Textures/Buttons.png"/>
+	  <buttons texturepath="Assets/Textures/ButtonsMenu.png" texturepathselected="Assets/Textures/ButtonsMenuSelected.png"/>
   </sceneMenu>
   <sceneLevel1>
     <music path="Assets/Audio/Music/1_Astrub.ogg"/>
@@ -34,6 +41,16 @@
     <terrestreenemysmall x="1700" y="200" texturepath="Assets/Textures/piku_spritesheet.png"/>
     <terrestreenemysmall x="1770" y="200" texturepath="Assets/Textures/piku_spritesheet.png"/>
     <terrestreenemysmall x="1850" y="300" texturepath="Assets/Textures/piku_spritesheet.png"/>
+	  <coin x="160" y="264" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="735" y="375" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1155" y="270" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1375" y="285" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1440" y="140" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="2295" y="335" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="2210" y="65" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="2805" y="260" texturepath="Assets/Textures/Coin.png"/>
+	  <life x="220" y="258" texturepath="Assets/Textures/Heart.png"/>
+	  <life x="2454" y="416" texturepath="Assets/Textures/Heart.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/first_level.tmx"/>
@@ -49,6 +66,20 @@
     <flyingenemy x="2588" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
     <flyingenemy x="2788" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
     <flyingenemy x="2988" y="260" texturepath="Assets/Textures/bird_spritesheet.png"/>
+	  <coin x="290" y="140" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="235" y="350" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="715" y="300" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="715" y="190" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1100" y="255" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1695" y="335" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1695" y="335" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1695" y="335" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1695" y="335" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="1535" y="40" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="2180" y="380" texturepath="Assets/Textures/Coin.png"/>
+	  <coin x="2270" y="330" texturepath="Assets/Textures/Coin.png"/>
+	  <life x="755" y="60" texturepath="Assets/Textures/Heart.png"/>
+	  <life x="1935" y="45" texturepath="Assets/Textures/Heart.png"/>
   	<map>
   		<mapfolder path="Assets/Maps/"/>
   		<mapfile path="Assets/Maps/second_level.tmx"/>

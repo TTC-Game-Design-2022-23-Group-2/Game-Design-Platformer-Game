@@ -25,7 +25,8 @@ enum bodyType {
 
 enum class ColliderType {
 	PLAYER, 
-	ITEM,
+	COIN,
+	LIFE,
 	PLATFORM, 
 	DEATH,
 	WIN,
@@ -77,7 +78,7 @@ public:
 
 	// Create basic physics objects
 	PhysBody* CreateRectangle(int x, int y, int width, int height, bodyType type);
-	PhysBody* CreateCircle(int x, int y, int radious, bodyType type);
+	PhysBody* CreateCircle(int x, int y, int radious, bodyType type, bool sensor = false);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, bodyType type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bodyType type);
 	PhysBody* CreateSensorChain(int x, int y, int* points, int size, bodyType type);

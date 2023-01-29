@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "SceneLevel1.h"
 #include "SceneLevel2.h"
+#include "SceneGui.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
@@ -242,6 +243,10 @@ bool Player::Start() {
 
 bool Player::Update()
 {
+	if (app->sceneGui->lives <= 0) {
+		state = DYING;
+	}
+
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	b2Vec2 vel;
 	float speed = 100.0f; 
@@ -663,8 +668,12 @@ bool Player::Update()
 
 	}
 
+	return true;
+}
+
+bool Player::PostUpdate() {
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x -38, position.y-27, &rect);
+	app->render->DrawTexture(texture, position.x - 38, position.y - 27, &rect);
 	currentAnim->Update();
 
 	return true;
@@ -685,9 +694,17 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 
-		case ColliderType::ITEM:
+		case ColliderType::COIN:
 			LOG("Collision ITEM");
+			app->sceneGui->money += 10;
+			physB->body->SetActive(false);
 			app->audio->PlayFx(pickCoinFxId);
+			break;
+		case ColliderType::LIFE:
+			LOG("Collision ITEM");
+			app->sceneGui->lives++;
+			physB->body->SetActive(false);
+			/*app->audio->PlayFx(pickCoinFxId);*/
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
@@ -701,14 +718,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			LOG("Collision DEATH");
 			if (!godMode) {
 				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
-				state = DYING;
+				app->sceneGui->lives = 0;
 			}
 			break;
 		case ColliderType::ENEMY:
 			LOG("Collision ENEMY");
 			if (!godMode) {
-				if (state != DYING) { app->audio->PlayFx(app->audio->executedFx); }
-				state = DYING;
+				app->sceneGui->lives--;
+				if (state != DYING && app->sceneGui->lives <= 0) { app->audio->PlayFx(app->audio->executedFx); }
 			}
 			break;
 		case ColliderType::WIN:
@@ -728,7 +745,10 @@ void Player::EndCollision(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{
-	case ColliderType::ITEM:
+	case ColliderType::COIN:
+		LOG("END Collision ITEM");
+		break;
+	case ColliderType::LIFE:
 		LOG("END Collision ITEM");
 		break;
 	case ColliderType::PLATFORM:

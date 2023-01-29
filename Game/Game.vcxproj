@@ -62,7 +62,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Source\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib; SDL2_mixer.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\SDL_image\libx86;$(ProjectDir)Source\External\SDL_mixer\libx86;$(ProjectDir)Source\External\Box2D\libx86\DebugLib</AdditionalLibraryDirectories>
@@ -97,50 +97,65 @@
   <ItemGroup>
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FlyingEnemy.cpp" />
-    <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
+    <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\Coin.cpp" />
+    <ClCompile Include="Source\Life.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModuleFadeToBlack.cpp" />
+    <ClCompile Include="Source\ModuleFonts.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
+    <ClCompile Include="Source\PauseMenus.cpp" />
+    <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\SceneGui.cpp" />
     <ClCompile Include="Source\SceneLevel1.cpp" />
     <ClCompile Include="Source\Render.cpp" />
-    <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\SceneLevel2.cpp" />
     <ClCompile Include="Source\SceneMenu.cpp" />
     <ClCompile Include="Source\TerrestreEnemyBig.cpp" />
     <ClCompile Include="Source\TerrestreEnemySmall.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\FlyingEnemy.h" />
-    <ClInclude Include="Source\Item.h" />
+    <ClInclude Include="Source\GuiButton.h" />
+    <ClInclude Include="Source\GuiControl.h" />
+    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\Coin.h" />
+    <ClInclude Include="Source\Life.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\MemLeaks.h" />
     <ClInclude Include="Source\ModuleFadeToBlack.h" />
+    <ClInclude Include="Source\ModuleFonts.h" />
     <ClInclude Include="Source\Pathfinding.h" />
+    <ClInclude Include="Source\PauseMenus.h" />
+    <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Queue.h" />
+    <ClInclude Include="Source\SceneGui.h" />
     <ClInclude Include="Source\SceneLevel1.h" />
     <ClInclude Include="Source\Audio.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Render.h" />
-    <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneLevel2.h" />
     <ClInclude Include="Source\SceneMenu.h" />
     <ClInclude Include="Source\TerrestreEnemyBig.h" />
     <ClInclude Include="Source\TerrestreEnemySmall.h" />
     <ClInclude Include="Source\Textures.h" />
+    <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\List.h" />

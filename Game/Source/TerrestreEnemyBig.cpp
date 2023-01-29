@@ -206,6 +206,10 @@ bool TerrestreEnemyBig::Update()
 
 	}
 
+	return true;
+}
+
+bool TerrestreEnemyBig::PostUpdate() {
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	app->render->DrawTexture(texture, position.x, position.y, &rect);
 	currentAnim->Update();

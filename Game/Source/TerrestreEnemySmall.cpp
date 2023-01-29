@@ -10,6 +10,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "Map.h"
+#include "SceneGui.h"
 
 #define FACING_LEFT false
 #define FACING_RIGHT true
@@ -336,6 +337,10 @@ bool TerrestreEnemySmall::Update()
 
 	}
 
+	return true;
+}
+
+bool TerrestreEnemySmall::PostUpdate() {
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	if (state == DYING)
 	{
@@ -371,9 +376,11 @@ void TerrestreEnemySmall::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("ENEMY Collision ATTACK");
 		state = DYING;
 		app->audio->PlayFx(app->audio->enemy_deathFx);
+		app->sceneGui->money += 50;
+		app->sceneGui->money_anim.Reset();
 		break;
 	case ColliderType::DEATH:
-		LOG("ENEMY Collision ATTACK");
+		LOG("ENEMY Collision DEATH");
 		state = DYING;
 		app->audio->PlayFx(app->audio->enemy_deathFx);
 		break;

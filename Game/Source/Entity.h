@@ -11,7 +11,8 @@ class PhysBody;
 enum class EntityType
 {
 	PLAYER,
-	ITEM,
+	COIN,
+	LIFE,
 	PIKU,
 	MAMAPIKU,
 	FLYING,
@@ -35,6 +36,11 @@ public:
 	}
 
 	virtual bool Update()
+	{
+		return true;
+	}
+
+	virtual bool PostUpdate()
 	{
 		return true;
 	}

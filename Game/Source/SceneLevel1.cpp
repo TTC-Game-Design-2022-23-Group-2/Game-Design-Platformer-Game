@@ -5,12 +5,14 @@
 #include "Render.h"
 #include "Window.h"
 #include "SceneLevel1.h"
+#include "SceneGui.h"
 #include "SceneMenu.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
 #include "Physics.h"
 #include "PathFinding.h"
+#include "PauseMenus.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -43,14 +45,20 @@ bool SceneLevel1::Start()
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
+	for (pugi::xml_node coinNode = config.child("coin"); coinNode; coinNode = coinNode.next_sibling("coin"))
 	{
-		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-		item->parameters = itemNode;
+		Coin* coin = (Coin*)app->entityManager->CreateEntity(EntityType::COIN);
+		coin->parameters = coinNode;
+		coins.Add(coin);
 	}
 
-    configNode = app->LoadConfigFileToVar();
-	config = configNode.child(name.GetString());
+	for (pugi::xml_node lifeNode = config.child("life"); lifeNode; lifeNode = lifeNode.next_sibling("life"))
+	{
+		Life* life = (Life*)app->entityManager->CreateEntity(EntityType::LIFE);
+		life->parameters = lifeNode;
+		lifes.Add(life);
+	}
+
 	// SMALL TERR ENEMIES
 	for (pugi::xml_node pikuEnemyNode = config.child("terrestreenemysmall"); pikuEnemyNode; pikuEnemyNode = pikuEnemyNode.next_sibling("terrestreenemysmall"))
 	{
@@ -59,8 +67,6 @@ bool SceneLevel1::Start()
 		terrestreSmallEnemies.Add(pikuEnemy);
 	}
 
-	configNode = app->LoadConfigFileToVar();
-	config = configNode.child(name.GetString());
 	// BIG TERR ENEMIES
 	for (pugi::xml_node mamapikuEnemyNode = config.child("terrestreenemybig"); mamapikuEnemyNode; mamapikuEnemyNode = mamapikuEnemyNode.next_sibling("terrestreenemybig"))
 	{
@@ -78,6 +84,9 @@ bool SceneLevel1::Start()
 
 	//IMPORTANT, ENTITY MANAGER IS DISABLED BY DEFAULT
 	if(!app->entityManager->isEnabled) { app->entityManager->Enable(); }
+
+	//IMPORTANT, SCENE GUI IS DISABLED BY DEFAULT
+	if (!app->sceneGui->isEnabled) { app->sceneGui->Enable(); }
 
 	victory_defeat = app->tex->Load(config.child("textures").attribute("victory_defeat").as_string());
 	death_text = app->tex->Load(config.child("textures").attribute("death_text").as_string());
@@ -200,12 +209,10 @@ bool SceneLevel1::PostUpdate()
 		app->render->DrawTexture(victory_defeat, ((app->render->camera.x)*-1)/ app->win->GetScale(), ((app->render->camera.y)*-1)/app->win->GetScale(), &rect);
 	}
 
-	if (player->GetState() == 10) {
-		SDL_Rect rect = victory.GetCurrentFrame();
-		app->render->DrawTexture(victory_defeat, ((app->render->camera.x) * -1) / app->win->GetScale(), ((app->render->camera.y) * -1) / app->win->GetScale(), &rect);
-	}
+	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		app->pauseMenus->GameMenu();
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || player->endLevelDie)
+	if (player->endLevelDie)
 		app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 30);
 
 	//DEBUG KEYS

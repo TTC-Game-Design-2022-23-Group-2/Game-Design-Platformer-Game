@@ -3,7 +3,8 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Item.h"
+#include "Coin.h"
+#include "Life.h"
 #include "Point.h"
 #include "Physics.h"
 #include "FlyingEnemy.h"
@@ -42,6 +43,8 @@ public:
 
 public:
 	List<FlyingEnemy*> flyingEnemies;
+	List<Coin*> coins;
+	List<Life*> lifes;
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;

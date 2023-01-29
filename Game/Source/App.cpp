@@ -6,13 +6,16 @@
 #include "Audio.h"
 #include "SceneLevel1.h"
 #include "SceneLevel2.h"
+#include "SceneGui.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
 #include "ModuleFadeToBlack.h"
-#include "SceneIntro.h"
 #include "SceneMenu.h"
 #include "Pathfinding.h"
+#include "GuiManager.h"
+#include "ModuleFonts.h"
+#include "PauseMenus.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -35,11 +38,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding      = new PathFinding();
 	sceneLevel1	     = new SceneLevel1(false);
 	sceneLevel2		 = new SceneLevel2(false);
-	sceneIntro		 = new SceneIntro(false);
+	sceneGui		 = new SceneGui(false);
 	sceneMenu		 = new SceneMenu(true);
 	entityManager	 = new EntityManager(false);
 	map				 = new Map(false);
 	fade			 = new ModuleFadeToBlack(true);
+	fonts			 = new ModuleFonts(true);
+	guiManager		 = new GuiManager(true);
+	pauseMenus		 = new PauseMenus(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -47,19 +53,22 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);				//2
 	AddModule(tex);				//3
 	AddModule(audio);			//4
+	AddModule(fonts);			//5
 	//L07 DONE 2: Add Physics module
-	AddModule(physics);			//5
-	AddModule(pathfinding);     //6
-	AddModule(sceneIntro);		//7
+	AddModule(physics);			//6
+	AddModule(pathfinding);     //7
 	AddModule(sceneLevel1);	    //8
 	AddModule(sceneLevel2);		//9
-	AddModule(sceneMenu);		//10
-	AddModule(entityManager);	//11
-	AddModule(map);				//12
-	AddModule(fade);			//13
+	AddModule(sceneGui);		//10
+	AddModule(sceneMenu);		//11
+	AddModule(entityManager);	//12
+	AddModule(map);				//13
+	AddModule(guiManager);		//14
+	AddModule(pauseMenus);		//15
+	AddModule(fade);			//16
 
 	// Render last to swap buffer
-	AddModule(render);			//14
+	AddModule(render);			//17
 }
 
 // Destructor
@@ -86,6 +95,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
+	timer = Timer();
+
 	bool ret = false;
 
 	// L01: DONE 3: Load config from XML
@@ -94,6 +105,8 @@ bool App::Awake()
 	if (ret == true)
 	{
 		title = configNode.child("app").child("title").child_value(); // L01: DONE 4: Read the title from the config file
+
+		maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
 
 		ListItem<Module*>* item;
 		item = modules.start;
@@ -116,6 +129,10 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
+	timer.Start();
+	startupTime.Start();
+	lastSecFrameTime.Start();
+
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -174,6 +191,7 @@ bool App::LoadConfig()
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+	frameTime.Start();
 }
 
 // ---------------------------------------------
@@ -182,6 +200,47 @@ void App::FinishUpdate()
 	// L03: DONE 1: This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadFromFile();
 	if (saveGameRequested == true) SaveToFile();
+
+	// L13: DONE 4: Now calculate:
+	// Amount of frames since startup
+	frameCount++;
+	// Amount of time since game start (use a low resolution timer)
+	secondsSinceStartup = startupTime.ReadSec();
+	// Amount of ms took the last update
+	dt = frameTime.ReadMSec();
+	// Amount of frames during the last second
+	lastSecFrameCount++;
+
+	if (lastSecFrameTime.ReadMSec() > 1000) {
+		lastSecFrameTime.Start();
+		framesPerSecond = lastSecFrameCount;
+		lastSecFrameCount = 0;
+		// Average FPS for the whole game life
+		averageFps = (averageFps + framesPerSecond) / 2;
+	}
+
+	// L14: DONE 2: Use SDL_Delay to make sure you get your capped framerate
+	// L14: DONE 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+
+	float delay = float(maxFrameDuration) - dt;
+
+	PerfTimer delayTimer = PerfTimer();
+	delayTimer.Start();
+	if (maxFrameDuration > 0 && delay > 0) {
+		SDL_Delay(delay);
+		LOG("We waited for %f milliseconds and the real delay is % f", delay, delayTimer.ReadMs());
+		dt = maxFrameDuration;
+	}
+	else {
+		//LOG("No wait");
+	}
+
+	// Shows the time measurements in the window title
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+		averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
+
+	app->win->SetTitle(title);
 }
 
 // Call modules before each loop iteration

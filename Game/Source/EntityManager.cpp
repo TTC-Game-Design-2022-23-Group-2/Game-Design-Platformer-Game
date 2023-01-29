@@ -1,10 +1,12 @@
 #include "EntityManager.h"
 #include "Player.h"
-#include "Item.h"
+#include "Coin.h"
+#include "Life.h"
 #include "App.h"
 #include "Textures.h"
 #include "SceneLevel1.h"
 #include "SceneLevel2.h"
+#include "PauseMenus.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -84,8 +86,12 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		entity = new Player();
 		break;
 
-	case EntityType::ITEM:
-		entity = new Item();
+	case EntityType::COIN:
+		entity = new Coin();
+		break;
+
+	case EntityType::LIFE:
+		entity = new Life();
 		break;
 
 	case EntityType::PIKU:
@@ -124,6 +130,8 @@ void EntityManager::AddEntity(Entity* entity)
 
 bool EntityManager::Update(float dt)
 {
+	if (app->pauseMenus->isPaused()) { return true; }
+
 	bool ret = true;
 	ListItem<Entity*>* item;
 	Entity* pEntity = NULL;
@@ -134,6 +142,23 @@ bool EntityManager::Update(float dt)
 
 		if (pEntity->active == false) continue;
 		ret = item->data->Update();
+	}
+
+	return ret;
+}
+
+bool EntityManager::PostUpdate()
+{
+	bool ret = true;
+	ListItem<Entity*>* item;
+	Entity* pEntity = NULL;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		pEntity = item->data;
+
+		if (pEntity->active == false) continue;
+		ret = item->data->PostUpdate();
 	}
 
 	return ret;

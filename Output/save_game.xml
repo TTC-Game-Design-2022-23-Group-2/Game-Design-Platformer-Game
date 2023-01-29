@@ -5,20 +5,24 @@
 	<textures />
 	<audio />
 	<:anonymous />
+	<:anonymous />
 	<pathfinding />
-	<sceneIntro />
 	<sceneLevel1>
-		<player x="120" y="283" />
-		<terrestreenemysmall x="750" y="260" />
+		<player x="1925" y="187" />
+		<terrestreenemysmall x="696" y="237" />
 	</sceneLevel1>
 	<sceneLevel2 />
+	<sceneGui>
+		<gamedata lives="2" money="200" />
+	</sceneGui>
 	<sceneMenu>
 		<scene level="1" />
 	</sceneMenu>
 	<entitymanager />
 	<map />
+	<guiManager />
 	<fade />
 	<renderer>
-		<camera x="0" y="-198" />
+		<camera x="-3418" y="-42" />
 	</renderer>
 </save_state>

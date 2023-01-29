@@ -1,18 +1,19 @@
-#ifndef __ITEM_H__
-#define __ITEM_H__
+#ifndef __LIFE_H__
+#define __LIFE_H__
 
 #include "Entity.h"
 #include "Point.h"
+#include "Animation.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
 
-class Item : public Entity
+class Life : public Entity
 {
 public:
 
-	Item();
-	virtual ~Item();
+	Life();
+	virtual ~Life();
 
 	bool Awake();
 
@@ -31,8 +32,10 @@ private:
 	SDL_Texture* texture;
 	const char* texturePath;
 
+	Animation lifeAnim;
+
 	//DONE 4: Add a physics to an item
 	PhysBody* pbody;
 };
 
-#endif // __ITEM_H__
+#endif // __LIFE_H__

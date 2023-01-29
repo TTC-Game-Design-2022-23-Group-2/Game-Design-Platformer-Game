@@ -9,6 +9,8 @@
 #include "Render.h"
 #include "Player.h"
 #include "Window.h"
+#include "PauseMenus.h"
+
 #include "Box2D/Box2D/Box2D.h"
 
 // Tell the compiler to reference the compiled Box2D libraries
@@ -23,6 +25,7 @@ Physics::Physics(bool startEnabled) : Module(startEnabled)
 	// Initialise all the internal class variables, at least to NULL pointer
 	world = NULL;
 	debug = false;
+	name.Create("physics");
 }
 
 // Destructor
@@ -47,6 +50,8 @@ bool Physics::Start()
 // 
 bool Physics::PreUpdate()
 {
+	if (app->pauseMenus->isPaused()) { return true; }
+
 	bool ret = true;
 
 	// Step (update) the World
@@ -102,7 +107,7 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
 	return pbody;
 }
 
-PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type)
+PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type, bool sensor)
 {
 	// Create BODY at position x,y
 	b2BodyDef body;
@@ -124,7 +129,9 @@ PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type)
 	b2FixtureDef fixture;
 	fixture.shape = &circle;
 	fixture.density = 1.0f;
-	b->ResetMassData();
+
+	if (sensor) { fixture.isSensor = true; }
+	else { b->ResetMassData(); }
 
 	// Add fixture to the BODY
 	b->CreateFixture(&fixture);

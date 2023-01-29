@@ -4,6 +4,7 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "GuiManager.h"
 
 struct SDL_Texture;
 
@@ -19,6 +20,8 @@ public:
 	// Called when the module is activated
 	bool Start();
 
+	bool PreUpdate();
+
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
 	bool Update(float dt);
@@ -31,19 +34,29 @@ public:
 
 	bool SaveState(pugi::xml_node& data);
 
+	// Define multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* menuTexture = nullptr;
 	SDL_Texture* buttonTexture = nullptr;
+	SDL_Texture* buttonTextureSelected = nullptr;
 	Animation menu;
-	Animation icon;
-	Animation buttons;
+
+	//GUI Buttons
+	GuiButton* startButton;
+	GuiButton* continueButton;
+	GuiButton* exitButton;
+	GuiButton* creditsButton;
+	GuiButton* settingsButton;
 
 	int iconCounter = 240;
 	bool appStart = true;
 
 	int currentLevel;
 	bool loadPrevious;
+	bool quit = false;
 };
 
 #endif

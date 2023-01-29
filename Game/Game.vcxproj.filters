@@ -40,9 +40,6 @@
     <ClCompile Include="Source\ModuleFadeToBlack.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneIntro.cpp">
-      <Filter>Source\Gameplay\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneMenu.cpp">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClCompile>
@@ -55,7 +52,7 @@
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Source\Gameplay\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Item.cpp">
+    <ClCompile Include="Source\Coin.cpp">
       <Filter>Source\Gameplay\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
@@ -69,6 +66,30 @@
     </ClCompile>
     <ClCompile Include="Source\TerrestreEnemySmall.cpp">
       <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiButton.cpp">
+      <Filter>Source\Gameplay\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>Source\Gameplay\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneGui.cpp">
+      <Filter>Source\Gameplay\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleFonts.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PauseMenus.cpp">
+      <Filter>Source\Gameplay\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Life.cpp">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PerfTimer.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +159,6 @@
     <ClInclude Include="Source\Animation.h">
       <Filter>Source\Gameplay\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneIntro.h">
-      <Filter>Source\Gameplay\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneMenu.h">
       <Filter>Source\Gameplay\Scenes</Filter>
     </ClInclude>
@@ -157,7 +175,7 @@
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Source\Gameplay\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Item.h">
+    <ClInclude Include="Source\Coin.h">
       <Filter>Source\Gameplay\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
@@ -171,6 +189,33 @@
     </ClInclude>
     <ClInclude Include="Source\TerrestreEnemySmall.h">
       <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiButton.h">
+      <Filter>Source\Gameplay\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>Source\Gameplay\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControl.h">
+      <Filter>Source\Gameplay\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGui.h">
+      <Filter>Source\Gameplay\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleFonts.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenus.h">
+      <Filter>Source\Gameplay\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Life.h">
+      <Filter>Source\Gameplay\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerfTimer.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +248,9 @@
     </Filter>
     <Filter Include="Source\Gameplay\Entities">
       <UniqueIdentifier>{5b6a391e-ce0a-457d-a0b8-503c3d47afc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gameplay\GUI">
+      <UniqueIdentifier>{37ed93af-f348-4859-bb64-5c7567c0bedf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
