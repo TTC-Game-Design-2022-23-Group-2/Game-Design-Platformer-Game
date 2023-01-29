@@ -16,6 +16,7 @@
  - {2 levels}
  - {Enemy sprites of our own}
  - {Menu selection with mouse}
+ - {Gui sprites of our own}
  
 ## Controls
 
@@ -36,8 +37,8 @@
 
 ## Developers
 
- - {Kiko Ferrerós} - {Programming & Design} - [_kikofp02_](https://github.com/kikofp02)
- - {Alex Delgado} - {Programming & Design} - [_faelion_](https://github.com/faelion) // [_Crujialex_](https://github.com/Crujialex)
+ - {Kiko Ferrerós} - {Programming & Design & Art} - [_kikofp02_](https://github.com/kikofp02)
+ - {Alex Delgado} - {Programming & Design & Audio} - [_faelion_](https://github.com/faelion) // [_Crujialex_](https://github.com/Crujialex)
 
 ## License
 
