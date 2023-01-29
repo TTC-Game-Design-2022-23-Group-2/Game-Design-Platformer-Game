@@ -26,19 +26,9 @@ enum MainState
 
 App* app = NULL;
 
-void capFramerate(Uint32 startingTick)
-{
-	if ((1000 / app->FPS) > SDL_GetTicks() - startingTick)
-	{
-		SDL_Delay(1000 / app->FPS - (SDL_GetTicks() - startingTick));
-	}
-}
-
 int main(int argc, char* args[])
 {
 	LOG("Engine starting ...");
-
-	Uint32 startingTick;
 
 	ReportMemoryLeaks();
 
@@ -47,7 +37,6 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
-		startingTick = SDL_GetTicks();
 
 		switch(state)
 		{
@@ -118,10 +107,6 @@ int main(int argc, char* args[])
 			result = EXIT_FAILURE;
 			state = EXIT;
 			break;
-		}
-		if (state == LOOP)
-		{
-			capFramerate(startingTick);
 		}
 	}
 
